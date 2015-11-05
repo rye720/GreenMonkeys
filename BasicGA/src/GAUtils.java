@@ -5,10 +5,18 @@
  */
 import java.util.*;
 
+/**
+ *
+ * @author jawarth
+ */
 public class GAUtils implements Comparator<Animal> {
-   
-    //Outputs the current population
-    public void PopOut(List<Animal> pop) {
+
+
+    /**
+     *
+     * @param pop
+     */
+        public void PopOut(List<Animal> pop) {
         int i = 0;
         while (pop.size() > i) {
             System.out.println(pop.get(i));
@@ -16,19 +24,30 @@ public class GAUtils implements Comparator<Animal> {
         }
     }
 
-    //Ranks the animals from highest to lowest via fitness
-    public List<Animal> ranking(List<Animal> pop) {
+    /**
+     *
+     * @param pop
+     * @return sorted population, highest fitness at the top
+     */
+        public List<Animal> ranking(List<Animal> pop) {
         Collections.sort(pop, new GAUtils());
         return pop;
     }
 
     //compares the fitness for the sorting method above
-    @Override
+
+    /**
+     *
+     * @param t
+     * @param t1
+     * @return compares two animals, higher fitness first
+     */
+        @Override
     public int compare(Animal t, Animal t1) {
         int x = 0;
-        if(t.getFitness() > t1.getFitness()){
+        if (t.getFitness() > t1.getFitness()) {
             x = -1;
-        } else if (t.getFitness() < t1.getFitness()){
+        } else if (t.getFitness() < t1.getFitness()) {
             x = 1;
         } else {
             x = 0;
@@ -36,4 +55,43 @@ public class GAUtils implements Comparator<Animal> {
         return x;
     }
 
+    /**
+     *
+     * @param x
+     * @return random mutation gene
+     */
+    public int[] RandGene(int x) {
+        int[] genes = new int[x];
+        for (int i = 0; i < x; i++) {
+            genes[i] = (int) (Math.random() * 9 + 1);
+        }
+        return genes;
+    }
+       
+    /**
+     *
+     * @param x
+     * @return if x is prime or not
+     */
+    public boolean isPrime(int x){
+        boolean prime = false;
+        if(x==2 || x==3 || x==5 || x==7)
+            prime = true;
+        return prime;
+    }
+    
+    /**
+     *
+     * @return random sex
+     */
+    public char GetSex() {
+        char c;
+        int sexRand = (int) (Math.random() * 10 + 1);
+        if (sexRand > 5) {
+            c = 'm';
+        } else {
+            c = 'f';
+        }
+        return c;
+    }
 }

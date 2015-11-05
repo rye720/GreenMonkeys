@@ -1,78 +1,169 @@
+
 /**
  * @author The Green Monkeys Inc.
  */
 import java.lang.*;
 import java.util.*;
 
+/**
+ *
+ * @author jawarth
+ */
 public class GeneticAlgorithm {
-    
-   /**
-    * @param m mom animal
-    * @param d dad animal
-    * @return offspring of two parents
-    */
-    public List<Animal> Combination(List<Animal> pop){
-        
+
+    /**
+     *
+     * @param t
+     * @param x
+     * @param y
+     * @param z
+     * @return random population
+     */
+    public List<Animal> GeneratePop(String t, int x, int y, int z) {
+        GAUtils gau = new GAUtils();
+        Vector pos = new Vector(0.0,0.0,0.0);
+        List<Animal> newPop = new ArrayList<>();
+
+        for (int i = 0; i < x; i++) {
+            Animal a = new Animal(t, gau.RandGene(y), gau.GetSex(), 0, z, t + z + i,pos);
+            newPop.add(a);
+        }
+        return newPop;
+    }
+
+    /**
+     *
+     * @param pop
+     * @param x
+     * @return
+     */
+    public List<Animal> Selection(List<Animal> pop, int x) {
+        int i = (x / 4);
+        for (; i > 0; x--, i--) {
+            //System.out.println(pop.remove(x).tag + " Removed.");
+            pop.remove(x);
+        }
+        return pop;
+    }
+
+    /**
+     *
+     * @param pop
+     * @param x
+     * @return
+     */
+    public List<Animal> Combination(List<Animal> pop, int x) {
+        GAUtils gau = new GAUtils();
 //     in the future, will want to define exception for when two
 //     animals with incompatible genes attempt to mate
-       List<Animal> newPop = new ArrayList<Animal>();
-        
-        while (pop.size() > 1){
+        List<Animal> newPop = new ArrayList<>();
+
+        while (pop.size() > 1) {
             //generate sex of animal
             char sex;
-            int sexRand = (int)(Math.random() * 10 + 1);
-            if(sexRand > 5){
+            int sexRand = (int) (Math.random() * 10 + 1);
+            if (sexRand > 5) {
                 sex = 'm';
-            }else{
+            } else {
                 sex = 'f';
             }
-            
-            Animal d = pop.remove(0);
-            Animal m = pop.remove(0);
-            
+
+            //More diverse combination to avoide local maxima's
+            Animal d;
+            Animal m;
+            if (pop.size() >= 8) {
+                d = pop.remove((int) (Math.random() * 6));
+                m = pop.remove((int) (Math.random() * 6));
+            } else if (pop.size() >= 7) {
+                d = pop.remove((int) (Math.random() * 5));
+                m = pop.remove((int) (Math.random() * 5));
+            } else if (pop.size() >= 6) {
+                d = pop.remove((int) (Math.random() * 4));
+                m = pop.remove((int) (Math.random() * 4));
+            } else if (pop.size() >= 5) {
+                d = pop.remove((int) (Math.random() * 3));
+                m = pop.remove((int) (Math.random() * 3));
+            } else if (pop.size() >= 4) {
+                d = pop.remove((int) (Math.random() * 2));
+                m = pop.remove((int) (Math.random() * 2));
+            } else if (pop.size() >= 3) {
+                d = pop.remove((int) (Math.random() * 1));
+                m = pop.remove((int) (Math.random() * 1));
+            } else {
+                d = pop.remove(0);
+                m = pop.remove(0);
+            }
+
             //generate crossover point
-            int cp = (int)(Math.random() * d.genes.length + 1);
-            System.out.println("Crossover pt: "+cp);
-            
+            int cp = (int) (Math.random() * d.genes.length + 1);
+            //System.out.println("Crossover pt: " + cp);
+
             //initialize child genes
             int[] childGenes = new int[d.genes.length];
-            
+
             //next two loops populate child gene set
-            for(int i=0; i<cp;i++){
+            for (int i = 0; i < cp; i++) {
                 //pass down some mom genes
-                childGenes[i] = d.genes[i]; 
+                childGenes[i] = d.genes[i];
             }
-            
-            for(int i=cp; i<m.genes.length;i++){
+
+            for (int i = cp; i < m.genes.length; i++) {
                 //pass down some dad genes
                 childGenes[i] = m.genes[i];
             }
             
-            Animal child = new Animal(m.species, childGenes, sex, calcFitness(childGenes));
+            //Mutation if sexRand is a prime number
+            if (gau.isPrime(sexRand)) {
+                Mutation(childGenes);
+            }
+            //Future use for 3d graphics and visulization
+            Vector pos = new Vector(0.0,0.0,0.0);  
+            
+            Animal child = new Animal(m.species, childGenes, sex, calcFitness(childGenes),
+                    (m.generation + 1), m.species + (m.generation + 1) + x, pos);
+            x++;
             Collections.addAll(newPop, m, d, child);
         }
-            return newPop;
-            
-    }   
-    
-    //Loops through the population changing each animals' fitness number
-    public List<Animal> EvalPopFitness(List<Animal> pop){           
-        for(int i = 0, y = pop.size();y > i; i++){
+        if (pop.size() == 1) {
+            newPop.add(pop.remove(0));
+        }
+        return newPop;
+
+    }
+
+    //Random gene mutation
+    private int[] Mutation(int[] x) {
+        x[(int) (Math.random() * 4)] = (int) (Math.random() * 9 + 1);
+        return x;
+    }
+
+    /**
+     *
+     * @param pop
+     * @return population with their fitness number evaluated
+     */
+        public List<Animal> EvalPopFitness(List<Animal> pop) {
+        for (int i = 0, y = pop.size(); y > i; i++) {
             pop.get(i).fitness = calcFitness(pop.get(i).genes);
-        }     
+        }
         return pop;
     }
-    
+
     //Calcualte the fitness
-    public float calcFitness(int[] genes){
+
+    /**
+     *
+     * @param genes
+     * @return fitness number
+     */
+        public float calcFitness(int[] genes) {
         float x = 0;
         //Summation precentage of each gene
-        for(int i = 0; genes.length > i; i++){
-            x += (genes[i]/10.0);
+        for (int i = 0; genes.length > i; i++) {
+            x += (genes[i] / 10.0);
         }
         //Average summation percentage
-        x /= (float)genes.length;      
+        x /= (float) genes.length;
         return x;
     }
 }
-
