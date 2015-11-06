@@ -16,7 +16,6 @@ public class Animal {
     protected String tag;
     protected Vector position;
     protected Vector direction;
-    
 
     public Animal(String s, int[] g, char c, float f, int ge, String t, Vector v) {
         this.species = s;
@@ -28,7 +27,7 @@ public class Animal {
         this.position = v;
     }
 
-    public float getFitness() {     
+    public float getFitness() {
         return fitness;
     }
 
@@ -38,5 +37,5 @@ public class Animal {
         return "Species: " + species + " Genes: " + Arrays.toString(genes) + " Sex: " + sex
                 + " Fitness: " + f.format(fitness) + " Generation " + generation + " Tag: " + tag;
     }
-       
+
 }//animal

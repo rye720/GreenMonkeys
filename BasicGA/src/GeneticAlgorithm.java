@@ -21,11 +21,18 @@ public class GeneticAlgorithm {
      */
     public List<Animal> GeneratePop(String t, int x, int y, int z) {
         GAUtils gau = new GAUtils();
-        Vector pos = new Vector(0.0,0.0,0.0);
         List<Animal> newPop = new ArrayList<>();
 
         for (int i = 0; i < x; i++) {
-            Animal a = new Animal(t, gau.RandGene(y), gau.GetSex(), 0, z, t + z + i,pos);
+            int x1[] = gau.RandGene(y);
+            double fn = calcFitness(x1);
+            // Vector pos = new Vector( (calcFitness(x1)*100) + 5,
+            //      (Math.random() * calcFitness(x1)*150) + 5,
+            //      (Math.random() * calcFitness(x1)*100) + 5);
+            Vector pos = new Vector((((fn / 10) + (fn % 10)) * 350) + 5,
+                    (((fn / 10) + (fn % 10)) * 350) + 5,
+                    (fn * 100) + 5);
+            Animal a = new Animal(t, gau.RandGene(y), gau.GetSex(), 0, z, t + z + i, pos);
             newPop.add(a);
         }
         return newPop;
@@ -111,14 +118,23 @@ public class GeneticAlgorithm {
                 //pass down some dad genes
                 childGenes[i] = m.genes[i];
             }
-            
+
             //Mutation if sexRand is a prime number
-            if (gau.isPrime(sexRand)) {
+            //if (gau.isPrime(sexRand)) {
+            if (Math.random() <= .20) {
                 Mutation(childGenes);
             }
+            //}
             //Future use for 3d graphics and visulization
-            Vector pos = new Vector(0.0,0.0,0.0);  
-            
+
+            double fn = calcFitness(childGenes);
+            //Vector pos = new Vector( (calcFitness(childGenes)*100) + 5,
+            //     (Math.random() * calcFitness(childGenes)*150) + 5,
+            //     (Math.random() * calcFitness(childGenes)*100) + 5);
+            Vector pos = new Vector((((fn / 10) + (fn % 10)) * 350) + 5,
+                    (((fn / 10) + (fn % 10)) * 350) + 5,
+                    (fn * 100) + 5);
+
             Animal child = new Animal(m.species, childGenes, sex, calcFitness(childGenes),
                     (m.generation + 1), m.species + (m.generation + 1) + x, pos);
             x++;
@@ -133,7 +149,7 @@ public class GeneticAlgorithm {
 
     //Random gene mutation
     private int[] Mutation(int[] x) {
-            x[(int) (Math.random() * (x.length-1))] = (int) (Math.random() * 9 + 1);
+        x[(int) (Math.random() * (x.length - 1))] = (int) (Math.random() * 9 + 1);
         return x;
     }
 
@@ -142,7 +158,7 @@ public class GeneticAlgorithm {
      * @param pop
      * @return population with their fitness number evaluated
      */
-        public List<Animal> EvalPopFitness(List<Animal> pop) {
+    public List<Animal> EvalPopFitness(List<Animal> pop) {
         for (int i = 0, y = pop.size(); y > i; i++) {
             pop.get(i).fitness = calcFitness(pop.get(i).genes);
         }
@@ -150,13 +166,12 @@ public class GeneticAlgorithm {
     }
 
     //Calcualte the fitness
-
     /**
      *
      * @param genes
      * @return fitness number
      */
-        public float calcFitness(int[] genes) {
+    public float calcFitness(int[] genes) {
         float x = 0;
         //Summation precentage of each gene
         for (int i = 0; genes.length > i; i++) {
