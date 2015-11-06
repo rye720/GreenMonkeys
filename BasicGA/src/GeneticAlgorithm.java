@@ -133,7 +133,7 @@ public class GeneticAlgorithm {
 
     //Random gene mutation
     private int[] Mutation(int[] x) {
-        x[(int) (Math.random() * 4)] = (int) (Math.random() * 9 + 1);
+            x[(int) (Math.random() * (x.length-1))] = (int) (Math.random() * 9 + 1);
         return x;
     }
 
