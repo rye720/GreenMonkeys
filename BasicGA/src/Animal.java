@@ -17,14 +17,17 @@ public class Animal {
     protected Vector position;
     protected Vector direction;
 
-    public Animal(String s, int[] g, char c, float f, int ge, String t, Vector v) {
-        this.species = s;
-        this.genes = g;
-        this.sex = c;
-        this.fitness = f;
-        this.generation = ge;
-        this.tag = t;
-        this.position = v;
+    public Animal(
+          String species, int[] genes, char sex, float fitness, int generation, String tag,
+          Vector position) {
+        // You don't need to use different variable names; the "this" quantifier disambiguates them.
+        this.species = species;
+        this.genes = genes;
+        this.sex = sex;
+        this.fitness = fitness;
+        this.generation = generation;
+        this.tag = tag;
+        this.position = position;
     }
 
     public float getFitness() {
