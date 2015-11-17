@@ -121,8 +121,10 @@ public class GeneticAlgorithm {
 
             //Mutation if sexRand is a prime number
             //if (gau.isPrime(sexRand)) {
+            Boolean hasMutation = false;//use this to identify mutated childGenes
             if (Math.random() <= .20) {
                 Mutation(childGenes);
+                hasMutation = true;
             }
             //}
             //Future use for 3d graphics and visulization
@@ -135,8 +137,19 @@ public class GeneticAlgorithm {
                     (((fn / 10) + (fn % 10)) * 350) + 5,
                     (fn * 100) + 5);
 
+            
+            //building the tag name
+            //appends an 'm' if individual has mutated gene
+            StringBuilder tag = new StringBuilder();
+            tag.append(m.species);
+            tag.append(m.generation + 1);
+            tag.append(x);
+            if (hasMutation) {
+                tag.append("m");
+            }
+
             Animal child = new Animal(m.species, childGenes, sex, calcFitness(childGenes),
-                    (m.generation + 1), m.species + (m.generation + 1) + x, pos);
+                    (m.generation + 1), tag.toString(), pos);
             x++;
             Collections.addAll(newPop, m, d, child);
         }
