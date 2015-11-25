@@ -32,7 +32,7 @@ public class GeneticAlgorithm {
             Vector pos = new Vector((((fn / 10) + (fn % 10)) * 350) + 5,
                     (((fn / 10) + (fn % 10)) * 350) + 5,
                     (fn * 100) + 5);
-            Animal a = new Animal(t, gau.RandGene(y), gau.GetSex(), 0, z, t+"_" + z+"_" + i+"_", pos);
+            Animal a = new Animal(t, gau.RandGene(y), gau.GetSex(), 0, z, t + z + i, pos);
             newPop.add(a);
         }
         return newPop;

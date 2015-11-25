@@ -26,10 +26,8 @@ public class Driver {
         System.out.println("Visual mode? y or n: ");
         String str = s.next();
         if (str.equalsIgnoreCase("y")) {
-            //run visual mode
             v.init(population);
         } else {
-            //run in console
             System.out.println("How many generations? ");
             generations = s.nextInt();
             //Run the GA for how many generations specified 
