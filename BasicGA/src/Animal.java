@@ -15,7 +15,7 @@ public class Animal {
     protected int generation;
     protected String tag;
     protected Vector position;
-    protected Vector direction;
+    protected Vector direction;//direction not currently used?
 
     public Animal(String s, int[] g, char c, float f, int ge, String t, Vector v) {
         this.species = s;

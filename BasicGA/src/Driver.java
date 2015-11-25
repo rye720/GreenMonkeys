@@ -18,6 +18,7 @@ public class Driver {
         System.out.println("How many genes? ");
         geneNum = s.nextInt();
         System.out.println("How many animals? ");
+        System.out.println("If visual mode, must be at least 5");
         animalNum = s.nextInt();
         List<Animal> population = ga.GeneratePop("Ursus americanus", animalNum, geneNum, 0);
         ga.EvalPopFitness(population);
@@ -26,8 +27,10 @@ public class Driver {
         System.out.println("Visual mode? y or n: ");
         String str = s.next();
         if (str.equalsIgnoreCase("y")) {
+            //run visual mode
             v.init(population);
         } else {
+            //run in console
             System.out.println("How many generations? ");
             generations = s.nextInt();
             //Run the GA for how many generations specified 

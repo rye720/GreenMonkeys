@@ -32,7 +32,7 @@ public class GeneticAlgorithm {
             Vector pos = new Vector((((fn / 10) + (fn % 10)) * 350) + 5,
                     (((fn / 10) + (fn % 10)) * 350) + 5,
                     (fn * 100) + 5);
-            Animal a = new Animal(t, gau.RandGene(y), gau.GetSex(), 0, z, t + z + i, pos);
+            Animal a = new Animal(t, gau.RandGene(y), gau.GetSex(), 0, z, t+"_" + z+"_" + i+"_", pos);
             newPop.add(a);
         }
         return newPop;
@@ -142,7 +142,9 @@ public class GeneticAlgorithm {
             //appends an 'm' if individual has mutated gene
             StringBuilder tag = new StringBuilder();
             tag.append(m.species);
+            tag.append("_");
             tag.append(m.generation + 1);
+            tag.append("_");
             tag.append(x);
             if (hasMutation) {
                 tag.append("m");
