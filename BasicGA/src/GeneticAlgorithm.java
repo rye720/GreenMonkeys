@@ -13,10 +13,10 @@ public class GeneticAlgorithm {
 
     /**
      *
-     * @param t
-     * @param x
-     * @param y
-     * @param z
+     * @param t Species name
+     * @param x number of individuals
+     * @param y number of genes in gene array
+     * @param z generation number
      * @return random population
      */
     public List<Animal> GeneratePop(String t, int x, int y, int z) {

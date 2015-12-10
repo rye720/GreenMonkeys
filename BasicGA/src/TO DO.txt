@@ -21,4 +21,7 @@ add a second animal
 
 give user option to populate with chosen animal
 
+XML CLASS IN JAVA! use this to output to xml file. then use the data
+everywhere!
+
 do some fuckin writing. quit playin. play too much.

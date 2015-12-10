@@ -17,7 +17,7 @@ public class Driver {
         //Generate popualtion, get their fitness, and rank them
         System.out.println("How many genes? ");
         geneNum = s.nextInt();
-        System.out.println("How many animals? ");
+        System.out.println("How many individuals? ");
         System.out.println("If visual mode, must be at least 5");
         animalNum = s.nextInt();
         List<Animal> population = ga.GeneratePop("Ursus americanus", animalNum, geneNum, 0);
