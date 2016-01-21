@@ -155,7 +155,9 @@ public class GeneticAlgorithm {
             newPop.add(pop.remove(0));
         }
         
+        //age bears 5 years
         gau.agePopulation(newPop, 5);
+        //kill old bears
         gau.removeSeniorCitizens(newPop);
         
         return newPop;
