@@ -13,11 +13,12 @@ public class Animal {
     protected char sex;
     protected float fitness;
     protected int generation;
+    protected int age;
     protected String tag;
     protected Vector position;
     protected Vector direction;//direction not currently used?
 
-    public Animal(String s, int[] g, char c, float f, int ge, String t, Vector v) {
+    public Animal(String s, int[] g, char c, float f, int ge, String t, Vector v, int a) {
         this.species = s;
         this.genes = g;
         this.sex = c;
@@ -25,6 +26,7 @@ public class Animal {
         this.generation = ge;
         this.tag = t;
         this.position = v;
+        this.age = a;
     }
 
     public float getFitness() {
@@ -35,7 +37,7 @@ public class Animal {
     public String toString() {
         NumberFormat f = new DecimalFormat("#0.00");
         return "Species: " + species + " Genes: " + Arrays.toString(genes) + " Sex: " + sex
-                + " Fitness: " + f.format(fitness) + " Generation " + generation + " Tag: " + tag;
+                + " Fitness: " + f.format(fitness) + " Age: " + age + " Generation " + generation + " Tag: " + tag;
     }
 
 }//animal

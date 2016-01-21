@@ -5,10 +5,6 @@
 import java.lang.*;
 import java.util.*;
 
-/**
- *
- * @author jawarth
- */
 public class GeneticAlgorithm {
 
     /**
@@ -32,7 +28,7 @@ public class GeneticAlgorithm {
             Vector pos = new Vector((((fn / 10) + (fn % 10)) * 350) + 5,
                     (((fn / 10) + (fn % 10)) * 350) + 5,
                     (fn * 100) + 5);
-            Animal a = new Animal(t, gau.RandGene(y), gau.GetSex(), 0, z, t+"_" + z+"_" + i+"_", pos);
+            Animal a = new Animal(t, gau.RandGene(y), gau.GetSex(), 0, z, t+"_" + z+"_" + i+"_", pos, 1);
             newPop.add(a);
         }
         return newPop;
@@ -151,13 +147,17 @@ public class GeneticAlgorithm {
             }
 
             Animal child = new Animal(m.species, childGenes, sex, calcFitness(childGenes),
-                    (m.generation + 1), tag.toString(), pos);
+                    (m.generation + 1), tag.toString(), pos, 1);
             x++;
             Collections.addAll(newPop, m, d, child);
         }
         if (pop.size() == 1) {
             newPop.add(pop.remove(0));
         }
+        
+        gau.agePopulation(newPop, 5);
+        gau.removeSeniorCitizens(newPop);
+        
         return newPop;
 
     }
