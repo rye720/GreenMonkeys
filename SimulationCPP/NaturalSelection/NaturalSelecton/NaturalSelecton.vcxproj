@@ -22,6 +22,7 @@
     <ClInclude Include="Driver.h" />
     <ClInclude Include="GA.h" />
     <ClInclude Include="GAUtils.h" />
+    <ClInclude Include="Resource.h" />
     <ClInclude Include="Visual.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
