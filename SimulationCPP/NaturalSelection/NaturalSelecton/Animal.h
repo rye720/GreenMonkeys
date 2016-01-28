@@ -13,6 +13,7 @@ public:
 	float fitness;
 	int generation;
 	std::vector<float> genes;
+	int age;
 };
 
 #endif
