@@ -23,7 +23,7 @@ int main() {
 	if (visualConf == "yes" || visualConf == "y")
 		v.visualSetup();
 	else {
-		population = main.generatePop("bear", 5, 5, 1);
+		population = main.generatePop(animalName, animalStart, geneNum, 1);
 
 
 		/*Loop i < x; x is the number of times you itterate through it*/

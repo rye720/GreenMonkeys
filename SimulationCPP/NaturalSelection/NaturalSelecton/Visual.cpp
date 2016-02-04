@@ -1,6 +1,6 @@
 #include "Visual.h"
 
-void visualSetup(){
+void Visual::visualSetup(){
 	LPCWSTR myClass = L"Green Monkeys";
 	LPCWSTR myTitle = L"Title";
 
@@ -23,7 +23,7 @@ void visualSetup(){
 	}
 }
 
-long __stdcall WindowProcedure(HWND hWnd, unsigned int msg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK Visual::WindowProcedure(HWND hWnd, unsigned int msg, WPARAM wParam, LPARAM lParam)
 {
 	PAINTSTRUCT ps;
 	HDC hdc;
@@ -39,7 +39,6 @@ long __stdcall WindowProcedure(HWND hWnd, unsigned int msg, WPARAM wParam, LPARA
 		break;
 	default:
 		return DefWindowProc(hWnd, msg, wParam, lParam);
-		break;
 	}
-	return 0L;
+	return 0;
 }

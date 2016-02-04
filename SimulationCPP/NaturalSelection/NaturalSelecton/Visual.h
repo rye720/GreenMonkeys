@@ -13,7 +13,7 @@ public:
 	void visualSetup();
 
 private:
-	long __stdcall WindowProcedure(HWND hWnd, unsigned int msg, WPARAM wParam, LPARAM lParam);
+	static LRESULT CALLBACK WindowProcedure(HWND hWnd, unsigned int msg, WPARAM wParam, LPARAM lParam);
 };
 
 #endif
