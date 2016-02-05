@@ -1,4 +1,6 @@
 #include "Driver.h"
+#include <string>
+#include <locale>
 
 
 int main() {
@@ -20,7 +22,10 @@ int main() {
 	std::cout << std::endl;
 	std::cout << "Visual mode: ";
 	std::cin >> visualConf;
-	if (visualConf == "yes" || visualConf == "y")
+	std::locale loc;
+	std::transform(visualConf.begin(), visualConf.end(), visualConf.begin(), ::tolower);
+
+		if (visualConf == "yes" || visualConf == "y")
 		v.visualSetup();
 	else {
 		population = main.generatePop(animalName, animalStart, geneNum, 1);
