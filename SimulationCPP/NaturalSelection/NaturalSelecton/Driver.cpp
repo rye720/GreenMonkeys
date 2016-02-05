@@ -9,7 +9,7 @@ int main() {
 	Visual v = Visual();
 	std::vector<Animal> population;
 	std::string animalName, visualConf;
-	int geneNum, animalStart;
+	int geneNum, animalStart, loops;
 
 	std::cout << "Enter the name of the animal: ";
 	std::cin >> animalName;
@@ -25,21 +25,31 @@ int main() {
 	std::locale loc;
 	std::transform(visualConf.begin(), visualConf.end(), visualConf.begin(), ::tolower);
 
-		if (visualConf == "yes" || visualConf == "y")
+	if (visualConf == "yes" || visualConf == "y")
+
+		//visual mode
+
 		v.visualSetup();
 	else {
+
+		//console window mode
+		std::cout << std::endl;
+		std::cout << "Simulate how many generations?: ";
+		std::cin >> loops;
+
 		population = main.generatePop(animalName, animalStart, geneNum, 1);
 
-
-		/*Loop i < x; x is the number of times you itterate through it*/
-		for (int i = 0; i < 35; i++){
+		/*Loop i < loops; loops is the number of times you iterate through it*/
+		for (int i = 0; i < loops; i++) {
 			main.combination(population, population.size(), i + 2);
 			main.ranking(population);
 			main.selection(population);
 		}
+		std::cout << std::endl;
 
 		/*g.popOut(population);*/
-		g.popOut(population, 5);
+		std::cout << "Top 10 individuals by gene ranking: ";
+		g.popOut(population, 10);
 		std::cout << "Population size: " + std::to_string(population.size());
 	}
 	/*system("pause");*/

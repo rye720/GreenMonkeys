@@ -14,6 +14,7 @@ public:
 	int generation;
 	std::vector<float> genes;
 	int age;
+	std::vector<int> position;
 };
 
 #endif

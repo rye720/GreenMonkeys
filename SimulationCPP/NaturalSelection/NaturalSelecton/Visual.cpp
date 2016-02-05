@@ -2,7 +2,7 @@
 
 void Visual::visualSetup(){
 	LPCWSTR myClass = L"Green Monkeys";
-	LPCWSTR myTitle = L"Title";
+	LPCWSTR myTitle = L"Natural Selection Simulator";
 
 	WNDCLASSEX wndclass = { sizeof(WNDCLASSEX), CS_DBLCLKS, WindowProcedure,
 		0, 0, GetModuleHandle(0), LoadIcon(0, IDI_APPLICATION),
@@ -32,6 +32,12 @@ LRESULT CALLBACK Visual::WindowProcedure(HWND hWnd, unsigned int msg, WPARAM wPa
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
 		/*Window here*/
+
+		//code to plot points of animal locations called here
+		Ellipse(hdc, 90, 90, 110, 110);
+
+
+
 		EndPaint(hWnd, &ps);
 		break;
 	case WM_DESTROY:
