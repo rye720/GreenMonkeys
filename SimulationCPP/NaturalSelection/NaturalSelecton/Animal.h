@@ -14,7 +14,10 @@ public:
 	int generation;
 	std::vector<float> genes;
 	int age;
-	std::vector<int> position;
+	int position[3];
+    int posXOffset = 30;
+	int posYOffset = 30;
+
 };
 
 #endif

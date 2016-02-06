@@ -6,7 +6,6 @@
 int main() {
 	GA main = GA();
 	GAUtils g = GAUtils();
-	Visual v = Visual();
 	std::vector<Animal> population;
 	std::string animalName, visualConf;
 	int geneNum, animalStart, loops;
@@ -24,6 +23,8 @@ int main() {
 	std::cin >> visualConf;
 	std::locale loc;
 	std::transform(visualConf.begin(), visualConf.end(), visualConf.begin(), ::tolower);
+	population = main.generatePop(animalName, animalStart, geneNum, 1);
+	Visual v = Visual(population);
 
 	if (visualConf == "yes" || visualConf == "y")
 
@@ -36,8 +37,6 @@ int main() {
 		std::cout << std::endl;
 		std::cout << "Simulate how many generations?: ";
 		std::cin >> loops;
-
-		population = main.generatePop(animalName, animalStart, geneNum, 1);
 
 		/*Loop i < loops; loops is the number of times you iterate through it*/
 		for (int i = 0; i < loops; i++) {

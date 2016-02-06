@@ -1,5 +1,9 @@
 #include "Visual.h"
 
+
+Visual::Visual(std::vector<Animal> &incPop):pop(incPop){
+}
+
 void Visual::visualSetup(){
 	LPCWSTR myClass = L"Green Monkeys";
 	LPCWSTR myTitle = L"Natural Selection Simulator";
@@ -27,13 +31,33 @@ LRESULT CALLBACK Visual::WindowProcedure(HWND hWnd, unsigned int msg, WPARAM wPa
 {
 	PAINTSTRUCT ps;
 	HDC hdc;
+
 	switch (msg)
 	{
+	case WM_CREATE:
+		SetTimer(hWnd, 1, 20, NULL);
+		SetTimer(hWnd, 2, 2000, NULL);
+		break;
+	case WM_TIMER:
+		if (wParam == 1){
+			//Screen refresh (illusion of moving)
+			InvalidateRect(hWnd,NULL, TRUE);
+			UpdateWindow(hWnd);
+		}
+		else if (wParam == 2){
+			//Animal Pos Update with screen refresh
+			//animalPosUpdate();
+			x += 5;
+			TextOut(hdc, x, x, L"HI", 2);
+			InvalidateRect(hWnd, NULL, TRUE);
+			UpdateWindow(hWnd);
+		}
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
 		/*Window here*/
 
 		//code to plot points of animal locations called here
+	   // paintAnimals(hdc, hWnd);
 		Ellipse(hdc, 90, 90, 110, 110);
 
 
@@ -47,4 +71,12 @@ LRESULT CALLBACK Visual::WindowProcedure(HWND hWnd, unsigned int msg, WPARAM wPa
 		return DefWindowProc(hWnd, msg, wParam, lParam);
 	}
 	return 0;
+}
+
+void Visual::animalPosUpdate(){
+	
+}
+
+void Visual::paintAnimals(HDC hdc, HWND hWnd){
+	TextOut(hdc, x+30, x+30, L"HI", 2);
 }
