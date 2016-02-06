@@ -8,16 +8,22 @@
 #include <memory>
 #include <iostream>
 #include "GA.h"
+#include "VisualHelp.h"
 
 
 class Visual {
 public:
     Visual(std::vector<Animal> &incPop);
 	void visualSetup();
+	static LRESULT CALLBACK StaticWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	LRESULT WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam);
+	
+protected:
+	HWND hWnd;
 
 private:
-    std::vector<Animal> &pop;
-	static LRESULT CALLBACK WindowProcedure(HWND hWnd, unsigned int msg, WPARAM wParam, LPARAM lParam);
+	int x = 20;
+	std::vector<Animal> &pop;
     void animalPosUpdate();
 	void paintAnimals(HDC hdc, HWND hWnd);
 };

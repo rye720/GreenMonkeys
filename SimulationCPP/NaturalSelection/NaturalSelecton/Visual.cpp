@@ -1,38 +1,59 @@
 #include "Visual.h"
 
-
-Visual::Visual(std::vector<Animal> &incPop):pop(incPop){
+Visual::Visual(std::vector<Animal> &incPop): pop(incPop){
+	hWnd = NULL;
 }
 
 void Visual::visualSetup(){
 	LPCWSTR myClass = L"Green Monkeys";
 	LPCWSTR myTitle = L"Natural Selection Simulator";
-
-	WNDCLASSEX wndclass = { sizeof(WNDCLASSEX), CS_DBLCLKS, WindowProcedure,
+	
+	
+	WNDCLASSEX wndclass = { sizeof(WNDCLASSEX), CS_DBLCLKS,(WNDPROC) StaticWndProc,
 		0, 0, GetModuleHandle(0), LoadIcon(0, IDI_APPLICATION),
 		LoadCursor(0, IDC_ARROW), HBRUSH(COLOR_WINDOW + 1),
 		0, myClass, LoadIcon(0, IDI_APPLICATION) };
 
 	if (RegisterClassEx(&wndclass))
 	{
-		HWND window = CreateWindowEx(0, myClass, myTitle,
+		hWnd = CreateWindowEx(0, myClass, myTitle,
 			WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
 			CW_USEDEFAULT, CW_USEDEFAULT, 0, 0, GetModuleHandle(0), 0);
-		if (window)
+		
+		if (hWnd)
 		{
-			ShowWindow(window, SW_SHOWDEFAULT);
-			MSG msg;
+			ShowWindow(hWnd, SW_SHOWDEFAULT);
+			MSG msg; 
 			while (GetMessage(&msg, 0, 0, 0)) DispatchMessage(&msg);
 		}
 	}
 }
 
-LRESULT CALLBACK Visual::WindowProcedure(HWND hWnd, unsigned int msg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK Visual::StaticWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+	Visual* pParent;
+
+	// Get pointer to window
+	if (uMsg == WM_CREATE)
+	{
+		pParent = (Visual*)((LPCREATESTRUCT)lParam)->lpCreateParams;
+		SetWindowLongPtr(hWnd, GWL_USERDATA, (LONG_PTR)pParent);
+	}
+	else
+	{
+		pParent = (Visual*)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		if (!pParent) return DefWindowProc(hWnd, uMsg, wParam, lParam);
+	}
+	pParent->hWnd = hWnd;
+	return pParent->WndProc(uMsg, wParam, lParam);
+}
+
+
+LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	PAINTSTRUCT ps;
 	HDC hdc;
 
-	switch (msg)
+	switch (uMsg)
 	{
 	case WM_CREATE:
 		SetTimer(hWnd, 1, 20, NULL);
@@ -68,7 +89,7 @@ LRESULT CALLBACK Visual::WindowProcedure(HWND hWnd, unsigned int msg, WPARAM wPa
 		PostQuitMessage(0);
 		break;
 	default:
-		return DefWindowProc(hWnd, msg, wParam, lParam);
+		return DefWindowProc(hWnd, uMsg, wParam, lParam);
 	}
 	return 0;
 }
@@ -78,5 +99,5 @@ void Visual::animalPosUpdate(){
 }
 
 void Visual::paintAnimals(HDC hdc, HWND hWnd){
-	TextOut(hdc, x+30, x+30, L"HI", 2);
 }
+
