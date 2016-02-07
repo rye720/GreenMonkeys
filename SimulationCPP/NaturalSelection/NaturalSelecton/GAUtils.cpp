@@ -69,7 +69,7 @@ float GAUtils::randFloatGen(){
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution<> dist(1, 999);
 
-	return dist(gen) / 1000.0;
+	return (float)(dist(gen) / 1000.0);
 }
 
 /*

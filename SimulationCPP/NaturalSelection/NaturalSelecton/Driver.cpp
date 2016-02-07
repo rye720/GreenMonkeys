@@ -24,13 +24,18 @@ int main() {
 	std::locale loc;
 	std::transform(visualConf.begin(), visualConf.end(), visualConf.begin(), ::tolower);
 	population = main.generatePop(animalName, animalStart, geneNum, 1);
-	Visual v = Visual(population);
 
-	if (visualConf == "yes" || visualConf == "y")
+	if (visualConf == "yes" || visualConf == "y"){
 
 		//visual mode
-
+		for (int i = 0; i < 5; i++) {
+			main.combination(population, population.size(), i + 2);
+			main.ranking(population);
+			main.selection(population);
+		}
+		Visual v = Visual(population);
 		v.visualSetup();
+	}
 	else {
 
 		//console window mode

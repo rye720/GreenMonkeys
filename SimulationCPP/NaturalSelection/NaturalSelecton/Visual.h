@@ -8,11 +8,11 @@
 #include <memory>
 #include <iostream>
 #include "GA.h"
-#include "VisualHelp.h"
 
 
 class Visual {
 public:
+	Visual();
     Visual(std::vector<Animal> &incPop);
 	void visualSetup();
 	static LRESULT CALLBACK StaticWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -20,6 +20,8 @@ public:
 	
 protected:
 	HWND hWnd;
+	HINSTANCE hInstance;
+	HDC hDc;
 
 private:
 	int x = 20;

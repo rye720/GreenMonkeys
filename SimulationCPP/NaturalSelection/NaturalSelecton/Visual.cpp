@@ -1,28 +1,36 @@
 #include "Visual.h"
 
+Visual::Visual():pop(pop){
+	hWnd = NULL;
+	hInstance = NULL;
+	hDc = NULL;
+}
+
 Visual::Visual(std::vector<Animal> &incPop): pop(incPop){
 	hWnd = NULL;
+	hInstance = NULL;
+	hDc = NULL;
 }
 
 void Visual::visualSetup(){
 	LPCWSTR myClass = L"Green Monkeys";
 	LPCWSTR myTitle = L"Natural Selection Simulator";
 	
-	
-	WNDCLASSEX wndclass = { sizeof(WNDCLASSEX), CS_DBLCLKS,(WNDPROC) StaticWndProc,
-		0, 0, GetModuleHandle(0), LoadIcon(0, IDI_APPLICATION),
-		LoadCursor(0, IDC_ARROW), HBRUSH(COLOR_WINDOW + 1),
-		0, myClass, LoadIcon(0, IDI_APPLICATION) };
 
-	if (RegisterClassEx(&wndclass))
+	WNDCLASS wndclass = { CS_HREDRAW | CS_VREDRAW, (WNDPROC)StaticWndProc, 0, 0, 
+		hInstance, LoadIcon(NULL,IDI_WINLOGO), LoadCursor(NULL, IDC_ARROW),
+		(HBRUSH) GetStockObject(WHITE_BRUSH), myTitle, myClass};
+
+	if (RegisterClass(&wndclass))
 	{
 		hWnd = CreateWindowEx(0, myClass, myTitle,
 			WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
-			CW_USEDEFAULT, CW_USEDEFAULT, 0, 0, GetModuleHandle(0), 0);
+			CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, hInstance, this);
 		
 		if (hWnd)
 		{
 			ShowWindow(hWnd, SW_SHOWDEFAULT);
+			UpdateWindow(hWnd);
 			MSG msg; 
 			while (GetMessage(&msg, 0, 0, 0)) DispatchMessage(&msg);
 		}
@@ -38,6 +46,8 @@ LRESULT CALLBACK Visual::StaticWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 	{
 		pParent = (Visual*)((LPCREATESTRUCT)lParam)->lpCreateParams;
 		SetWindowLongPtr(hWnd, GWL_USERDATA, (LONG_PTR)pParent);
+		SetTimer(hWnd, 1, 20, NULL);
+		SetTimer(hWnd, 2, 2000, NULL);
 	}
 	else
 	{
@@ -53,35 +63,37 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	PAINTSTRUCT ps;
 	HDC hdc;
 
+
 	switch (uMsg)
 	{
 	case WM_CREATE:
-		SetTimer(hWnd, 1, 20, NULL);
-		SetTimer(hWnd, 2, 2000, NULL);
+		//SetTimer(hWnd, 1, 20, NULL);
+		//SetTimer(hWnd, 2, 2000, NULL);
 		break;
 	case WM_TIMER:
-		if (wParam == 1){
-			//Screen refresh (illusion of moving)
-			InvalidateRect(hWnd,NULL, TRUE);
-			UpdateWindow(hWnd);
-		}
-		else if (wParam == 2){
-			//Animal Pos Update with screen refresh
-			//animalPosUpdate();
-			x += 5;
-			TextOut(hdc, x, x, L"HI", 2);
+		switch (wParam){
+		case 1:
+			/*This will be used to update the window to give the illusion of realtime movement*/
+
+			//InvalidateRect(hWnd, NULL, TRUE);
+			//UpdateWindow(hWnd);
+			return 0;
+		case 2:
+			/*Possible timer to update animals position and such. Mostly for testing right now*/
 			InvalidateRect(hWnd, NULL, TRUE);
 			UpdateWindow(hWnd);
+			return 0;
 		}
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
 		/*Window here*/
 
 		//code to plot points of animal locations called here
-	   // paintAnimals(hdc, hWnd);
+	    paintAnimals(hdc, hWnd);
 		Ellipse(hdc, 90, 90, 110, 110);
-
-
+		
+		x += 5;
+		TextOut(hdc, x, x, L"X", 1);
 
 		EndPaint(hWnd, &ps);
 		break;
@@ -91,7 +103,7 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	default:
 		return DefWindowProc(hWnd, uMsg, wParam, lParam);
 	}
-	return 0;
+	return (UINT)0;
 }
 
 void Visual::animalPosUpdate(){
@@ -99,5 +111,8 @@ void Visual::animalPosUpdate(){
 }
 
 void Visual::paintAnimals(HDC hdc, HWND hWnd){
+	std::wstring stemp = std::wstring(pop[0].tag.begin(), pop[0].tag.end());
+	LPCWSTR sw = stemp.c_str();
+	TextOut(hdc, 50, 50, sw, pop[0].tag.size());
 }
 
