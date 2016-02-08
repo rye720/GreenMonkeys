@@ -130,3 +130,29 @@ void GAUtils::popOut(std::vector<Animal> &pop, int x){
 		std::cout << std::to_string((i+1))+": " +animal.tag + "  " + std::to_string(animal.fitness) << std::endl;
 	}
 }
+
+/*
+* Input: population (vector of Animal struct objects), x number of years
+* Output: none
+* Advances each member of population x number of years
+* Notes: None
+*/
+void GAUtils::agePopulation(std::vector<Animal> &pop, int x) {
+	for (int i = 0; i < pop.size(); i++) {
+		pop[i].age += x;
+	}
+}
+
+/*
+* Input: population (vector of Animal struct objects)
+* Output: none
+* Kills every individual older than 23 (for now)
+* Notes: None
+*/
+void GAUtils::killSeniorCitizens(std::vector<Animal> &pop) {
+	for (int i = 0; i < pop.size(); i++) {
+		if (pop[i].age > 23) {
+			Animal a = pop.erase[i];
+		}
+	}
+}

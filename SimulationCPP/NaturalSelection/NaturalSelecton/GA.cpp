@@ -129,6 +129,10 @@ void GA::combination(std::vector<Animal> &pop, int animalNum, int currentGen){
 		pop.push_back(d);
 		pop.push_back(child);
 	}
+
+	gu.agePopulation(pop,5);
+	gu.killSeniorCitizens(pop);
+
 }
 
 /*
