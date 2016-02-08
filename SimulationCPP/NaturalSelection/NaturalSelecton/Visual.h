@@ -24,7 +24,7 @@ protected:
 	HDC hDc;
 
 private:
-	int x = 20;
+	int startX, startY, incPix = 0;
 	std::vector<Animal> &pop;
     void animalPosUpdate();
 	void paintAnimals(HDC hdc, HWND hWnd);

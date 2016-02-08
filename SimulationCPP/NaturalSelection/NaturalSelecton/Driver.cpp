@@ -28,7 +28,7 @@ int main() {
 	if (visualConf == "yes" || visualConf == "y"){
 
 		//visual mode
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 20; i++) {
 			main.combination(population, population.size(), i + 2);
 			main.ranking(population);
 			main.selection(population);

@@ -20,6 +20,7 @@ public:
 	char randSex();
 	float randFloatGen();	
 	int randIntGen(int upperBound);
+	int randIntGen(int lowerBound, int upperBound);
 	static bool compareAnimals(Animal &a1, Animal &a2);
 	void popOut(std::vector<Animal> &pop);
 	void popOut(std::vector<Animal> &pop, int x);

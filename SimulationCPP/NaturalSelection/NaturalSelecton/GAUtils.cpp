@@ -86,6 +86,14 @@ int GAUtils::randIntGen(int upperBound){
 	return dist(gen);
 }
 
+int GAUtils::randIntGen(int lowerBound, int upperBound){
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> dist(lowerBound, upperBound);
+
+	return dist(gen);
+}
+
 /*
 * Input: Two animals objects
 * Output: None

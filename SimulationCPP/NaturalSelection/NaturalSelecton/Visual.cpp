@@ -24,8 +24,8 @@ void Visual::visualSetup(){
 	if (RegisterClass(&wndclass))
 	{
 		hWnd = CreateWindowEx(0, myClass, myTitle,
-			WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
-			CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, hInstance, this);
+			WS_BORDER | WS_SYSMENU, CW_USEDEFAULT, CW_USEDEFAULT,
+			800, 600, NULL, NULL, hInstance, this);
 		
 		if (hWnd)
 		{
@@ -80,8 +80,8 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			return 0;
 		case 2:
 			/*Possible timer to update animals position and such. Mostly for testing right now*/
-			InvalidateRect(hWnd, NULL, TRUE);
-			UpdateWindow(hWnd);
+			//InvalidateRect(hWnd, NULL, TRUE);
+			//UpdateWindow(hWnd);
 			return 0;
 		}
 	case WM_PAINT:
@@ -90,10 +90,9 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 		//code to plot points of animal locations called here
 	    paintAnimals(hdc, hWnd);
-		Ellipse(hdc, 90, 90, 110, 110);
-		
-		x += 5;
-		TextOut(hdc, x, x, L"X", 1);
+		initialPopPlot(hdc, hWnd);
+		/*x += 5;
+		TextOut(hdc, x, x, L"X", 1);*/
 
 		EndPaint(hWnd, &ps);
 		break;
@@ -111,30 +110,70 @@ void Visual::animalPosUpdate(){
 }
 
 
-//ATTENTION: JAMES WRATH.. HOW WILL THIS CALL ACCESS THE POPULATION VECTOR?
-
-//function must accept starting point for first individual.. random x and y?
-//function must also accept population vector.. how will this call access it?
 void Visual::initialPopPlot(HDC hdc, HWND hWnd) {
+	GAUtils gau = GAUtils();
+	startX = gau.randIntGen(150, 150);
+	startY = gau.randIntGen(150, 150);
+	//Ellipse(hdc, startX, startX, startX  , startX );
+	int x = 1;
+	int y = pop.size();
+	int z = 0;
+	y /= 9;
 
-	//need some global data structure (vector) of every individual's current location
-	//must reference this structure to see what positions are occupied
- 
-	//plot first amimal at p with 1 px ellipse
-
-	//	for each animal in population
-
-	//		while adjacent pixel x is not empty
-
-	//			increment p.x
-
-	//			while adjacent pixel y is not empty
-
-	//				increment p.y
-
-	//				plot ellipse(p), or TextOut an x at position p, whateve
-
+	while (y != 0){
+		for (int i = 0; i < 9; i++){
+			if (i == 0){
+				TextOut(hdc, startX, startY, L".", 1);
+				pop[i + z].position[0] = startX;
+				pop[i + z].position[1] = startY;
+			}
+			else if (i == 1){
+				TextOut(hdc, startX + x, startY, L".", 1);
+				pop[i + z].position[0] = startX+x;
+				pop[i + z].position[1] = startY;
+			}
+			else if (i == 2){
+				TextOut(hdc, startX + x, startY + x, L".", 1);
+				pop[i + z].position[0] = startX+x;
+				pop[i + z].position[1] = startY+x;
+			}
+			else if (i == 3){
+				TextOut(hdc, startX, startY + x, L".", 1);
+				pop[i + z].position[0] = startX;
+				pop[i + z].position[1] = startY+x;
+			}
+			else if (i == 4){
+				TextOut(hdc, startX - x, startY + x, L".", 1);
+				pop[i + z].position[0] = startX-x;
+				pop[i + z].position[1] = startY+x;
+			}
+			else if (i == 5){
+				TextOut(hdc, startX - x, startY, L".", 1);
+				pop[i + z].position[0] = startX-x;
+				pop[i + z].position[1] = startY;
+			}
+			else if (i == 6){
+				TextOut(hdc, startX - x, startY - x, L".", 1);
+				pop[i + z].position[0] = startX-x;
+				pop[i + z].position[1] = startY-x;
+			}
+			else if (i == 7){
+				TextOut(hdc, startX, startY - x, L".", 1);
+				pop[i + z].position[0] = startX;
+				pop[i + z].position[1] = startY-x;
+			}
+			else if (i == 8){
+				TextOut(hdc, startX + x, startY - x, L".", 1);
+				pop[i + z].position[0] = startX+x;
+				pop[i + z].position[1] = startY-x;
+			}
+		}
+		y--;
+		x += 1;
+		z += 9;
+	}
 }
+
 
 void Visual::paintAnimals(HDC hdc, HWND hWnd){
 	std::wstring stemp = std::wstring(pop[0].tag.begin(), pop[0].tag.end());
