@@ -1,11 +1,11 @@
 #include "Driver.h"
-#include <string>
-#include <locale>
+#undef max
 
 
 int main() {
 	GA main = GA();
 	GAUtils g = GAUtils();
+	Driver d = Driver();
 	std::vector<Animal> population;
 	std::string animalName, visualConf;
 	int geneNum, animalStart, loops;
@@ -14,10 +14,10 @@ int main() {
 	std::cin >> animalName;
 	std::cout << std::endl;
 	std::cout << "Genes per animal: ";
-	std::cin >> geneNum;
+	d.defensiveInt(geneNum);
 	std::cout << std::endl;
 	std::cout << "Starting population: ";
-	std::cin >> animalStart;
+	d.defensiveInt(animalStart);
 	std::cout << std::endl;
 	std::cout << "Visual mode: ";
 	std::cin >> visualConf;
@@ -41,7 +41,7 @@ int main() {
 		//console window mode
 		std::cout << std::endl;
 		std::cout << "Simulate how many generations?: ";
-		std::cin >> loops;
+		d.defensiveInt(loops);
 
 		/*Loop i < loops; loops is the number of times you iterate through it*/
 		for (int i = 0; i < loops; i++) {
@@ -58,4 +58,18 @@ int main() {
 	}
 	/*system("pause");*/
 	return 0;
+}
+
+int Driver::defensiveInt(int &x){
+startover:
+	while (!(std::cin >> x)){
+		std::cin.clear();
+		std::cout << "Please enter an int: ";
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n' );
+	}
+	if (x < 0 || x > 1000){
+		std::cout << "Please enter an int between 0 and 1000: ";
+		goto startover;
+	}
+	return x;
 }
