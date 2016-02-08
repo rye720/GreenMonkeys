@@ -53,8 +53,11 @@ int main() {
 
 		/*g.popOut(population);*/
 		std::cout << "Top 10 individuals by gene ranking: ";
+		std::cout << std::endl;
 		g.popOut(population, 10);
+		std::cout << std::endl;
 		std::cout << "Population size: " + std::to_string(population.size());
+		std::cout << std::endl;
 	}
 	/*system("pause");*/
 	return 0;

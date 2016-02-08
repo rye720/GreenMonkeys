@@ -116,8 +116,9 @@ void GAUtils::popOut(std::vector<Animal> &pop){
 */
 void GAUtils::popOut(std::vector<Animal> &pop, int x){
 	Animal animal;
+	
 	for (int i = 0; i < x; i++){
 		animal = pop[i];
-		std::cout << animal.tag + "  " + std::to_string(animal.fitness) << std::endl;
+		std::cout << std::to_string((i+1))+": " +animal.tag + "  " + std::to_string(animal.fitness) << std::endl;
 	}
 }
