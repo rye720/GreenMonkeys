@@ -28,6 +28,7 @@ private:
 	std::vector<Animal> &pop;
     void animalPosUpdate();
 	void paintAnimals(HDC hdc, HWND hWnd);
+	void initialPopPlot(HDC hdc, HWND hWnd);
 };
 
 

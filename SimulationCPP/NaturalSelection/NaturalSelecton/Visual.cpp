@@ -110,6 +110,32 @@ void Visual::animalPosUpdate(){
 	
 }
 
+
+//ATTENTION: JAMES WRATH.. HOW WILL THIS CALL ACCESS THE POPULATION VECTOR?
+
+//function must accept starting point for first individual.. random x and y?
+//function must also accept population vector.. how will this call access it?
+void Visual::initialPopPlot(HDC hdc, HWND hWnd) {
+
+	//need some global data structure (vector) of every individual's current location
+	//must reference this structure to see what positions are occupied
+ 
+	//plot first amimal at p with 1 px ellipse
+
+	//	for each animal in population
+
+	//		while adjacent pixel x is not empty
+
+	//			increment p.x
+
+	//			while adjacent pixel y is not empty
+
+	//				increment p.y
+
+	//				plot ellipse(p), or TextOut an x at position p, whateve
+
+}
+
 void Visual::paintAnimals(HDC hdc, HWND hWnd){
 	std::wstring stemp = std::wstring(pop[0].tag.begin(), pop[0].tag.end());
 	LPCWSTR sw = stemp.c_str();
