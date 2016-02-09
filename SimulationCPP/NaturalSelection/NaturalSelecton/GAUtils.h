@@ -24,6 +24,8 @@ public:
 	static bool compareAnimals(Animal &a1, Animal &a2);
 	void popOut(std::vector<Animal> &pop);
 	void popOut(std::vector<Animal> &pop, int x);
+	void agePopulation(std::vector<Animal> &pop, int x);
+	void killSeniorCitizens(std::vector<Animal> &pop);
 
 private:
 };
