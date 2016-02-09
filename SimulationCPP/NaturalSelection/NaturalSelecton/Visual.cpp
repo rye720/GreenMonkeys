@@ -46,8 +46,9 @@ LRESULT CALLBACK Visual::StaticWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 	{
 		pParent = (Visual*)((LPCREATESTRUCT)lParam)->lpCreateParams;
 		SetWindowLongPtr(hWnd, GWL_USERDATA, (LONG_PTR)pParent);
-		SetTimer(hWnd, 1, 20, NULL);
-		SetTimer(hWnd, 2, 2000, NULL);
+		SetTimer(hWnd, 1, 3, NULL);
+		SetTimer(hWnd, 2, 5000, NULL);
+		SetTimer(hWnd, 3, 150, NULL);
 	}
 	else
 	{
@@ -75,24 +76,28 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		case 1:
 			/*This will be used to update the window to give the illusion of realtime movement*/
 
-			//InvalidateRect(hWnd, NULL, TRUE);
-			//UpdateWindow(hWnd);
-			return 0;
+			InvalidateRect(hWnd, NULL, TRUE);
+			UpdateWindow(hWnd);
+			break;
 		case 2:
 			/*Possible timer to update animals position and such. Mostly for testing right now*/
-			//InvalidateRect(hWnd, NULL, TRUE);
-			//UpdateWindow(hWnd);
-			return 0;
+			animalPosUpdate();
+			/*InvalidateRect(hWnd, NULL, TRUE);
+			UpdateWindow(hWnd);*/
+			break;
+		case 3:
+			animalIncUpdate();
+			break;
 		}
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
 		/*Window here*/
 
 		//code to plot points of animal locations called here
-	    paintAnimals(hdc, hWnd);
-		initialPopPlot(hdc, hWnd);
-		/*x += 5;
-		TextOut(hdc, x, x, L"X", 1);*/
+		if (firstTime)
+			initialPopPlot(hdc, hWnd);
+		else
+			paintAnimals(hdc, hWnd);
 
 		EndPaint(hWnd, &ps);
 		break;
@@ -106,15 +111,29 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 }
 
 void Visual::animalPosUpdate(){
+	GAUtils gau = GAUtils();
+	for (Animal &animal : pop){
+		int randx = gau.randIntGen(600);
+		int randy = gau.randIntGen(500);
+			
+		if (gau.randIntGen(10) > 5)
+			animal.posXOffset = randx;
+		else
+			animal.posXOffset = (randx * -1);
+
+		if (gau.randIntGen(10) > 5)
+			animal.posYOffset = randy;
+		else
+			animal.posYOffset = (randy * -1);
+	}
 	
 }
 
 
 void Visual::initialPopPlot(HDC hdc, HWND hWnd) {
 	GAUtils gau = GAUtils();
-	startX = gau.randIntGen(150, 150);
-	startY = gau.randIntGen(150, 150);
-	//Ellipse(hdc, startX, startX, startX  , startX );
+	startX = gau.randIntGen(100, 300);
+	startY = gau.randIntGen(100, 300);
 	int x = 1;
 	int y = pop.size();
 	int z = 0;
@@ -172,12 +191,52 @@ void Visual::initialPopPlot(HDC hdc, HWND hWnd) {
 		x += 1;
 		z += 9;
 	}
+	firstTime = false;
 }
 
 
 void Visual::paintAnimals(HDC hdc, HWND hWnd){
-	std::wstring stemp = std::wstring(pop[0].tag.begin(), pop[0].tag.end());
-	LPCWSTR sw = stemp.c_str();
-	TextOut(hdc, 50, 50, sw, pop[0].tag.size());
+	int xpos, ypos;
+	for (Animal &animal : pop){
+		xpos = animal.position[0];
+		ypos = animal.position[1];
+
+		if ((xpos > 50) && (ypos > 50) && (ypos < 500) && (xpos < 700))
+			TextOut(hdc, animal.position[0], animal.position[1], L".", 1);
+		else if ((xpos < 50) && (ypos > 50))
+			TextOut(hdc, 50, animal.position[1], L".", 1);
+		else if ((ypos < 50) && (xpos > 50))
+			TextOut(hdc, animal.position[0], 50, L".", 1);
+		else if ((ypos < 50) && (xpos < 50))
+			TextOut(hdc, 51, 51, L".", 1);
+		else if ((ypos > 500) && (xpos < 700))
+			TextOut(hdc, animal.position[0], 500, L".", 1);
+		else if ((ypos < 500) && (xpos > 700))
+			TextOut(hdc, 700, animal.position[1], L".", 1);
+		else
+			TextOut(hdc, 699, 499, L".", 1);
+		
+	}
 }
 
+void Visual::animalIncUpdate(){
+	for (Animal &animal : pop){
+		if (animal.posXOffset > 0){
+			animal.posXOffset -= 1;
+			animal.position[0] += 1;
+		}
+		else{
+			animal.posXOffset += 1;
+			animal.position[0] -= 1;
+		}
+
+		if (animal.posYOffset > 0){
+			animal.posYOffset -= 1;
+			animal.position[1] += 1;
+		}
+		else{
+			animal.posYOffset += 1;
+			animal.position[1] -= 1;
+		}
+	}
+}

@@ -24,11 +24,13 @@ protected:
 	HDC hDc;
 
 private:
-	int startX, startY, incPix = 0;
+	int startX, startY;
+	bool firstTime = true;
 	std::vector<Animal> &pop;
     void animalPosUpdate();
 	void paintAnimals(HDC hdc, HWND hWnd);
 	void initialPopPlot(HDC hdc, HWND hWnd);
+	void animalIncUpdate();
 };
 
 

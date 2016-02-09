@@ -15,8 +15,8 @@ public:
 	std::vector<float> genes;
 	int age;
 	int position[3];
-    int posXOffset = 30;
-	int posYOffset = 30;
+    int posXOffset = 0;
+	int posYOffset = 0;
 
 };
 
