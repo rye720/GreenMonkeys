@@ -70,8 +70,9 @@ startover:
 		std::cout << "Please enter an int: ";
 		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n' );
 	}
-	if (x < 0 || x > 1000){
-		std::cout << "Please enter an int between 0 and 1000: ";
+
+	if ((x < 5) || (x > 1000)){
+		std::cout << "Please enter an int between 5 and 1000: ";
 		goto startover;
 	}
 	return x;

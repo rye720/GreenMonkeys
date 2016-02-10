@@ -49,6 +49,7 @@ LRESULT CALLBACK Visual::StaticWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 		SetTimer(hWnd, 1, 3, NULL);
 		SetTimer(hWnd, 2, 5000, NULL);
 		SetTimer(hWnd, 3, 150, NULL);
+		/*SetTimer(hWnd, 4, 10000, NULL);*/
 	}
 	else
 	{
@@ -88,6 +89,12 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		case 3:
 			animalIncUpdate();
 			break;
+		/*case 4:
+			GA g = GA();
+			g.combination(pop, pop.size(), 0);
+			g.ranking(pop);
+			g.selection(pop);
+			break;*/
 		}
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
@@ -116,12 +123,12 @@ void Visual::animalPosUpdate(){
 		int randx = gau.randIntGen(600);
 		int randy = gau.randIntGen(500);
 			
-		if (gau.randIntGen(10) > 5)
+		if (gau.randIntGen(10) >= 5)
 			animal.posXOffset = randx;
 		else
 			animal.posXOffset = (randx * -1);
 
-		if (gau.randIntGen(10) > 5)
+		if (gau.randIntGen(10) >= 5)
 			animal.posYOffset = randy;
 		else
 			animal.posYOffset = (randy * -1);
@@ -192,6 +199,7 @@ void Visual::initialPopPlot(HDC hdc, HWND hWnd) {
 		z += 9;
 	}
 	firstTime = false;
+	animalPosUpdate();
 }
 
 

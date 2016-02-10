@@ -49,7 +49,6 @@ std::vector<float> GAUtils::generateGenes(int &genesNum){
 */
 char GAUtils::randSex(){
 	char c;
-	std::srand(time(NULL));
 	if (randIntGen(10) > 5)
 		c = 'M';
 	else
@@ -152,7 +151,9 @@ void GAUtils::agePopulation(std::vector<Animal> &pop, int x) {
 void GAUtils::killSeniorCitizens(std::vector<Animal> &pop) {
 	for (int i = 0; i < pop.size(); i++) {
 		if (pop[i].age > 23) {
-			Animal a = pop.erase[i];
+			//Animal a = pop[i];
+			pop.erase(pop.begin() + i);
+			i--;
 		}
 	}
 }
