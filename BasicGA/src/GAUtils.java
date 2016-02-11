@@ -94,4 +94,28 @@ public class GAUtils implements Comparator<Animal> {
         }
         return c;
     }
+    
+    /**
+     *
+     * @return advance age of each individual in population by n years
+     */
+    public List<Animal> agePopulation(List<Animal> pop, int n){
+        for(int x = 0; x < pop.size(); x++){
+            pop.get(x).age += n;
+        }
+        return pop;
+    }
+    
+   /**
+     *
+     * @return kill bears if they are older than 23
+     */
+    public List<Animal> removeSeniorCitizens(List<Animal> pop){
+            for(int x = 0; x < pop.size(); x++){
+            if(pop.get(x).age > 23){
+                pop.remove(x);
+            }
+        }
+        return pop;
+    }
 }

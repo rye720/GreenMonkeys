@@ -24,7 +24,7 @@ public class Visuals extends JPanel {
         JFrame f = new JFrame("Basic G.A.");
         f.setLocationRelativeTo(null);
         f.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
-        f.setSize(480, 600);
+        f.setSize(800, 600);
         this.add(button);
         f.add(this);
         button.addActionListener(new ActionListener() {
@@ -36,7 +36,7 @@ public class Visuals extends JPanel {
                 generation++;
             }
         });
-        f.setResizable(false);
+        f.setResizable(true);
         f.setVisible(true);
         population = pop;
     }
@@ -44,18 +44,20 @@ public class Visuals extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawString("Generation: " + Integer.toString(generation), 10, 15);
-        g.drawString("Top 5 Animals: ", 10, 30);
-        g.drawString("1: " + population.get(0).tag, 10, 40);
-        g.drawString("2: " + population.get(1).tag, 10, 50);
-        g.drawString("3: " + population.get(2).tag, 10, 60);
-        g.drawString("4: " + population.get(3).tag, 10, 70);
-        g.drawString("5: " + population.get(4).tag, 10, 80);
-        g.drawString("Animals: " + population.size(), 10, 100);
-        g.drawOval(346, 346, 16, 16);
+        Font font4k = new Font("TimesRoman", Font.BOLD, 24);
+        g.setFont(font4k);
+        g.drawString("Generation: " + Integer.toString(generation), 320, 60);
+        g.drawString("Top 5 Animals: ", 320, 90);
+        g.drawString("1: " + population.get(0).tag, 320, 115);
+        g.drawString("2: " + population.get(1).tag, 320, 140);
+        g.drawString("3: " + population.get(2).tag, 320, 165);
+        g.drawString("4: " + population.get(3).tag, 320, 190);
+        g.drawString("5: " + population.get(4).tag, 320, 215);
+        g.drawString("Animals: " + population.size(), 320, 240);
+        g.drawOval(310, 310, 85, 85);
         for (int i = 0; i < population.size(); i++) {
             g.fillOval((int) population.get(i).position.x,
-                    (int) population.get(i).position.y, 8, 8);
+                    (int) population.get(i).position.y, 15, 15);
         }
     }
 

@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NaturalSelecton", "NaturalSelecton\NaturalSelecton.vcxproj", "{696DBF5E-7A2D-4EAA-9DA8-E2D79C1792E9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{696DBF5E-7A2D-4EAA-9DA8-E2D79C1792E9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{696DBF5E-7A2D-4EAA-9DA8-E2D79C1792E9}.Debug|Win32.Build.0 = Debug|Win32
+		{696DBF5E-7A2D-4EAA-9DA8-E2D79C1792E9}.Release|Win32.ActiveCfg = Release|Win32
+		{696DBF5E-7A2D-4EAA-9DA8-E2D79C1792E9}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

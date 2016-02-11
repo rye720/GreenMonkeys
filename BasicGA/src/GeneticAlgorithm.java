@@ -5,18 +5,14 @@
 import java.lang.*;
 import java.util.*;
 
-/**
- *
- * @author jawarth
- */
 public class GeneticAlgorithm {
 
     /**
      *
-     * @param t
-     * @param x
-     * @param y
-     * @param z
+     * @param t Species name
+     * @param x number of individuals
+     * @param y number of genes in gene array
+     * @param z generation number
      * @return random population
      */
     public List<Animal> GeneratePop(String t, int x, int y, int z) {
@@ -32,7 +28,7 @@ public class GeneticAlgorithm {
             Vector pos = new Vector((((fn / 10) + (fn % 10)) * 350) + 5,
                     (((fn / 10) + (fn % 10)) * 350) + 5,
                     (fn * 100) + 5);
-            Animal a = new Animal(t, gau.RandGene(y), gau.GetSex(), 0, z, t + z + i, pos);
+            Animal a = new Animal(t, gau.RandGene(y), gau.GetSex(), 0, z, t+"_" + z+"_" + i+"_", pos, 1);
             newPop.add(a);
         }
         return newPop;
@@ -121,8 +117,10 @@ public class GeneticAlgorithm {
 
             //Mutation if sexRand is a prime number
             //if (gau.isPrime(sexRand)) {
+            Boolean hasMutation = false;//use this to identify mutated childGenes
             if (Math.random() <= .20) {
                 Mutation(childGenes);
+                hasMutation = true;
             }
             //}
             //Future use for 3d graphics and visulization
@@ -135,14 +133,33 @@ public class GeneticAlgorithm {
                     (((fn / 10) + (fn % 10)) * 350) + 5,
                     (fn * 100) + 5);
 
+            
+            //building the tag name
+            //appends an 'm' if individual has mutated gene
+            StringBuilder tag = new StringBuilder();
+            tag.append(m.species);
+            tag.append("_");
+            tag.append(m.generation + 1);
+            tag.append("_");
+            tag.append(x);
+            if (hasMutation) {
+                tag.append("m");
+            }
+
             Animal child = new Animal(m.species, childGenes, sex, calcFitness(childGenes),
-                    (m.generation + 1), m.species + (m.generation + 1) + x, pos);
+                    (m.generation + 1), tag.toString(), pos, 1);
             x++;
             Collections.addAll(newPop, m, d, child);
         }
         if (pop.size() == 1) {
             newPop.add(pop.remove(0));
         }
+        
+        //age bears 5 years
+        gau.agePopulation(newPop, 5);
+        //kill old bears
+        gau.removeSeniorCitizens(newPop);
+        
         return newPop;
 
     }
