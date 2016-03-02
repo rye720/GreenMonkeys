@@ -1,4 +1,5 @@
 #include "Driver.h"
+#include "getopt.h"
 #undef max
 
 
@@ -9,10 +10,16 @@ int main(int argc, char* argv[]) {
 	Driver d = Driver();
 	std::vector<Animal> population;
 	std::string animalName, visualConf;
-	int geneNum, animalStart, loops;
+	int geneNum, animalStart, loops, c, opterr, optopt, optind;
+	char * optarg;
 
 	// command line arguments supplied:
 	// animalName, geneNum, animalStart
+
+	//while ((c = getopt(argc, argv, "abc:")) != -1) {
+	//	//currently implementing
+	//}
+
 	if (argc == 5) {
 		animalName = std::string(argv[1]);
 		sscanf(argv[2], "%d", (int *)&geneNum);
