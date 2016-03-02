@@ -1,25 +1,80 @@
 #include "Driver.h"
-#include "getopt.h"
+#include "XGetopt.h"
 #undef max
 
 
-int main(int argc, char* argv[]) {
+int main(int argc, TCHAR *argv[]) {
 
 	GA main = GA();
 	GAUtils g = GAUtils();
 	Driver d = Driver();
 	std::vector<Animal> population;
 	std::string animalName, visualConf;
-	int geneNum, animalStart, loops, c, opterr, optopt, optind;
-	char * optarg;
+
+	//extern char* optarg;
+	//extern int optind, optopt;
+
+	int geneNum, animalStart, loops, c = 0;
+	
+	//opterr = 0;
+	
 
 	// command line arguments supplied:
 	// animalName, geneNum, animalStart
 
-	//while ((c = getopt(argc, argv, "abc:")) != -1) {
-	//	//currently implementing
-	//}
+	while ( (c = getopt(argc, argv, "a:bcd:")) != -1) {
+		switch (c) {
+		case ('a'):
+			animalName = std::string(optarg);
+			break;
+		case ('b'):
+			geneNum = atoi(optarg);
+			break;
+		case ('c'):
+			animalStart = atoi(optarg);
+			break;
+		case ('d'):
+			visualConf = std::string(optarg);
+			break;
+		case ('?') :
 
+			//still default
+			//if (optopt == 'c')
+			//	fprintf(stderr, "Option -%c requires an argument.\n", optopt);
+			//else if (isprint(optopt))
+			//	fprintf(stderr, "Unknown option `-%c'.\n", optopt);
+			//else
+			//	fprintf(stderr,
+			//		"Unknown option character `\\x%x'.\n",
+			//		optopt);
+			//return 1;
+
+			std::cout << "Bad Arguments";
+			std::cout << std::endl;
+
+		default:
+			abort();
+		}
+
+		std::cout << "Animal Name: ";
+		std::cout << animalName;
+		std::cout << std::endl;
+
+		std::cout << "Number of genes: ";
+		std::cout << geneNum;
+		std::cout << std::endl;
+
+		std::cout << "Starting Population ";
+		std::cout << animalStart;
+		std::cout << std::endl;
+
+		std::cout << "Animal Name: ";
+		std::cout << visualConf;
+		std::cout << std::endl;
+
+	}
+
+	/**
 	if (argc == 5) {
 		animalName = std::string(argv[1]);
 		sscanf(argv[2], "%d", (int *)&geneNum);
@@ -42,6 +97,7 @@ int main(int argc, char* argv[]) {
 		std::cin >> visualConf;
 
 	}
+	**/
 
 		std::locale loc;
 		std::transform(visualConf.begin(), visualConf.end(), visualConf.begin(), ::tolower);

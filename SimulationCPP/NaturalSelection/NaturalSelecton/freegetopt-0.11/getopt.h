@@ -43,7 +43,7 @@ extern "C" {
 #endif
 
 
-extern char* optarg;
+extern TCHAR* optarg;
 extern int optind;
 extern int opterr;
 extern int optopt;

@@ -13,8 +13,8 @@ Visual::Visual(std::vector<Animal> &incPop): pop(incPop){
 }
 
 void Visual::visualSetup(){
-	LPCWSTR myClass = L"Green Monkeys";
-	LPCWSTR myTitle = L"Natural Selection Simulator";
+	LPCSTR myClass = "Green Monkeys";
+	LPCSTR myTitle = "Natural Selection Simulator";
 	
 
 	WNDCLASS wndclass = { CS_HREDRAW | CS_VREDRAW, (WNDPROC)StaticWndProc, 0, 0, 
@@ -149,47 +149,47 @@ void Visual::initialPopPlot(HDC hdc, HWND hWnd) {
 	while (y != 0){
 		for (int i = 0; i < 9; i++){
 			if (i == 0){
-				TextOut(hdc, startX, startY, L".", 1);
+				TextOut(hdc, startX, startY, ".", 1);
 				pop[i + z].position[0] = startX;
 				pop[i + z].position[1] = startY;
 			}
 			else if (i == 1){
-				TextOut(hdc, startX + x, startY, L".", 1);
+				TextOut(hdc, startX + x, startY, ".", 1);
 				pop[i + z].position[0] = startX+x;
 				pop[i + z].position[1] = startY;
 			}
 			else if (i == 2){
-				TextOut(hdc, startX + x, startY + x, L".", 1);
+				TextOut(hdc, startX + x, startY + x, ".", 1);
 				pop[i + z].position[0] = startX+x;
 				pop[i + z].position[1] = startY+x;
 			}
 			else if (i == 3){
-				TextOut(hdc, startX, startY + x, L".", 1);
+				TextOut(hdc, startX, startY + x, ".", 1);
 				pop[i + z].position[0] = startX;
 				pop[i + z].position[1] = startY+x;
 			}
 			else if (i == 4){
-				TextOut(hdc, startX - x, startY + x, L".", 1);
+				TextOut(hdc, startX - x, startY + x, ".", 1);
 				pop[i + z].position[0] = startX-x;
 				pop[i + z].position[1] = startY+x;
 			}
 			else if (i == 5){
-				TextOut(hdc, startX - x, startY, L".", 1);
+				TextOut(hdc, startX - x, startY, ".", 1);
 				pop[i + z].position[0] = startX-x;
 				pop[i + z].position[1] = startY;
 			}
 			else if (i == 6){
-				TextOut(hdc, startX - x, startY - x, L".", 1);
+				TextOut(hdc, startX - x, startY - x, ".", 1);
 				pop[i + z].position[0] = startX-x;
 				pop[i + z].position[1] = startY-x;
 			}
 			else if (i == 7){
-				TextOut(hdc, startX, startY - x, L".", 1);
+				TextOut(hdc, startX, startY - x, ".", 1);
 				pop[i + z].position[0] = startX;
 				pop[i + z].position[1] = startY-x;
 			}
 			else if (i == 8){
-				TextOut(hdc, startX + x, startY - x, L".", 1);
+				TextOut(hdc, startX + x, startY - x, ".", 1);
 				pop[i + z].position[0] = startX+x;
 				pop[i + z].position[1] = startY-x;
 			}
@@ -210,19 +210,19 @@ void Visual::paintAnimals(HDC hdc, HWND hWnd){
 		ypos = animal.position[1];
 
 		if ((xpos > 50) && (ypos > 50) && (ypos < 500) && (xpos < 700))
-			TextOut(hdc, animal.position[0], animal.position[1], L".", 1);
+			TextOut(hdc, animal.position[0], animal.position[1], ".", 1);
 		else if ((xpos < 50) && (ypos > 50))
-			TextOut(hdc, 50, animal.position[1], L".", 1);
+			TextOut(hdc, 50, animal.position[1], ".", 1);
 		else if ((ypos < 50) && (xpos > 50))
-			TextOut(hdc, animal.position[0], 50, L".", 1);
+			TextOut(hdc, animal.position[0], 50, ".", 1);
 		else if ((ypos < 50) && (xpos < 50))
-			TextOut(hdc, 51, 51, L".", 1);
+			TextOut(hdc, 51, 51, ".", 1);
 		else if ((ypos > 500) && (xpos < 700))
-			TextOut(hdc, animal.position[0], 500, L".", 1);
+			TextOut(hdc, animal.position[0], 500, ".", 1);
 		else if ((ypos < 500) && (xpos > 700))
-			TextOut(hdc, 700, animal.position[1], L".", 1);
+			TextOut(hdc, 700, animal.position[1], ".", 1);
 		else
-			TextOut(hdc, 699, 499, L".", 1);
+			TextOut(hdc, 699, 499, ".", 1);
 		
 	}
 }
