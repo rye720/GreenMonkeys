@@ -1,5 +1,6 @@
 #include "Driver.h"
 #include "XGetopt.h"
+#include <tchar.h>
 #undef max
 
 
@@ -15,7 +16,7 @@ int main(int argc, TCHAR *argv[]) {
 	//extern int optind, optopt;
 
 	int geneNum, animalStart, loops, c = 0;
-	
+	TCHAR* optopt = argv[optind - 1];
 	//opterr = 0;
 	
 
@@ -38,19 +39,21 @@ int main(int argc, TCHAR *argv[]) {
 			break;
 		case ('?') :
 
-			//still default
-			//if (optopt == 'c')
-			//	fprintf(stderr, "Option -%c requires an argument.\n", optopt);
-			//else if (isprint(optopt))
-			//	fprintf(stderr, "Unknown option `-%c'.\n", optopt);
-			//else
-			//	fprintf(stderr,
-			//		"Unknown option character `\\x%x'.\n",
-			//		optopt);
-			//return 1;
+			//still default messages
+			
+			if (_tcscmp(argv[optind], _T('c') == 0))
+				fprintf(stderr, "Option -%c requires an argument.\n", optopt);
+			else if (isprint((int)optopt))
+				fprintf(stderr, "Unknown option `-%c'.\n", optopt);
+			else
+				fprintf(stderr,
+					"Unknown option character `\\x%x'.\n",
+					optopt);
+			return 1;
 
 			std::cout << "Bad Arguments";
 			std::cout << std::endl;
+			break;
 
 		default:
 			abort();

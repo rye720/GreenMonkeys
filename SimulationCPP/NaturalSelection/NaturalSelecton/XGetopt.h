@@ -16,7 +16,7 @@
 #define XGETOPT_H
 
 extern int optind, opterr;
-extern TCHAR *optarg;
+extern TCHAR *optarg, *optopt;
 
 int getopt(int argc, TCHAR *argv[], TCHAR *optstring);
 
