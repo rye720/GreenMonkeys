@@ -206,7 +206,9 @@ void Visual::initialPopPlot(HDC hdc, HWND hWnd) {
 
 
 void Visual::paintAnimals(HDC hdc, HWND hWnd){
+
 	int xpos, ypos;
+
 	for (Animal &animal : pop){
 		xpos = animal.position[0];
 		ypos = animal.position[1];

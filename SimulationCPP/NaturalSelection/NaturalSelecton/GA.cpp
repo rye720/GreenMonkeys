@@ -1,9 +1,9 @@
 #include "GA.h"
 
 /*
-* Input: Name of animal for this population, number of animals to generate, number of genes per animal, and starting generation
+* Input: Name of animal for this Population, number of animals to generate, number of genes per animal, and starting generation
 * Output: Vector of Animals based on the supplied fields
-* Funcation: Generates the first population of animals
+* Funcation: Generates the first Population of animals
 * Notes: None
 */
 std::vector<Animal> GA::generatePop(std::string name, int animals, int genes, int generation){
@@ -27,7 +27,7 @@ std::vector<Animal> GA::generatePop(std::string name, int animals, int genes, in
 * Input: Vector of Animals, number of Animals in the vector, and current generation 
 * Output: Modified Vector of Animals
 * Funcation: Recursively combines two top ranking Animals (via fitness) untill there is 1 or less animals left in 
-*            the population then re-adds the old and new animals back into the population. Also handles the mutation 
+*            the wolfPopulation then re-adds the old and new animals back into the wolfPopulation. Also handles the mutation 
 *            process of the genetic algorithm
 * Notes: Probably a better way to do the huge if/else statement 
 */
@@ -138,7 +138,7 @@ void GA::combination(std::vector<Animal> &pop, int animalNum, int currentGen){
 /*
 * Input: Vector of Animals
 * Output: Modified Vector of Animals
-* Funcation: Removes 1/4 of the population; lowest fitness is removed 
+* Funcation: Removes 1/4 of the wolfPopulation; lowest fitness is removed 
 * Notes: None
 */
 void GA::selection(std::vector<Animal> &pop){

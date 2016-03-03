@@ -104,9 +104,9 @@ bool GAUtils::compareAnimals(Animal &a1, Animal &a2){
 }
 
 /*
-* Input: Population (vector of Animal struct objects)
+* Input: wolfPopulation (vector of Animal struct objects)
 * Output: none
-* Function Summary: Outputs the entire population
+* Function Summary: Outputs the entire wolfPopulation
 * Notes: None
 */
 void GAUtils::popOut(std::vector<Animal> &pop){
@@ -116,9 +116,9 @@ void GAUtils::popOut(std::vector<Animal> &pop){
 }
 
 /*
-* Input: population (vector of Animal struct objects) and number of animals to output (starting from position 1)
+* Input: wolfPopulation (vector of Animal struct objects) and number of animals to output (starting from position 1)
 * Output: none 
-* Outputs population to supplied paramter
+* Outputs wolfPopulation to supplied paramter
 * Notes: None
 */
 void GAUtils::popOut(std::vector<Animal> &pop, int x){
@@ -131,9 +131,9 @@ void GAUtils::popOut(std::vector<Animal> &pop, int x){
 }
 
 /*
-* Input: population (vector of Animal struct objects), x number of years
+* Input: wolfPopulation (vector of Animal struct objects), x number of years
 * Output: none
-* Advances each member of population x number of years
+* Advances each member of wolfPopulation x number of years
 * Notes: None
 */
 void GAUtils::agePopulation(std::vector<Animal> &pop, int x) {
@@ -143,7 +143,7 @@ void GAUtils::agePopulation(std::vector<Animal> &pop, int x) {
 }
 
 /*
-* Input: population (vector of Animal struct objects)
+* Input: wolfPopulation (vector of Animal struct objects)
 * Output: none
 * Kills every individual older than 23 (for now)
 * Notes: None
