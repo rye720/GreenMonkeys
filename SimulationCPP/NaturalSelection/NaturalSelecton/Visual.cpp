@@ -46,7 +46,7 @@ LRESULT CALLBACK Visual::StaticWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 	{
 		pParent = (Visual*)((LPCREATESTRUCT)lParam)->lpCreateParams;
 		SetWindowLongPtr(hWnd, GWL_USERDATA, (LONG_PTR)pParent);
-		SetTimer(hWnd, 1, 3, NULL);
+		//SetTimer(hWnd, 1, 3, NULL);
 		SetTimer(hWnd, 2, 5000, NULL);
 		SetTimer(hWnd, 3, 150, NULL);
 		/*SetTimer(hWnd, 4, 10000, NULL);*/
@@ -88,6 +88,8 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			break;
 		case 3:
 			animalIncUpdate();
+			InvalidateRect(hWnd, NULL, TRUE);
+			UpdateWindow(hWnd);
 			break;
 		/*case 4:
 			GA g = GA();
@@ -209,17 +211,17 @@ void Visual::paintAnimals(HDC hdc, HWND hWnd){
 		xpos = animal.position[0];
 		ypos = animal.position[1];
 
-		if ((xpos > 50) && (ypos > 50) && (ypos < 500) && (xpos < 700))
+		if ((xpos > 51) && (ypos > 51) && (ypos < 501) && (xpos < 701))
 			TextOut(hdc, animal.position[0], animal.position[1], ".", 1);
-		else if ((xpos < 50) && (ypos > 50))
+		else if ((xpos < 51) && (ypos > 51))
 			TextOut(hdc, 50, animal.position[1], ".", 1);
-		else if ((ypos < 50) && (xpos > 50))
+		else if ((ypos < 51) && (xpos > 51))
 			TextOut(hdc, animal.position[0], 50, ".", 1);
-		else if ((ypos < 50) && (xpos < 50))
+		else if ((ypos < 51) && (xpos < 51))
 			TextOut(hdc, 51, 51, ".", 1);
-		else if ((ypos > 500) && (xpos < 700))
+		else if ((ypos > 501) && (xpos < 701))
 			TextOut(hdc, animal.position[0], 500, ".", 1);
-		else if ((ypos < 500) && (xpos > 700))
+		else if ((ypos < 501) && (xpos > 701))
 			TextOut(hdc, 700, animal.position[1], ".", 1);
 		else
 			TextOut(hdc, 699, 499, ".", 1);

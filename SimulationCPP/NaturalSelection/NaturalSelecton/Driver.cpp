@@ -22,18 +22,18 @@ int main(int argc, TCHAR *argv[]) {
 	// command line arguments supplied:
 	// animalName, geneNum, animalStart
 
-	while ( (c = getopt(argc, argv, "a:bcd:")) != -1) {
+	while ((c = getopt(argc, argv, "a:b:c:d:")) != -1) {
 		switch (c) {
-		case ('a'):
+		case ('a') :
 			animalName = std::string(optarg);
 			break;
-		case ('b'):
+		case ('b') :
 			geneNum = atoi(optarg);
 			break;
-		case ('c'):
+		case ('c') :
 			animalStart = atoi(optarg);
 			break;
-		case ('d'):
+		case ('d') :
 			visualConf = std::string(optarg);
 			break;
 		case ('?') :
@@ -55,7 +55,7 @@ int main(int argc, TCHAR *argv[]) {
 		default:
 			abort();
 		}
-
+	}
 		std::cout << "Animal Name: ";
 		std::cout << animalName;
 		std::cout << std::endl;
@@ -72,7 +72,7 @@ int main(int argc, TCHAR *argv[]) {
 		std::cout << visualConf;
 		std::cout << std::endl;
 
-	}
+	
 
 	/**
 	if (argc == 5) {
