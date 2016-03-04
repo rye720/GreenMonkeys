@@ -15,6 +15,7 @@
     <ClCompile Include="Driver.cpp" />
     <ClCompile Include="GA.cpp" />
     <ClCompile Include="GAUtils.cpp" />
+    <ClCompile Include="Population.cpp" />
     <ClCompile Include="Visual.cpp" />
     <ClCompile Include="XGetopt.cpp" />
   </ItemGroup>
@@ -23,6 +24,7 @@
     <ClInclude Include="Driver.h" />
     <ClInclude Include="GA.h" />
     <ClInclude Include="GAUtils.h" />
+    <ClInclude Include="Population.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Visual.h" />
     <ClInclude Include="XGetopt.h" />
