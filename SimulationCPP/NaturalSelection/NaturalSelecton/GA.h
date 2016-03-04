@@ -8,16 +8,17 @@
 #include <iostream>
 #include <vector>
 #include <String>
+#include <memory>
 
 class GA{
 
 public:
-	std::vector<Animal> generatePop(std::string name, int animals, int genes, int generation);
-	void combination(std::vector<Animal> &pop, int animalNum, int currentGen);
-	void selection(std::vector<Animal> &pop);
+	void generatePop(std::vector<std::shared_ptr<Animal>> &pop, std::string name, int animals, int genes, int generation);
+	void combination(std::vector<std::shared_ptr<Animal>> &pop, int animalNum, int currentGen);
+	void selection(std::vector<std::shared_ptr<Animal>> &pop);
 	void mutateGenes(std::vector<float> &genes);
 	void mutate(float &gene);
-	void ranking(std::vector<Animal> &pop);
+	void ranking(std::vector<std::shared_ptr<Animal>> &pop);
 
 private:
 

@@ -13,7 +13,7 @@
 class Visual {
 public:
 	Visual();
-    Visual(std::vector<Animal> &incPop);
+	Visual(std::vector<std::shared_ptr<Animal>> &incPop);
 	void visualSetup();
 	static LRESULT CALLBACK StaticWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	LRESULT WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -26,7 +26,7 @@ protected:
 private:
 	int startX, startY;
 	bool firstTime = true;
-	std::vector<Animal> &pop;
+	std::vector<std::shared_ptr<Animal>> pop;
     void animalPosUpdate();
 	void paintAnimals(HDC hdc, HWND hWnd);
 	void initialPopPlot(HDC hdc, HWND hWnd);

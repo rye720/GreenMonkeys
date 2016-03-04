@@ -6,21 +6,21 @@
 * Funcation: Generates the first Population of animals
 * Notes: None
 */
-std::vector<Animal> GA::generatePop(std::string name, int animals, int genes, int generation){
-	std::vector<Animal> pop;
-
+void GA::generatePop(std::vector<std::shared_ptr<Animal>> &pop, std::string name, int animals, int genes, int generation){
 
 	for (int i = 0; i < animals; i++){
 		GAUtils gu = GAUtils();
-		Animal a;
-		a.sex = gu.randSex();
-		a.genes = gu.generateGenes(genes);
-		a.fitness = gu.fitnessSingle(a.genes);
-		a.species = name;
-		a.tag = (name + "_" + std::to_string(generation) + std::to_string(i));
-		pop.push_back(a);
+		std::shared_ptr<Animal> a(new Animal(name));
+		float fitness;
+		char sex = gu.randSex();
+
+		a->setSex(sex);
+		a->setGenes(gu.generateGenes(genes));
+		fitness = gu.fitnessSingle(a->getGenes());
+		a->setFitness(fitness);
+		a->setTag(name + "_" + std::to_string(generation) + std::to_string(i));
+		pop.push_back(std::move(a));
 	}
-	return pop;
 }
 
 /*
@@ -31,78 +31,82 @@ std::vector<Animal> GA::generatePop(std::string name, int animals, int genes, in
 *            process of the genetic algorithm
 * Notes: Probably a better way to do the huge if/else statement 
 */
-void GA::combination(std::vector<Animal> &pop, int animalNum, int currentGen){
+void GA::combination(std::vector<std::shared_ptr<Animal>> &pop, int animalNum, int currentGen){
 	char sex;
 	GAUtils gu = GAUtils();
 	if (pop.size() > 1) {
 		sex = gu.randSex();
-		Animal m, d;
+		std::shared_ptr<Animal> m, d;
 		int dRand, mRand;
 
 		if (pop.size() >= 8) {
 			dRand = gu.randIntGen(6);
 			mRand = gu.randIntGen(6);
-			d = pop[dRand];
+			
+			d = std::move(pop[dRand]);
 			pop.erase(pop.begin() + dRand);
-			m = pop[mRand];
+			m = std::move(pop[mRand]);
 			pop.erase(pop.begin() + mRand);
 		}
 		else if (pop.size() >= 7) {
 			dRand = gu.randIntGen(5);
 			mRand = gu.randIntGen(5);
-			d = pop[dRand];
+			d = std::move(pop[dRand]);
 			pop.erase(pop.begin() + dRand);
-			m = pop[mRand];
+			m = std::move(pop[mRand]);
 			pop.erase(pop.begin() + mRand);
 		}
 		else if (pop.size() >= 6) {
 			dRand = gu.randIntGen(4);
 			mRand = gu.randIntGen(4);
-			d = pop[dRand];
+			d = std::move(pop[dRand]);
 			pop.erase(pop.begin() + dRand);
-			m = pop[mRand];
+			m = std::move(pop[mRand]);
 			pop.erase(pop.begin() + mRand);
 		}
 		else if (pop.size() >= 5) {
 			dRand = gu.randIntGen(3);
 			mRand = gu.randIntGen(3);
-			d = pop[dRand];
+			d = std::move(pop[dRand]);
 			pop.erase(pop.begin() + dRand);
-			m = pop[mRand];
+			m = std::move(pop[mRand]);
 			pop.erase(pop.begin() + mRand);
 		}
 		else if (pop.size() >= 4) {
 			dRand = gu.randIntGen(2);
 			mRand = gu.randIntGen(2);
-			d = pop[dRand];
+			d = std::move(pop[dRand]);
 			pop.erase(pop.begin() + dRand);
-			m = pop[mRand];
+			m = std::move(pop[mRand]);
 			pop.erase(pop.begin() + mRand);
 		}
 		else if (pop.size() >= 3) {
 			dRand = gu.randIntGen(1);
 			mRand = gu.randIntGen(1);
-			d = pop[dRand];
+			d = std::move(pop[dRand]);
 			pop.erase(pop.begin() + dRand);
-			m = pop[mRand];
+			m = std::move(pop[mRand]);
 			pop.erase(pop.begin() + mRand);
 		}
 		else {
-			d = pop[0];
+			d = std::move(pop[0]);
 			pop.erase(pop.begin());
-			m = pop[0];
+			m = std::move(pop[0]);
 			pop.erase(pop.begin());
 		}
-
-		int cp = (gu.randIntGen(m.genes.size()));
+		
+		
+		int cp = (gu.randIntGen(m->getGeneSize()));
 		std::vector <float> childGenes;
 
+		std::vector<float> dadGenes = d->getGenes();
+		std::vector<float> momGenes = m->getGenes();
 		for (int i = 0; i < cp; i++){
-			childGenes.push_back(m.genes[i]); 
+			childGenes.push_back(dadGenes[i]); 
 		}
 
-		for (int i = cp; i < m.genes.size(); i++){
-			childGenes.push_back(m.genes[i]);
+		for (int i = cp; i < m->getGeneSize(); i++){
+			childGenes.push_back(momGenes[i]);
 		}
 
 		bool hasMutation = false;
@@ -112,22 +116,22 @@ void GA::combination(std::vector<Animal> &pop, int animalNum, int currentGen){
 		}
 
 		float fn = gu.fitnessSingle(childGenes);
-		Animal child;
+		std::shared_ptr<Animal> child(new Animal(d->getName()));
 		std::string cTag;
-		child.fitness = fn;
-		child.genes = childGenes;
-		child.sex = sex;
-		child.generation = currentGen;
-		child.species = m.species;
+		
+		child->setFitness(fn);
+		child->setGenes(childGenes);
+		child->setSex(sex);
+		child->setGeneration(currentGen);
 		if (hasMutation)
-			cTag.append(m.species + "_" + std::to_string(currentGen) + "_" + std::to_string(animalNum + 1) + "m");
+			cTag.append(m->getName() + "_" + std::to_string(currentGen) + "_" + std::to_string(animalNum + 1) + "m");
 		else
-			cTag.append(m.species + "_" + std::to_string(currentGen) + "_" + std::to_string(animalNum + 1));
-		child.tag = cTag;
+			cTag.append(m->getName() + "_" + std::to_string(currentGen) + "_" + std::to_string(animalNum + 1));
+		child->setTag(cTag);
 		combination(pop, animalNum+1, currentGen);
-		pop.push_back(m);
-		pop.push_back(d);
-		pop.push_back(child);
+		pop.push_back(std::move(m));
+		pop.push_back(std::move(d));
+		pop.push_back(std::move(child));
 	}
 
 	gu.agePopulation(pop,5);
@@ -141,7 +145,7 @@ void GA::combination(std::vector<Animal> &pop, int animalNum, int currentGen){
 * Funcation: Removes 1/4 of the wolfPopulation; lowest fitness is removed 
 * Notes: None
 */
-void GA::selection(std::vector<Animal> &pop){
+void GA::selection(std::vector<std::shared_ptr<Animal>> &pop){
 	int size = pop.size();
 	int x = (size / 4);
 	size -= 1;
@@ -176,7 +180,7 @@ void GA::mutate(float &gene){
 * Funcation: Calls the function to sort the Vector
 * Notes: Was trying to avoid using GUtils in the driver.
 */
-void GA::ranking(std::vector<Animal> &pop){
+void GA::ranking(std::vector<std::shared_ptr<Animal>> &pop){
 	GAUtils gu = GAUtils();
 	gu.rankPop(pop);
 }

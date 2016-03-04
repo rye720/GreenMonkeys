@@ -6,7 +6,7 @@ Visual::Visual():pop(pop){
 	hDc = NULL;
 }
 
-Visual::Visual(std::vector<Animal> &incPop): pop(incPop){
+Visual::Visual(std::vector<std::shared_ptr<Animal>> &incPop) : pop(std::move(incPop)){
 	hWnd = NULL;
 	hInstance = NULL;
 	hDc = NULL;
@@ -121,19 +121,19 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 void Visual::animalPosUpdate(){
 	GAUtils gau = GAUtils();
-	for (Animal &animal : pop){
+	for (const auto& animal : pop){
 		int randx = gau.randIntGen(600);
 		int randy = gau.randIntGen(500);
 			
 		if (gau.randIntGen(10) >= 5)
-			animal.posXOffset = randx;
+			animal->setPosXOffset(randx);
 		else
-			animal.posXOffset = (randx * -1);
+			animal->setPosXOffset(randx*-1);
 
 		if (gau.randIntGen(10) >= 5)
-			animal.posYOffset = randy;
+			animal->setPosYOffset(randy);
 		else
-			animal.posYOffset = (randy * -1);
+			animal->setPosYOffset(randy*-1);
 	}
 	
 }
@@ -152,48 +152,48 @@ void Visual::initialPopPlot(HDC hdc, HWND hWnd) {
 		for (int i = 0; i < 9; i++){
 			if (i == 0){
 				TextOut(hdc, startX, startY, ".", 1);
-				pop[i + z].position[0] = startX;
-				pop[i + z].position[1] = startY;
+				pop[i + z]->setXPosition(startX);
+				pop[i + z]->setYPosition(startY);
 			}
 			else if (i == 1){
 				TextOut(hdc, startX + x, startY, ".", 1);
-				pop[i + z].position[0] = startX+x;
-				pop[i + z].position[1] = startY;
+				pop[i + z]->setXPosition(startX+x);
+				pop[i + z]->setYPosition(startY);
 			}
 			else if (i == 2){
 				TextOut(hdc, startX + x, startY + x, ".", 1);
-				pop[i + z].position[0] = startX+x;
-				pop[i + z].position[1] = startY+x;
+				pop[i + z]->setXPosition(startX + x);
+				pop[i + z]->setYPosition(startY + x);
 			}
 			else if (i == 3){
 				TextOut(hdc, startX, startY + x, ".", 1);
-				pop[i + z].position[0] = startX;
-				pop[i + z].position[1] = startY+x;
+				pop[i + z]->setXPosition(startX);
+				pop[i + z]->setYPosition(startY + x);
 			}
 			else if (i == 4){
 				TextOut(hdc, startX - x, startY + x, ".", 1);
-				pop[i + z].position[0] = startX-x;
-				pop[i + z].position[1] = startY+x;
+				pop[i + z]->setXPosition(startX - x);
+				pop[i + z]->setYPosition(startY + x);
 			}
 			else if (i == 5){
 				TextOut(hdc, startX - x, startY, ".", 1);
-				pop[i + z].position[0] = startX-x;
-				pop[i + z].position[1] = startY;
+				pop[i + z]->setXPosition(startX - x);
+				pop[i + z]->setYPosition(startY);
 			}
 			else if (i == 6){
 				TextOut(hdc, startX - x, startY - x, ".", 1);
-				pop[i + z].position[0] = startX-x;
-				pop[i + z].position[1] = startY-x;
+				pop[i + z]->setXPosition(startX - x);
+				pop[i + z]->setYPosition(startY - x);
 			}
 			else if (i == 7){
 				TextOut(hdc, startX, startY - x, ".", 1);
-				pop[i + z].position[0] = startX;
-				pop[i + z].position[1] = startY-x;
+				pop[i + z]->setXPosition(startX);
+				pop[i + z]->setYPosition(startY - x);
 			}
 			else if (i == 8){
 				TextOut(hdc, startX + x, startY - x, ".", 1);
-				pop[i + z].position[0] = startX+x;
-				pop[i + z].position[1] = startY-x;
+				pop[i + z]->setXPosition(startX + x);
+				pop[i + z]->setYPosition(startY - x);
 			}
 		}
 		y--;
@@ -208,23 +208,24 @@ void Visual::initialPopPlot(HDC hdc, HWND hWnd) {
 void Visual::paintAnimals(HDC hdc, HWND hWnd){
 
 	int xpos, ypos;
-
-	for (Animal &animal : pop){
-		xpos = animal.position[0];
-		ypos = animal.position[1];
+	for (const auto& animal : pop){
+		
+		xpos = animal->getXPos();
+		ypos = animal->getYPos();
 
 		if ((xpos > 51) && (ypos > 51) && (ypos < 501) && (xpos < 701))
-			TextOut(hdc, animal.position[0], animal.position[1], ".", 1);
+			TextOut(hdc,xpos, ypos, ".", 1);
 		else if ((xpos < 51) && (ypos > 51))
-			TextOut(hdc, 50, animal.position[1], ".", 1);
+			TextOut(hdc, 50, ypos, ".", 1);
 		else if ((ypos < 51) && (xpos > 51))
-			TextOut(hdc, animal.position[0], 50, ".", 1);
+			TextOut(hdc, xpos, 50, ".", 1);
 		else if ((ypos < 51) && (xpos < 51))
 			TextOut(hdc, 51, 51, ".", 1);
 		else if ((ypos > 501) && (xpos < 701))
-			TextOut(hdc, animal.position[0], 500, ".", 1);
+			TextOut(hdc, xpos, 500, ".", 1);
 		else if ((ypos < 501) && (xpos > 701))
-			TextOut(hdc, 700, animal.position[1], ".", 1);
+			TextOut(hdc, 700, ypos, ".", 1);
+
 		else
 			TextOut(hdc, 699, 499, ".", 1);
 		
@@ -232,23 +233,23 @@ void Visual::paintAnimals(HDC hdc, HWND hWnd){
 }
 
 void Visual::animalIncUpdate(){
-	for (Animal &animal : pop){
-		if (animal.posXOffset > 0){
-			animal.posXOffset -= 1;
-			animal.position[0] += 1;
+	for (const auto& animal : pop){
+		if (animal->getPosXOffset() > 0){
+			animal->setPosXOffset(animal->getPosXOffset() - 1);
+			animal->setXPosition(animal->getXPos() + 1);
 		}
 		else{
-			animal.posXOffset += 1;
-			animal.position[0] -= 1;
+			animal->setPosXOffset(animal->getPosXOffset() + 1);
+			animal->setXPosition(animal->getXPos() - 1);
 		}
 
-		if (animal.posYOffset > 0){
-			animal.posYOffset -= 1;
-			animal.position[1] += 1;
+		if (animal->getPosYOffset() > 0){
+			animal->setPosYOffset(animal->getPosYOffset() - 1);
+			animal->setYPosition(animal->getYPos ()+ 1);
 		}
 		else{
-			animal.posYOffset += 1;
-			animal.position[1] -= 1;
+			animal->setPosYOffset(animal->getPosYOffset() + 1);
+			animal->setYPosition(animal->getYPos() - 1);
 		}
 	}
 }

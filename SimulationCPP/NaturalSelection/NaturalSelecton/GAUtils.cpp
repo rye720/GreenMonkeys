@@ -6,7 +6,7 @@
 * Funcation: Sorts the vector of Animals in ascending order
 * Notes: None
 */
-void GAUtils::rankPop(std::vector<Animal> &pop){
+void GAUtils::rankPop(std::vector<std::shared_ptr<Animal>> &pop){
 	std::sort(pop.begin(), pop.end(), compareAnimals);
 }
 
@@ -99,8 +99,8 @@ int GAUtils::randIntGen(int lowerBound, int upperBound){
 * Function Summary: Compares animal 1 to animal 2 based on fitness
 * Notes: None
 */
-bool GAUtils::compareAnimals(Animal &a1, Animal &a2){
-	return a1.fitness > a2.fitness;
+bool GAUtils::compareAnimals(std::shared_ptr<Animal> a1, std::shared_ptr<Animal> a2) {
+	return a1->getFitness() > a2->getFitness();
 }
 
 /*
@@ -109,9 +109,9 @@ bool GAUtils::compareAnimals(Animal &a1, Animal &a2){
 * Function Summary: Outputs the entire wolfPopulation
 * Notes: None
 */
-void GAUtils::popOut(std::vector<Animal> &pop){
+void GAUtils::popOut(std::vector<std::shared_ptr<Animal>> &pop){
 	for (auto & animal : pop){
-		std::cout << animal.tag + "  " + std::to_string(animal.fitness) << std::endl;
+		std::cout << animal->getTag() + "  " + std::to_string(animal->getFitness()) << std::endl;
 	}
 }
 
@@ -121,12 +121,9 @@ void GAUtils::popOut(std::vector<Animal> &pop){
 * Outputs wolfPopulation to supplied paramter
 * Notes: None
 */
-void GAUtils::popOut(std::vector<Animal> &pop, int x){
-	Animal animal;
-	
+void GAUtils::popOut(std::vector<std::shared_ptr<Animal>> &pop, int x){
 	for (int i = 0; i < x; i++){
-		animal = pop[i];
-		std::cout << std::to_string((i+1))+": " +animal.tag + "  " + std::to_string(animal.fitness) << std::endl;
+		std::cout << std::to_string((i+1))+": " +pop[i]->getTag() + "  " + std::to_string(pop[i]->getFitness()) << std::endl;
 	}
 }
 
@@ -136,9 +133,9 @@ void GAUtils::popOut(std::vector<Animal> &pop, int x){
 * Advances each member of wolfPopulation x number of years
 * Notes: None
 */
-void GAUtils::agePopulation(std::vector<Animal> &pop, int x) {
+void GAUtils::agePopulation(std::vector<std::shared_ptr<Animal>> &pop, int x) {
 	for (int i = 0; i < pop.size(); i++) {
-		pop[i].age += x;
+		pop[i]->setAge(pop[i]->getAge() + x);
 	}
 }
 
@@ -148,9 +145,9 @@ void GAUtils::agePopulation(std::vector<Animal> &pop, int x) {
 * Kills every individual older than 23 (for now)
 * Notes: None
 */
-void GAUtils::killSeniorCitizens(std::vector<Animal> &pop) {
+void GAUtils::killSeniorCitizens(std::vector<std::shared_ptr<Animal>> &pop) {
 	for (int i = 0; i < pop.size(); i++) {
-		if (pop[i].age > 23) {
+		if (pop[i]->getAge() > 23) {
 			//Animal a = pop[i];
 			pop.erase(pop.begin() + i);
 			i--;
