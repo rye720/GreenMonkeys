@@ -26,7 +26,7 @@ public:
 	/*
 	* Input: Number of genes per animal. Number of animals to create. Starting generation.
 	* Output: None
-	* Funcation: Fills the population with individual animals. Uses the name supplied in the constructor.
+	* Function: Fills the population with individual animals. Uses the name supplied in the constructor.
 	* Notes: User has access to this, but not to pop. Abstraction is a great thing.
 	*/
 	void createPopulation(int geneNum, int startingSize, int generation);
@@ -34,7 +34,7 @@ public:
 	/*
 	* Input: Number of genes per animal. Number of animals to create. Starting generation. Name of animals.
 	* Output: None
-	* Funcation: Fills the population with individual animals. Uses the name supplied in this function, instead of the constructor one.
+	* Function: Fills the population with individual animals. Uses the name supplied in this function, instead of the constructor one.
 	* Notes: User has access to this, but not to pop. Abstraction is a great thing.
 	*/
 	void createPopulation(int geneNum, int startingSize, int generation, std::string name);
@@ -42,7 +42,7 @@ public:
 	/*
 	* Input: None
 	* Output: None 
-	* Funcation: Advances the population one generation. This creates new animals and removes old/low fitness ones.
+	* Function: Advances the population one generation. This creates new animals and removes old/low fitness ones.
 	* Notes: This is so the driver only has to do one call to advance the generation.
 	*/
 	void advanceGeneration();
@@ -50,7 +50,7 @@ public:
 	/*
 	* Input: Number of animals to output (highest fitness first).
 	* Output: Output of N animals.
-	* Funcation: If you only want to output the top N animals, use this.
+	* Function: If you only want to output the top N animals, use this.
 	* Notes: Maybe add function to output bottom animals too.
 	*/
 	void outputNAnimals(int outNum);
@@ -58,7 +58,7 @@ public:
 	/*
 	* Input: None
 	* Output: Visual class declaration.
-	* Funcation: Declares visual mode so you can run the setup and being visualizing the genetic algorithm.
+	* Function: Declares visual mode so you can run the setup and being visualizing the genetic algorithm.
 	* Notes: This is so the driver does not have access to the pop data structure.
 	*/
 	Visual initVisual();
@@ -66,7 +66,7 @@ public:
 	/*
 	* Input: None
 	* Output: Size of the population.
-	* Funcation: Returns the size of the population.
+	* Function: Returns the size of the population.
 	* Notes: None.
 	*/
 	int getPopSize();
@@ -74,7 +74,7 @@ public:
 	/*
 	* Input: See notes
 	* Output: All animals in the population.
-	* Funcation: When you cout the population it calls this. This allows us to output what we want from the data class.
+	* Function: When you cout the population it calls this. This allows us to output what we want from the data class.
 	* Notes: None.
 	*/
 	friend std::ostream& operator<<(std::ostream& os, const Population& pop);

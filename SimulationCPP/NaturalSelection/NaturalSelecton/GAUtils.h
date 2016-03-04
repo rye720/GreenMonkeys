@@ -18,7 +18,7 @@ public:
 	/*
 	* Input: Vector of Animals
 	* Output: Sorted vector of Animals; Ascending order
-	* Funcation: Sorts the vector of Animals in ascending order
+	* Function: Sorts the vector of Animals in ascending order
 	* Notes: None
 	*/
 	void rankPop(std::vector<std::shared_ptr<Animal>> &pop);
@@ -26,7 +26,7 @@ public:
 	/*
 	* Input: Gene vector
 	* Output: Fitness value
-	* Funcation: Determines the fitness value based on the genes supplied
+	* Function: Determines the fitness value based on the genes supplied
 	* Notes: None
 	*/
 	float fitnessSingle(std::vector<float> &genes);
@@ -34,7 +34,7 @@ public:
 	/*
 	* Input: Number of genes to generate
 	* Output: Vector of floats
-	* Funcation: Generates a random vector of floats. Length is based on input
+	* Function: Generates a random vector of floats. Length is based on input
 	* Notes: None
 	*/
 	std::vector<float> generateGenes(int &genesNum);
@@ -42,7 +42,7 @@ public:
 	/*
 	* Input: None
 	* Output: Chararacter M or F
-	* Funcation: Returns either M or F based on random number
+	* Function: Returns either M or F based on random number
 	* Notes: None
 	*/
 	char randSex();
@@ -50,7 +50,7 @@ public:
 	/*
 	* Input: None
 	* Output: Random float
-	* Funcation: Returns a random float with a precision of 4
+	* Function: Returns a random float with a precision of 4
 	* Notes: Non-determinsitic number generation taken from https://msdn.microsoft.com/en-us/library/bb982398.aspx
 	*/
 	float randFloatGen();	

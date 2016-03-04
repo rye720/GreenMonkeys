@@ -18,7 +18,7 @@ public:
 	/*
 	* Input: None
 	* Output: None
-	* Funcation: Creates the window class and converts the program into a windows program instead of a console program. 
+	* Function: Creates the window class and converts the program into a windows program instead of a console program. 
 	* Notes: Only public call in Visual.
 	*/
 	void visualSetup();
@@ -39,7 +39,7 @@ private:
 	/*
 	* Input: None
 	* Output: None
-	* Funcation: Randomly generates the animals position offsets. The offests are used to determine which way the animal is moving by adding either +1 or -1 to the animals x and y pos. 
+	* Function: Randomly generates the animals position offsets. The offests are used to determine which way the animal is moving by adding either +1 or -1 to the animals x and y pos. 
 	*            I.E. +x, -y means it is moving in the positive x and the negative y direction so it's moving in the direction of 225 degrees.
 	* Notes: None
 	*/
@@ -48,7 +48,7 @@ private:
 	/*
 	* Input: Handle to the paint device. Handle to the window to be painted on.
 	* Output: Dots on the screen.
-	* Funcation: Paints dots on the screen according to their current position.
+	* Function: Paints dots on the screen according to their current position.
 	* Notes: This function is only called when the timer for animalPosUpdate is called.
 	*/
 	void paintAnimals(HDC hdc, HWND hWnd);
@@ -56,7 +56,7 @@ private:
 	/*
 	* Input:  Handle to the paint device. Handle to the window to be painted on.
 	* Output: Initial dots on the screen
-	* Funcation: Plots the initial animal position
+	* Function: Plots the initial animal position
 	* Notes: None
 	*/
 	void initialPopPlot(HDC hdc, HWND hWnd);
@@ -64,7 +64,7 @@ private:
 	/*
 	* Input: None
 	* Output: Changes x and y offsets of each animal.
-	* Funcation: Moves the x and y offets of each animal one step closer to 0. When it is 0 that means the animal is no longer moving
+	* Function: Moves the x and y offets of each animal one step closer to 0. When it is 0 that means the animal is no longer moving
 	* Notes: None
 	*/
 	void animalIncUpdate();
@@ -72,7 +72,7 @@ private:
 	/*
 	* Input:  Handle to the window being called in the wnd proc. Message sent to the window (i.e. button clicked). First message parameter. Second message parameter.
 	* Output:  None
-	* Funcation:  Static version of window procedure (aka message handler). Dspatch msg can only call this. Cannot use any external data sets.
+	* Function:  Static version of window procedure (aka message handler). Dspatch msg can only call this. Cannot use any external data sets.
 	* Notes: See .cpp comment for more indepth notes.
 	*/
 	static LRESULT CALLBACK StaticWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -80,7 +80,7 @@ private:
 	/*
 	* Input: Message sent to the window. First message parameter. Second message parameter.
 	* Output: None
-	* Funcation: None static version of window procedure. Can use external data sets.
+	* Function: None static version of window procedure. Can use external data sets.
 	* Notes: see .cpp comment for more indepth notes.
 	*/
 	LRESULT WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam);

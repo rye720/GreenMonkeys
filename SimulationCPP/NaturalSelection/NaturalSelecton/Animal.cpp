@@ -3,7 +3,7 @@
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes: 
 */
 Animal::Animal() {
@@ -13,7 +13,7 @@ Animal::Animal() {
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 Animal::Animal(std::string name){
@@ -23,7 +23,7 @@ Animal::Animal(std::string name){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 void Animal::setSex(char sex){
@@ -33,7 +33,7 @@ void Animal::setSex(char sex){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 void Animal::setFitness(float fitness){
@@ -43,7 +43,7 @@ void Animal::setFitness(float fitness){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 void Animal::setGeneration(int generation){
@@ -53,7 +53,7 @@ void Animal::setGeneration(int generation){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 void Animal::setAge(int age){
@@ -63,7 +63,7 @@ void Animal::setAge(int age){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 void Animal::setGenes(std::vector<float> &genes){
@@ -73,7 +73,7 @@ void Animal::setGenes(std::vector<float> &genes){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 void Animal::setPosition(int x, int y, int z){
@@ -85,7 +85,7 @@ void Animal::setPosition(int x, int y, int z){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 void Animal::setXPosition(int x){
@@ -95,7 +95,7 @@ void Animal::setXPosition(int x){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 void Animal::setYPosition(int y){
@@ -105,7 +105,7 @@ void Animal::setYPosition(int y){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 void Animal::setZPosition(int z){
@@ -115,7 +115,7 @@ void Animal::setZPosition(int z){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 void Animal::setPosXOffset(int posXOffset){
@@ -125,7 +125,7 @@ void Animal::setPosXOffset(int posXOffset){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 void Animal::setPosYOffset(int posYOffset){
@@ -135,7 +135,7 @@ void Animal::setPosYOffset(int posYOffset){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 void Animal::setTag(std::string tag){
@@ -145,7 +145,7 @@ void Animal::setTag(std::string tag){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 char Animal::getSex(){
@@ -155,7 +155,7 @@ char Animal::getSex(){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 float Animal::getFitness(){
@@ -165,7 +165,7 @@ float Animal::getFitness(){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 std::vector<float> Animal::getGenes(){
@@ -175,7 +175,7 @@ std::vector<float> Animal::getGenes(){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 int Animal::getGeneSize(){
@@ -185,7 +185,7 @@ int Animal::getGeneSize(){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 std::string Animal::getName(){
@@ -195,7 +195,7 @@ std::string Animal::getName(){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 std::string Animal::getTag(){
@@ -205,7 +205,7 @@ std::string Animal::getTag(){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 int Animal::getGeneration(){
@@ -215,7 +215,7 @@ int Animal::getGeneration(){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 int Animal::getAge(){
@@ -225,7 +225,7 @@ int Animal::getAge(){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 int Animal::getXPos(){
@@ -235,7 +235,7 @@ int Animal::getXPos(){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 int Animal::getYPos(){
@@ -245,7 +245,7 @@ int Animal::getYPos(){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 int Animal::getZPost(){
@@ -255,7 +255,7 @@ int Animal::getZPost(){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 int Animal::getPosXOffset(){
@@ -265,7 +265,7 @@ int Animal::getPosXOffset(){
 /*
 * Input:
 * Output:
-* Funcation:
+* Function:
 * Notes:
 */
 int Animal::getPosYOffset(){
