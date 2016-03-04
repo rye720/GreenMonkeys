@@ -1,20 +1,19 @@
 #include "GAUtils.h"
 
-/*
-* Input: Vector of Animals
-* Output: Sorted vector of Animals; Ascending order
-* Funcation: Sorts the vector of Animals in ascending order
-* Notes: None
+/*COMMENTS:
+*  Using C++'s implemented quicksort. 
+*  So far this has been working well and only causing the program to run slow on 5k+ animals.
+*  May need either implement a better sorting algortihm, or see what algorithm's the BOOST library has to offer, 
+*  if we can't fix the issue by balancing out the population by killing off more animals as the growth rises.
 */
 void GAUtils::rankPop(std::vector<std::shared_ptr<Animal>> &pop){
 	std::sort(pop.begin(), pop.end(), compareAnimals);
 }
 
-/*
-* Input: Gene vector
-* Output: Fitness value
-* Funcation: Determines the fitness value based on the genes supplied
-* Notes: None
+/*COMMENTS:
+*  Very basic way to generate a fitness function.
+*  Possibly want to change it in the future if we add specific attributes that account for more, 
+*  such as strength, dextarity, intelligence, etc...
 */
 float GAUtils::fitnessSingle(std::vector<float> &genes){
 	float total = 0.0;
@@ -26,11 +25,8 @@ float GAUtils::fitnessSingle(std::vector<float> &genes){
 	return total/(float)i;
 }
 
-/*
-* Input: Number of genes to generate
-* Output: Vector of floats 
-* Funcation: Generates a random vector of floats. Length is based on input
-* Notes: None
+/*COMMENTS:
+* Straight forward generating basic genes. Maybe need to rename function to generateRandGenes to be more clear
 */
 std::vector<float> GAUtils::generateGenes(int &genesNum){
 	std::vector<float> genes;
@@ -41,11 +37,8 @@ std::vector<float> GAUtils::generateGenes(int &genesNum){
 	return genes;
 }
 
-/*
-* Input: None
-* Output: Chararacter M or F
-* Funcation: Returns either M or F based on random number 
-* Notes: None
+/*COMMENTS:
+* 
 */
 char GAUtils::randSex(){
 	char c;
@@ -57,11 +50,11 @@ char GAUtils::randSex(){
 }
 
 
-/*
-* Input: None
-* Output: Random float 
-* Funcation: Returns a random float with a precision of 4
-* Notes: Non-determinsitic number generation taken from https://msdn.microsoft.com/en-us/library/bb982398.aspx
+/*COMMENTS:
+*  Using this version because it generates truly randly values via uniform distribution.
+*  Tried using time and it gave the same set of data over and over again, wasn't truly "random".
+*  May want to add the time random gen, as it is easier to generate the same data set over and over again for tesing purposes.
+*  This does not produce the same data set if ran twice (have tested this).
 */
 float GAUtils::randFloatGen(){
 	std::random_device rd;
@@ -71,11 +64,8 @@ float GAUtils::randFloatGen(){
 	return (float)(dist(gen) / 1000.0);
 }
 
-/*
-* Input: Upperbound on the range of random interger (e.g. upperBound = 7, random number from 0 to 7)
-* Output: Random number from 0 to specified upperbound
-* Funcation Summary: Returns a random integer from 0 to the supplied parameter
-* Notes: Non-determinsitic number generation taken from https://msdn.microsoft.com/en-us/library/bb982398.aspx
+/*COMMENTS:
+*  See above comment.
 */
 int GAUtils::randIntGen(int upperBound){
 	std::random_device rd;
@@ -85,6 +75,9 @@ int GAUtils::randIntGen(int upperBound){
 	return dist(gen);
 }
 
+/*COMMENTS:
+*  See above comment.
+*/
 int GAUtils::randIntGen(int lowerBound, int upperBound){
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -93,21 +86,16 @@ int GAUtils::randIntGen(int lowerBound, int upperBound){
 	return dist(gen);
 }
 
-/*
-* Input: Two animals objects
-* Output: None
-* Function Summary: Compares animal 1 to animal 2 based on fitness
-* Notes: None
+/*COMMENTS:
+*  Used for C++'s quicksort, again may change if we use a different sorting algorithm
 */
 bool GAUtils::compareAnimals(std::shared_ptr<Animal> a1, std::shared_ptr<Animal> a2) {
 	return a1->getFitness() > a2->getFitness();
 }
 
-/*
-* Input: wolfPopulation (vector of Animal struct objects)
-* Output: none
-* Function Summary: Outputs the entire wolfPopulation
-* Notes: None
+/*COMMENTS:
+*  This is currently not used due to overloading the ostream on the Population class. 
+*  Leaving it in here incase it has some use later on, but for now it has no use.
 */
 void GAUtils::popOut(std::vector<std::shared_ptr<Animal>> &pop){
 	for (auto & animal : pop){
@@ -115,11 +103,8 @@ void GAUtils::popOut(std::vector<std::shared_ptr<Animal>> &pop){
 	}
 }
 
-/*
-* Input: wolfPopulation (vector of Animal struct objects) and number of animals to output (starting from position 1)
-* Output: none 
-* Outputs wolfPopulation to supplied paramter
-* Notes: None
+/*COMMENTS:
+*  Currently do not know of any way to overload the ostream on the Population class to also accept an int parameter so I'm keeping this.
 */
 void GAUtils::popOut(std::vector<std::shared_ptr<Animal>> &pop, int x){
 	for (int i = 0; i < x; i++){
@@ -127,26 +112,20 @@ void GAUtils::popOut(std::vector<std::shared_ptr<Animal>> &pop, int x){
 	}
 }
 
-/*
-* Input: wolfPopulation (vector of Animal struct objects), x number of years
-* Output: none
-* Advances each member of wolfPopulation x number of years
-* Notes: None
+/*COMMENTS:
+*
 */
 void GAUtils::agePopulation(std::vector<std::shared_ptr<Animal>> &pop, int x) {
-	for (int i = 0; i < pop.size(); i++) {
+	for (size_t i = 0; i < pop.size(); i++) {
 		pop[i]->setAge(pop[i]->getAge() + x);
 	}
 }
 
-/*
-* Input: wolfPopulation (vector of Animal struct objects)
-* Output: none
-* Kills every individual older than 23 (for now)
-* Notes: None
+/*COMMENTS:
+*
 */
 void GAUtils::killSeniorCitizens(std::vector<std::shared_ptr<Animal>> &pop) {
-	for (int i = 0; i < pop.size(); i++) {
+	for (size_t i = 0; i < pop.size(); i++) {
 		if (pop[i]->getAge() > 23) {
 			//Animal a = pop[i];
 			pop.erase(pop.begin() + i);

@@ -136,10 +136,8 @@ int main(int argc, TCHAR *argv[]) {
 
 	std::locale loc;
 	std::transform(visualConf.begin(), visualConf.end(), visualConf.begin(), ::tolower);
-	//wolfPopulation = main.generatePop(wolfName, animalStart1, geneNum1, 1);
-	//rabPopulation = main.generatePop(rabName, animalStart2, geneNum2, 1);
-	Population wolfpop = Population("Wolves");
-	Population rabpop = Population("Rabbits");
+	Population wolfpop = Population(wolfName);
+	Population rabpop = Population(rabName);
 	wolfpop.createPopulation(geneNum1, animalStart1, 1);
 	//rabpop.createPopulation(geneNum2, animalStart2, 1);
 
@@ -148,16 +146,10 @@ int main(int argc, TCHAR *argv[]) {
 		//visual mode
 		for (int i = 0; i < 20; i++) {
 			wolfpop.advanceGeneration();
-			/*main.combination(wolfPopulation, wolfPopulation.size(), i + 2);
-			main.ranking(wolfPopulation);
-			main.selection(wolfPopulation);
-
-			main.combination(rabPopulation, rabPopulation.size(), i + 2);
-			main.ranking(rabPopulation);
-			main.selection(rabPopulation);*/
 
 		}
-		Visual v = Visual(wolfpop.getPopulation());
+		//Visual v = Visual(wolfpop.getPopulation());
+		Visual v = wolfpop.initVisual();
 		v.visualSetup();
 
 	}
@@ -171,23 +163,13 @@ int main(int argc, TCHAR *argv[]) {
 		/*Loop i < loops; loops is the number of times you iterate through it*/
 		for (int i = 0; i < loops; i++) {
 			wolfpop.advanceGeneration();
-
-			/*main.combination(wolfPopulation, wolfPopulation.size(), i + 2);
-			main.ranking(wolfPopulation);
-			main.selection(wolfPopulation);
-
-			main.combination(rabPopulation, rabPopulation.size(), i + 2);
-			main.ranking(rabPopulation);
-			main.selection(rabPopulation);*/
-
 		}
 		std::cout << std::endl;
 
-		/*g.popOut(wolfPopulation);*/
 		std::cout << "Top 10 predator individuals by gene ranking: ";
 		std::cout << std::endl;
-		//g.popOut(wolfpop, 10);
 		std::cout << wolfpop;
+		//wolfpop.outputNAnimals(10);
 		std::cout << std::endl;
 		std::cout << "wolfPopulation size: " + std::to_string(wolfpop.getPopSize());
 		std::cout << std::endl;

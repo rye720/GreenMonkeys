@@ -1,21 +1,33 @@
 #include "Visual.h"
 
+/*COMMENTS:
+*  Need this inorder to create a pointer to this class in the static version of windowprodecure.3
+*  Not going to use pop in this at all, so setting pop equal to its self is safe in this instance.
+*/
 Visual::Visual():pop(pop){
 	hWnd = NULL;
 	hInstance = NULL;
 	hDc = NULL;
 }
 
+/*COMMENTS:
+*  The constructor that will be called from outside this class. Using an initializer list more for style and avoiding possible complicated code.
+*  In earlier development this did not use an initializer list and the program quickly ran into problems setting pop equal to incPop in the body of the function.
+*  Not sure what caused this, but it was fixed with an initalizer list.
+*/
 Visual::Visual(std::vector<std::shared_ptr<Animal>> &incPop) : pop(std::move(incPop)){
 	hWnd = NULL;
 	hInstance = NULL;
 	hDc = NULL;
 }
 
+/*COMMENTS:
+*  Just basic window creation and registration with a basic msg handler loop. Nothing too fancy. 
+*/
 void Visual::visualSetup(){
 	LPCSTR myClass = "Green Monkeys";
 	LPCSTR myTitle = "Natural Selection Simulator";
-	
+	std::cout << pop.size();
 
 	WNDCLASS wndclass = { CS_HREDRAW | CS_VREDRAW, (WNDPROC)StaticWndProc, 0, 0, 
 		hInstance, LoadIcon(NULL,IDI_WINLOGO), LoadCursor(NULL, IDC_ARROW),
@@ -37,6 +49,15 @@ void Visual::visualSetup(){
 	}
 }
 
+/*COMMENTS:
+*  This was a big pain to get working. Finally got it to work after a long time resraching.
+*  So windows api only allows the main window procedure to be static. But since we are using an external data structure
+*  this proved to be a problem. The way this problem was solved was by creating a pointer to the class and a pointer to the window.
+*  The window pointer is then used to initalize the class pointer (class pointer still has access to the static window). With this we are able to call functions via the class pointer.
+*  And since we are able to call our second window procedure, which is not static, and use our external data members. 
+*  This whole process allows us to bypass the static window procedure. 
+*  Again this was a big pain to get working.
+*/
 LRESULT CALLBACK Visual::StaticWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	Visual* pParent;
@@ -48,7 +69,7 @@ LRESULT CALLBACK Visual::StaticWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 		SetWindowLongPtr(hWnd, GWL_USERDATA, (LONG_PTR)pParent);
 		//SetTimer(hWnd, 1, 3, NULL);
 		SetTimer(hWnd, 2, 5000, NULL);
-		SetTimer(hWnd, 3, 150, NULL);
+		SetTimer(hWnd, 3, 125, NULL);
 		/*SetTimer(hWnd, 4, 10000, NULL);*/
 	}
 	else
@@ -60,7 +81,11 @@ LRESULT CALLBACK Visual::StaticWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 	return pParent->WndProc(uMsg, wParam, lParam);
 }
 
-
+/*COMMENTS:
+*  Non-static version of the window procedure. 
+*  May need to edit the timers a bit more. 
+*  Also need to remove the first timer as it is not being used anymore.
+*/
 LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	PAINTSTRUCT ps;
 	HDC hdc;
@@ -119,6 +144,10 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	return (UINT)0;
 }
 
+/*COMMENTS:
+*  This will need to change or be re-written once we add in prey/a grid 2d array. 
+*  Currently it is giving the animal a random direction to "roam" in.
+*/
 void Visual::animalPosUpdate(){
 	GAUtils gau = GAUtils();
 	for (const auto& animal : pop){
@@ -138,7 +167,12 @@ void Visual::animalPosUpdate(){
 	
 }
 
-
+/*COMMENTS:
+*  Generates the first position and starting place for each animal.
+*  It spawns each animal in a box formation. Each with their own unique position. This is done so there is no outliers when spawning (i.e. they're all grouped up).
+*  Note, when we add in prey/predator we may need to space them out a bit more to avoid a feeding frenzy and possible genocide.
+*  Probably should create their position in the GA instead of here, but this works for now.
+*/
 void Visual::initialPopPlot(HDC hdc, HWND hWnd) {
 	GAUtils gau = GAUtils();
 	startX = gau.randIntGen(100, 300);
@@ -204,7 +238,10 @@ void Visual::initialPopPlot(HDC hdc, HWND hWnd) {
 	animalPosUpdate();
 }
 
-
+/*COMMENTS:
+*  Basic painting and collision detection done in one function.
+*  Did this in one function becuase the collision is fairly small and fits right in with the paiting.
+*/
 void Visual::paintAnimals(HDC hdc, HWND hWnd){
 
 	int xpos, ypos;
@@ -232,6 +269,10 @@ void Visual::paintAnimals(HDC hdc, HWND hWnd){
 	}
 }
 
+/*COMMENTS:
+*  Possible future work: Instead of each animal moving 1 pixel at a time have them move at their own speed.
+*  Would need to test this though. Could lead to a "skipping" effect on the screen.
+*/
 void Visual::animalIncUpdate(){
 	for (const auto& animal : pop){
 		if (animal->getPosXOffset() > 0){
