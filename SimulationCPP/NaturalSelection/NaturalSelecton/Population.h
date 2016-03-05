@@ -24,7 +24,7 @@ public:
 	Population(std::string popName);
 
 	/*
-	* Input: Number of genes per animal. Number of animals to create. Starting generation.
+	* Input: Number of genes per animal. Number of animals to create . Starting generation number.
 	* Output: None
 	* Function: Fills the population with individual animals. Uses the name supplied in the constructor.
 	* Notes: User has access to this, but not to pop. Abstraction is a great thing.
@@ -49,23 +49,23 @@ public:
 
 	/*
 	* Input: Number of animals to output (highest fitness first).
-	* Output: Output of N animals.
+	* Output: Output of N animals in command line.
 	* Function: If you only want to output the top N animals, use this.
-	* Notes: Maybe add function to output bottom animals too.
+	* Notes: cout population to get a list of all animals.
 	*/
 	void outputNAnimals(int outNum);
 
 	/*
 	* Input: None
 	* Output: Visual class declaration.
-	* Function: Declares visual mode so you can run the setup and being visualizing the genetic algorithm.
-	* Notes: This is so the driver does not have access to the pop data structure.
+	* Function: Declares visual mode so you can run the setup and begin visualizing the population.
+	* Notes: Must catch this declaration.
 	*/
 	Visual initVisual();
 
 	/*
 	* Input: None
-	* Output: Size of the population.
+	* Output: Size of the population in int.
 	* Function: Returns the size of the population.
 	* Notes: None.
 	*/

@@ -133,7 +133,6 @@ int main(int argc, TCHAR *argv[]) {
 
 	}
 
-
 	std::locale loc;
 	std::transform(visualConf.begin(), visualConf.end(), visualConf.begin(), ::tolower);
 	Population wolfpop = Population(wolfName);
@@ -149,7 +148,7 @@ int main(int argc, TCHAR *argv[]) {
 
 		}
 		//Visual v = Visual(wolfpop.getPopulation());
-		Visual v = wolfpop.initVisual();
+		Visual v = wolfpop.initVisual();	
 		v.visualSetup();
 
 	}

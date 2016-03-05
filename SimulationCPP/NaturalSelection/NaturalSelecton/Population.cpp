@@ -8,7 +8,7 @@ Population::Population(){
 }
 
 /*COMMENTS:
-*  Constructor that should be called. One above was put in for testing purposes, and may have a real use later on.
+*  Constructor that should be called. One above was put in for testing purposes, and may have a real use later on;
 *  Possible "Demo run" on the final produce. I.E. press one button to see an example run of our program with all default inputs.
 */
 Population::Population(std::string popName){

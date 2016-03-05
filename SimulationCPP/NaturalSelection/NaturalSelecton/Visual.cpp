@@ -172,6 +172,7 @@ void Visual::animalPosUpdate(){
 *  It spawns each animal in a box formation. Each with their own unique position. This is done so there is no outliers when spawning (i.e. they're all grouped up).
 *  Note, when we add in prey/predator we may need to space them out a bit more to avoid a feeding frenzy and possible genocide.
 *  Probably should create their position in the GA instead of here, but this works for now.
+*  Also this is causing some errors when the pop is < 9 and some of the aniamls are not getting an initial position. Need to rework this loop
 */
 void Visual::initialPopPlot(HDC hdc, HWND hWnd) {
 	GAUtils gau = GAUtils();
@@ -244,9 +245,9 @@ void Visual::initialPopPlot(HDC hdc, HWND hWnd) {
 */
 void Visual::paintAnimals(HDC hdc, HWND hWnd){
 
-	int xpos, ypos;
+	
 	for (const auto& animal : pop){
-		
+		int xpos, ypos;
 		xpos = animal->getXPos();
 		ypos = animal->getYPos();
 

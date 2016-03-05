@@ -4,7 +4,6 @@
 #include <windows.h>
 #include <stdlib.h>
 #include <string.h>
-//#include <char.h>
 #include <memory>
 #include <iostream>
 #include "GA.h"
@@ -18,7 +17,7 @@ public:
 	/*
 	* Input: None
 	* Output: None
-	* Function: Creates the window class and converts the program into a windows program instead of a console program. 
+	* Function: Creates and registers the window class and converts the program into a windows program instead of a console program. 
 	* Notes: Only public call in Visual.
 	*/
 	void visualSetup();
