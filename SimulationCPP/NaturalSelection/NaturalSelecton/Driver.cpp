@@ -138,18 +138,24 @@ int main(int argc, TCHAR *argv[]) {
 	Population wolfpop = Population(wolfName);
 	Population rabpop = Population(rabName);
 	wolfpop.createPopulation(geneNum1, animalStart1, 1);
-	//rabpop.createPopulation(geneNum2, animalStart2, 1);
+	rabpop.createPopulation(geneNum2, animalStart2, 1);
 
 	if (visualConf == "yes" || visualConf == "y") {
 
 		//visual mode
 		for (int i = 0; i < 20; i++) {
 			wolfpop.advanceGeneration();
+			rabpop.advanceGeneration();
 
 		}
-		//Visual v = Visual(wolfpop.getPopulation());
-		Visual v = wolfpop.initVisual();	
+
+
+		Visual v = Visual(wolfpop.getPop(), rabpop.getPop());
 		v.visualSetup();
+		//Visual v = Visual(wolfpop.getPopulation());
+		/*Visual v = wolfpop.initVisual();	
+		v.visualSetup();*/
+
 
 	}
 	else {

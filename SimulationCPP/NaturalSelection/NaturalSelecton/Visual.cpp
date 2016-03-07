@@ -4,10 +4,11 @@
 *  Need this inorder to create a pointer to this class in the static version of windowprodecure.3
 *  Not going to use pop in this at all, so setting pop equal to its self is safe in this instance.
 */
-Visual::Visual():pop(pop){
+Visual::Visual():pop1(pop1), pop2(pop2){
 	hWnd = NULL;
 	hInstance = NULL;
 	hDc = NULL;
+
 }
 
 /*COMMENTS:
@@ -15,10 +16,34 @@ Visual::Visual():pop(pop){
 *  In earlier development this did not use an initializer list and the program quickly ran into problems setting pop equal to incPop in the body of the function.
 *  Not sure what caused this, but it was fixed with an initalizer list.
 */
-Visual::Visual(std::vector<std::shared_ptr<Animal>> &incPop) : pop(std::move(incPop)){
+Visual::Visual(std::vector<std::shared_ptr<Animal>> &incPop) : pop1(std::move(incPop)) , pop2(pop2){
 	hWnd = NULL;
 	hInstance = NULL;
 	hDc = NULL;
+	gridBoard.resize(gridHeight);
+	for (int i = 0; i < gridHeight; i++){
+		gridBoard[i].resize(gridWidth);
+	}
+	//gridBoard = (std::shared_ptr<Animal>**)malloc(sizeof(std::shared_ptr<Animal>*) * 500);
+	//for (int i = 0; i < 700; i++)
+	//	gridBoard[i] = (std::shared_ptr<Animal>*)malloc(sizeof(std::shared_ptr<Animal>) * 700);
+}
+
+Visual::Visual(std::vector<std::shared_ptr<Animal>> &incPop1, std::vector<std::shared_ptr<Animal>> &incPop2) : pop1(std::move(incPop1)), pop2(std::move(incPop2)){
+	hWnd = NULL;
+	hInstance = NULL;
+	hDc = NULL;
+	gridBoard.resize(gridHeight);
+	for (int i = 0; i < gridHeight; i++){
+		gridBoard[i].resize(gridWidth);
+	}
+	twoPops = true;
+}
+
+Visual::~Visual(){
+	//for (int i = 0; i < 500; i++)
+	//	free(gridBoard[i]);
+	//free(gridBoard);
 }
 
 /*COMMENTS:
@@ -27,7 +52,7 @@ Visual::Visual(std::vector<std::shared_ptr<Animal>> &incPop) : pop(std::move(inc
 void Visual::visualSetup(){
 	LPCSTR myClass = "Green Monkeys";
 	LPCSTR myTitle = "Natural Selection Simulator";
-	std::cout << pop.size();
+	std::cout << pop1.size();
 
 	WNDCLASS wndclass = { CS_HREDRAW | CS_VREDRAW, (WNDPROC)StaticWndProc, 0, 0, 
 		hInstance, LoadIcon(NULL,IDI_WINLOGO), LoadCursor(NULL, IDC_ARROW),
@@ -107,12 +132,22 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			break;
 		case 2:
 			/*Possible timer to update animals position and such. Mostly for testing right now*/
-			animalPosUpdate();
+			if (twoPops){
+				animalPosUpdate(pop1);
+				animalPosUpdate(pop2);
+			}
+				else
+				animalPosUpdate(pop1);
 			/*InvalidateRect(hWnd, NULL, TRUE);
 			UpdateWindow(hWnd);*/
 			break;
 		case 3:
-			animalIncUpdate();
+			if (twoPops){
+				animalIncUpdate(pop1);
+				animalIncUpdate(pop2);
+			}
+			else
+				animalIncUpdate(pop1);		
 			InvalidateRect(hWnd, NULL, TRUE);
 			UpdateWindow(hWnd);
 			break;
@@ -128,10 +163,22 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		/*Window here*/
 
 		//code to plot points of animal locations called here
-		if (firstTime)
-			initialPopPlot(hdc, hWnd);
+		if (firstTime && twoPops){
+			initialPopPlot(hdc, hWnd, pop1);
+			initialPopPlot(hdc, hWnd, pop2);
+		}
+		else if (firstTime && !twoPops)
+		{
+			initialPopPlot(hdc, hWnd, pop1);
+
+		}
+		else if (twoPops){
+			paintAnimals(hdc, hWnd, pop1, "RED");
+			paintAnimals(hdc, hWnd, pop2, "BLACK");
+		}
 		else
-			paintAnimals(hdc, hWnd);
+			paintAnimals(hdc, hWnd, pop1, "BLACK");
+
 
 		EndPaint(hWnd, &ps);
 		break;
@@ -148,7 +195,7 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 *  This will need to change or be re-written once we add in prey/a grid 2d array. 
 *  Currently it is giving the animal a random direction to "roam" in.
 */
-void Visual::animalPosUpdate(){
+void Visual::animalPosUpdate(std::vector<std::shared_ptr<Animal>> pop){
 	GAUtils gau = GAUtils();
 	for (const auto& animal : pop){
 		int randx = gau.randIntGen(600);
@@ -174,41 +221,73 @@ void Visual::animalPosUpdate(){
 *  Probably should create their position in the GA instead of here, but this works for now.
 *  Also this is causing some errors when the pop is < 9 and some of the aniamls are not getting an initial position. Need to rework this loop
 */
-void Visual::initialPopPlot(HDC hdc, HWND hWnd) {
+void Visual::initialPopPlot(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Animal>> pop) {
 	GAUtils gau = GAUtils();
 	startX = gau.randIntGen(100, 300);
 	startY = gau.randIntGen(100, 300);
 	int x = 1;
 	int y = pop.size();
 	int z = 0;
-	y /= 9;
+	//int remainder = y % 9;
+	//y /= 9;
 
-	while (y != 0){
+	for (int i = 500; i < 500; i++){
+		for (int j = 700; j < 700; j++){
+			gridBoard[j][i] = NULL;
+		}
+	}
+
+	int popFillSize = floor(sqrt(y));
+	int remainder = (y-(popFillSize*popFillSize));
+
+	for (int i = 0, animalCount = 0; i < popFillSize; i++){
+		for (int j = 0; j < popFillSize; j++){
+			pop[animalCount]->setXPosition(startX + i);
+			pop[animalCount]->setYPosition(startY + j);
+			gridBoard[startY + j][startX + i] = pop[animalCount];			
+			animalCount++;
+		}
+	}
+
+	for (int i = 0, j = pop.size(); i < remainder; i++){
+		pop[j - i-1]->setXPosition(startX + i);
+		pop[j - i-1]->setYPosition(startY + popFillSize);
+		gridBoard[startY + popFillSize][startX + i] = pop[j-i-1];
+	}
+
+	/*while (y != 0){
 		for (int i = 0; i < 9; i++){
 			if (i == 0){
 				TextOut(hdc, startX, startY, ".", 1);
 				pop[i + z]->setXPosition(startX);
+				startX += x;
 				pop[i + z]->setYPosition(startY);
 			}
 			else if (i == 1){
 				TextOut(hdc, startX + x, startY, ".", 1);
-				pop[i + z]->setXPosition(startX+x);
+				pop[i + z]->setXPosition(startX);
+				startX += x;
 				pop[i + z]->setYPosition(startY);
+				startY += x;
 			}
 			else if (i == 2){
 				TextOut(hdc, startX + x, startY + x, ".", 1);
-				pop[i + z]->setXPosition(startX + x);
-				pop[i + z]->setYPosition(startY + x);
+				pop[i + z]->setXPosition(startX);
+				pop[i + z]->setYPosition(startY);
+				startY += x;
 			}
 			else if (i == 3){
 				TextOut(hdc, startX, startY + x, ".", 1);
 				pop[i + z]->setXPosition(startX);
-				pop[i + z]->setYPosition(startY + x);
+				startX -= x;
+				pop[i + z]->setYPosition(startY);
+				startY += x;
 			}
 			else if (i == 4){
 				TextOut(hdc, startX - x, startY + x, ".", 1);
-				pop[i + z]->setXPosition(startX - x);
-				pop[i + z]->setYPosition(startY + x);
+				pop[i + z]->setXPosition(startX);
+				startX -= x;
+				pop[i + z]->setYPosition(startY);
 			}
 			else if (i == 5){
 				TextOut(hdc, startX - x, startY, ".", 1);
@@ -234,22 +313,33 @@ void Visual::initialPopPlot(HDC hdc, HWND hWnd) {
 		y--;
 		x += 1;
 		z += 9;
-	}
+	}*/
+
+	//for (; remainder > 0; remainder--){
+	//	pop[z + remainder]->setXPosition(startX + x);
+	//	pop[z + remainder]->setYPosition(startY + x);
+	//	x += 1;
+	//}
 	firstTime = false;
-	animalPosUpdate();
+	animalPosUpdate(pop);
 }
 
 /*COMMENTS:
 *  Basic painting and collision detection done in one function.
 *  Did this in one function becuase the collision is fairly small and fits right in with the paiting.
 */
-void Visual::paintAnimals(HDC hdc, HWND hWnd){
+void Visual::paintAnimals(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Animal>> pop, std::string color){
 
-	
+	if (color == "BLACK")
+		SetTextColor(hdc, RGB(0,0,0));
+	else
+		SetTextColor(hdc, RGB(255,0,0));
+
 	for (const auto& animal : pop){
 		int xpos, ypos;
 		xpos = animal->getXPos();
 		ypos = animal->getYPos();
+		
 
 		if ((xpos > 51) && (ypos > 51) && (ypos < 501) && (xpos < 701))
 			TextOut(hdc,xpos, ypos, ".", 1);
@@ -274,24 +364,35 @@ void Visual::paintAnimals(HDC hdc, HWND hWnd){
 *  Possible future work: Instead of each animal moving 1 pixel at a time have them move at their own speed.
 *  Would need to test this though. Could lead to a "skipping" effect on the screen.
 */
-void Visual::animalIncUpdate(){
+void Visual::animalIncUpdate(std::vector<std::shared_ptr<Animal>> pop){
+
 	for (const auto& animal : pop){
-		if (animal->getPosXOffset() > 0){
+		int xpos = animal->getXPos();
+		int ypos = animal->getYPos();
+		if (animal->getPosXOffset() > 0 && xpos < gridHeight-1 && xpos > 0){
 			animal->setPosXOffset(animal->getPosXOffset() - 1);
+			gridBoard[xpos][ypos] = NULL;
 			animal->setXPosition(animal->getXPos() + 1);
+			gridBoard[xpos+1][ypos] = animal;
 		}
-		else{
+		else if (animal->getPosXOffset() < 0 && xpos < gridHeight-1 && xpos > 0){
 			animal->setPosXOffset(animal->getPosXOffset() + 1);
+			gridBoard[xpos][ypos] = NULL;
 			animal->setXPosition(animal->getXPos() - 1);
+			gridBoard[xpos-1][ypos] = animal;
 		}
 
-		if (animal->getPosYOffset() > 0){
+		if (animal->getPosYOffset() > 0 && ypos < gridWidth-1 && ypos > 0){
 			animal->setPosYOffset(animal->getPosYOffset() - 1);
+			gridBoard[xpos][ypos] = NULL;
 			animal->setYPosition(animal->getYPos ()+ 1);
+			gridBoard[xpos][ypos+1] = animal;
 		}
-		else{
+		else if (animal->getPosYOffset() < 0 && ypos < gridWidth-1 && ypos > 0){
 			animal->setPosYOffset(animal->getPosYOffset() + 1);
+			gridBoard[xpos][ypos] = NULL;
 			animal->setYPosition(animal->getYPos() - 1);
+			gridBoard[xpos][ypos-1] = animal;
 		}
 	}
 }

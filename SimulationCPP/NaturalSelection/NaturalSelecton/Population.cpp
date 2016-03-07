@@ -15,6 +15,10 @@ Population::Population(std::string popName){
 	this->populationName = popName;
 }
 
+std::vector<std::shared_ptr<Animal>> Population::getPop(){
+	return this->pop;
+}
+
 /*COMMENTS:
 *  None
 */

@@ -12,7 +12,9 @@
 class Visual {
 public:
 	Visual();
+	~Visual(); 
 	Visual(std::vector<std::shared_ptr<Animal>> &incPop);
+	Visual(std::vector<std::shared_ptr<Animal>> &incPop1, std::vector<std::shared_ptr<Animal>> &incPop2);
 
 	/*
 	* Input: None
@@ -29,10 +31,16 @@ protected:
 
 private:
 	/*Variables*/
+	int gridWidth = 900;
+	int gridHeight = 500;
 	int startX, startY;
 	bool firstTime = true;
-	std::vector<std::shared_ptr<Animal>> pop;
-
+	bool twoPops = false;
+	std::vector<std::shared_ptr<Animal>> pop1;
+	std::vector<std::shared_ptr<Animal>> pop2;
+	std::vector<std::vector<std::shared_ptr<Animal>>> gridBoard;
+	
+	
 	/*Functions*/
 
 	/*
@@ -42,7 +50,7 @@ private:
 	*            I.E. +x, -y means it is moving in the positive x and the negative y direction so it's moving in the direction of 225 degrees.
 	* Notes: None
 	*/
-    void animalPosUpdate();
+	void animalPosUpdate(std::vector<std::shared_ptr<Animal>> pop);
 
 	/*
 	* Input: Handle to the paint device. Handle to the window to be painted on.
@@ -50,7 +58,7 @@ private:
 	* Function: Paints dots on the screen according to their current position.
 	* Notes: This function is only called when the timer for animalPosUpdate is called.
 	*/
-	void paintAnimals(HDC hdc, HWND hWnd);
+	void paintAnimals(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Animal>> pop,std::string color);
 
 	/*
 	* Input:  Handle to the paint device. Handle to the window to be painted on.
@@ -58,7 +66,7 @@ private:
 	* Function: Plots the initial animal position
 	* Notes: None
 	*/
-	void initialPopPlot(HDC hdc, HWND hWnd);
+	void initialPopPlot(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Animal>> pop);
 
 	/*
 	* Input: None
@@ -66,7 +74,7 @@ private:
 	* Function: Moves the x and y offets of each animal one step closer to 0. When it is 0 that means the animal is no longer moving
 	* Notes: None
 	*/
-	void animalIncUpdate();
+	void animalIncUpdate(std::vector<std::shared_ptr<Animal>> pop);
 
 	/*
 	* Input:  Handle to the window being called in the wnd proc. Message sent to the window (i.e. button clicked). First message parameter. Second message parameter.

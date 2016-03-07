@@ -23,6 +23,8 @@ public:
 	Population();
 	Population(std::string popName);
 
+	std::vector<std::shared_ptr<Animal>> getPop();
+
 	/*
 	* Input: Number of genes per animal. Number of animals to create . Starting generation number.
 	* Output: None
@@ -62,6 +64,8 @@ public:
 	* Notes: Must catch this declaration.
 	*/
 	Visual initVisual();
+
+
 
 	/*
 	* Input: None
