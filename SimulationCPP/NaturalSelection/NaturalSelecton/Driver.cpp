@@ -135,22 +135,26 @@ int main(int argc, TCHAR *argv[]) {
 
 	std::locale loc;
 	std::transform(visualConf.begin(), visualConf.end(), visualConf.begin(), ::tolower);
-	Population wolfpop = Population(wolfName);
-	Population rabpop = Population(rabName);
-	wolfpop.createPopulation(geneNum1, animalStart1, 1);
-	rabpop.createPopulation(geneNum2, animalStart2, 1);
+	Population pop = Population("pop1");
+	pop.createPopulation(geneNum1, animalStart1, 1, wolfName);
+	//pop.createPopulation(geneNum2, animalStart2, 1, rabName);
+	//Population wolfpop = Population(wolfName);
+	//Population rabpop = Population(rabName);
+	//wolfpop.createPopulation(geneNum1, animalStart1, 1);
+	//rabpop.createPopulation(geneNum2, animalStart2, 1);
 
 	if (visualConf == "yes" || visualConf == "y") {
 
 		//visual mode
 		for (int i = 0; i < 20; i++) {
-			wolfpop.advanceGeneration();
-			rabpop.advanceGeneration();
+			pop.advanceGeneration();
+			//wolfpop.advanceGeneration();
+			//rabpop.advanceGeneration();
 
 		}
 
 
-		Visual v = Visual(wolfpop.getPop(), rabpop.getPop());
+		Visual v = pop.initVisual();
 		v.visualSetup();
 		//Visual v = Visual(wolfpop.getPopulation());
 		/*Visual v = wolfpop.initVisual();	
@@ -167,16 +171,16 @@ int main(int argc, TCHAR *argv[]) {
 
 		/*Loop i < loops; loops is the number of times you iterate through it*/
 		for (int i = 0; i < loops; i++) {
-			wolfpop.advanceGeneration();
+			pop.advanceGeneration();
 		}
 		std::cout << std::endl;
 
 		std::cout << "Top 10 predator individuals by gene ranking: ";
 		std::cout << std::endl;
-		std::cout << wolfpop;
+		std::cout << pop;
 		//wolfpop.outputNAnimals(10);
 		std::cout << std::endl;
-		std::cout << "wolfPopulation size: " + std::to_string(wolfpop.getPopSize());
+		std::cout << "wolfPopulation size: " + std::to_string(pop.getPopSize());
 		std::cout << std::endl;
 		std::cout << std::endl;
 

@@ -15,25 +15,26 @@ Population::Population(std::string popName){
 	this->populationName = popName;
 }
 
-std::vector<std::shared_ptr<Animal>> Population::getPop(){
-	return this->pop;
-}
-
 /*COMMENTS:
 *  None
 */
 void Population::createPopulation(int geneNum, int startingSize, int generation){
+	std::vector<std::shared_ptr<Animal>> pop;
 	ga.generatePop(pop, populationName, startingSize, geneNum, generation);
-	this->generation = generation;
+	std::tuple<std::vector<std::shared_ptr<Animal>>, int> popTuple(pop, generation);
+	if (popMap.find(populationName) == popMap.end())
+		popMap[populationName] = popTuple;
 }
 
 /*COMMENTS:
-*  Not sure why we really need this one. Thought it might come in handy in the future. 
-*  Maybe re-create the population, with new animals, without having to start all over.
+* This one should be used to give each population their own name and key 
+* 
 */
 void Population::createPopulation(int geneNum, int startingSize, int generation, std::string name){
+	std::vector<std::shared_ptr<Animal>> pop;
 	ga.generatePop(pop, name, startingSize, geneNum, generation);
-	this->generation = generation;
+	std::tuple<std::vector<std::shared_ptr<Animal>>, int> popTuple(pop, generation);
+	popMap[name] = popTuple;
 }
 
 /*COMMENTS:
@@ -41,17 +42,21 @@ void Population::createPopulation(int geneNum, int startingSize, int generation,
 *  Makes the driver look more clean.
 */
 void Population::advanceGeneration(){
-	ga.combination(pop, pop.size(), generation);
-	ga.ranking(pop);
-	ga.selection(pop);
-	generation++;
+//#pragma omp parallel  
+	for (auto& tuple : popMap){
+		ga.combination(std::get<0>(tuple.second), std::get<0>(tuple.second).size(), std::get<1>(tuple.second));
+		ga.ranking(std::get<0>(tuple.second));
+		ga.selection(std::get<0>(tuple.second));
+		std::get<1>(tuple.second)++;
+//#pragma omp barrier
+	}
 }
 
 /*COMMENTS:
 *  See GAUtils popOut for an explination why this is here.
 */
 void Population::outputNAnimals(int outNum){
-	gau.popOut(this->pop, outNum);
+	gau.popOut(std::get<0>(popMap.begin()->second), outNum);
 }
 
 /*COMMENTS:
@@ -60,14 +65,14 @@ void Population::outputNAnimals(int outNum){
 *  Not sure if it's really necessary, but makes it look more clean (personal preference).
 */
 Visual Population::initVisual(){
-	return this->pop;
+	return this->popMap;
 }
 
 /*COMMENTS:
 *  Just a basic size function for the caller.
 */
 int Population::getPopSize(){
-	return this->pop.size();
+	return std::get<0>(popMap.begin()->second).size();
 }
 
 /*COMMENTS:
@@ -75,7 +80,7 @@ int Population::getPopSize(){
 *  If a way is found please add it below this and edit this comment accordingly.
 */
 std::ostream& operator<<(std::ostream& os, const Population& pop){
-	for (auto & animal : pop.pop){
+	for (auto & animal : std::get<0>(pop.popMap.begin()->second)){
 		os << animal->getTag() + "  " + std::to_string(animal->getFitness()) << std::endl;
 	}
 	return os;

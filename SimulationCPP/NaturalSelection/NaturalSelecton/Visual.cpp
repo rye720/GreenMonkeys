@@ -4,7 +4,7 @@
 *  Need this inorder to create a pointer to this class in the static version of windowprodecure.3
 *  Not going to use pop in this at all, so setting pop equal to its self is safe in this instance.
 */
-Visual::Visual():pop1(pop1), pop2(pop2){
+Visual::Visual():popMap(popMap){
 	hWnd = NULL;
 	hInstance = NULL;
 	hDc = NULL;
@@ -13,33 +13,23 @@ Visual::Visual():pop1(pop1), pop2(pop2){
 
 /*COMMENTS:
 *  The constructor that will be called from outside this class. Using an initializer list more for style and avoiding possible complicated code.
-*  In earlier development this did not use an initializer list and the program quickly ran into problems setting pop equal to incPop in the body of the function.
+*  In earlier development this did not use an initializer list and the program quickly ran into problems setting popMap equal to incPopMap in the body of the function.
 *  Not sure what caused this, but it was fixed with an initalizer list.
 */
-Visual::Visual(std::vector<std::shared_ptr<Animal>> &incPop) : pop1(std::move(incPop)) , pop2(pop2){
+Visual::Visual(std::map<std::string, std::tuple<std::vector<std::shared_ptr<Animal>>, int>> incPopMap) : popMap(std::move(incPopMap)){
 	hWnd = NULL;
 	hInstance = NULL;
 	hDc = NULL;
-	gridBoard.resize(gridHeight);
-	for (int i = 0; i < gridHeight; i++){
+	
+	gridBoard.resize(gridHeight);		
+	for (int i = 0; i < gridHeight; i++){	
 		gridBoard[i].resize(gridWidth);
 	}
-	//gridBoard = (std::shared_ptr<Animal>**)malloc(sizeof(std::shared_ptr<Animal>*) * 500);
-	//for (int i = 0; i < 700; i++)
-	//	gridBoard[i] = (std::shared_ptr<Animal>*)malloc(sizeof(std::shared_ptr<Animal>) * 700);
 }
 
-Visual::Visual(std::vector<std::shared_ptr<Animal>> &incPop1, std::vector<std::shared_ptr<Animal>> &incPop2) : pop1(std::move(incPop1)), pop2(std::move(incPop2)){
-	hWnd = NULL;
-	hInstance = NULL;
-	hDc = NULL;
-	gridBoard.resize(gridHeight);
-	for (int i = 0; i < gridHeight; i++){
-		gridBoard[i].resize(gridWidth);
-	}
-	twoPops = true;
-}
-
+/*COMMENTS:
+* OLD, no need for this. Was used when the grid was a 2d array and needed to malloc the grid.
+*/
 Visual::~Visual(){
 	//for (int i = 0; i < 500; i++)
 	//	free(gridBoard[i]);
@@ -52,7 +42,7 @@ Visual::~Visual(){
 void Visual::visualSetup(){
 	LPCSTR myClass = "Green Monkeys";
 	LPCSTR myTitle = "Natural Selection Simulator";
-	std::cout << pop1.size();
+	std::cout << std::get<0>(popMap.begin()->second).size();
 
 	WNDCLASS wndclass = { CS_HREDRAW | CS_VREDRAW, (WNDPROC)StaticWndProc, 0, 0, 
 		hInstance, LoadIcon(NULL,IDI_WINLOGO), LoadCursor(NULL, IDC_ARROW),
@@ -110,6 +100,7 @@ LRESULT CALLBACK Visual::StaticWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 *  Non-static version of the window procedure. 
 *  May need to edit the timers a bit more. 
 *  Also need to remove the first timer as it is not being used anymore.
+*  Messing with OpenMP. Causing errors though, still looking into it.
 */
 LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	PAINTSTRUCT ps;
@@ -131,23 +122,19 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			UpdateWindow(hWnd);
 			break;
 		case 2:
-			/*Possible timer to update animals position and such. Mostly for testing right now*/
-			if (twoPops){
-				animalPosUpdate(pop1);
-				animalPosUpdate(pop2);
+			/*Possible timer to update animals position and such. Mostly for testing right now*/		
+//#pragma omp parallel
+			for (auto& map : popMap){
+				animalPosUpdate(std::get<0>(map.second));
+//#pragma omp barrier
 			}
-				else
-				animalPosUpdate(pop1);
-			/*InvalidateRect(hWnd, NULL, TRUE);
-			UpdateWindow(hWnd);*/
 			break;
 		case 3:
-			if (twoPops){
-				animalIncUpdate(pop1);
-				animalIncUpdate(pop2);
-			}
-			else
-				animalIncUpdate(pop1);		
+//#pragma omp parallel
+			for (auto& map : popMap){
+				animalIncUpdate(std::get<0>(map.second));
+//#pragma omp barrier
+			}	
 			InvalidateRect(hWnd, NULL, TRUE);
 			UpdateWindow(hWnd);
 			break;
@@ -164,39 +151,31 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 
 		//code to plot points of animal locations called here
-		if (firstTime && twoPops){
-			initialPopPlot(hdc, hWnd, pop1);
-			initialPopPlot(hdc, hWnd, pop2);
-			//TextOut(hdc, 10, 10, pop1[0]->getName().c_str(), pop1[0]->getName().length());
-			//TCHAR buffer[32];
-			//_itoa_s(pop1.size(), buffer, 10);
-			//if (pop1.size() < 10)
-			//	TextOut(hdc, 40, 10, buffer, 1);
-			//else if (pop1.size() < 100)
-			//	TextOut(hdc, 40, 10, buffer, 2);
-			//else if (pop1.size() < 1000)
-			//	TextOut(hdc, 40, 10, buffer, 3);
-			//else
-			//	TextOut(hdc, 40, 10, buffer, 4);
+//#pragma omp parallel
+		if (firstTime){
+			for (auto& map : popMap){
+				initialPopPlot(hdc, hWnd, std::get<0>(map.second));
+//#pragma omp barrier
+			}
+		}
+		else {
+//#pragma omp parallel
+			for (auto& map : popMap){
+				paintAnimals(hdc, hWnd, std::get<0>(map.second), "RED");
+//#pragma omp barrier
+			}
 
-			//TextOut(hdc, 70, 10, pop2[0]->getName().c_str(), pop1[0]->getName().length());
-			//_itoa_s(pop2.size(), buffer, 10);
-			//if (pop2.size() < 10)
-			//	TextOut(hdc, 100, 10, buffer, 1);
-			//else if (pop2.size() < 100)
-			//	TextOut(hdc, 100, 10, buffer, 2);
-			//else if (pop2.size() < 1000)
-			//	TextOut(hdc, 100, 10, buffer, 3);
-			//else
-			//	TextOut(hdc, 100, 10, buffer, 4);
-		}
-		else if (firstTime && !twoPops)
-		{
-			initialPopPlot(hdc, hWnd, pop1);
-		}
-		else if (twoPops){
-			paintAnimals(hdc, hWnd, pop1, "RED");
+			/*paintAnimals(hdc, hWnd, pop1, "RED");
 			paintAnimals(hdc, hWnd, pop2, "BLACK");
+			*/
+
+			/***************************************************************************
+			 * For ryan: How to Textout out the vector size + name of the animals.     *
+			 * Old code before we had the map though. Still works just need to get the *
+			 * vector from the map.                                                    *
+			 ***************************************************************************/
+
+			/*
 			TextOut(hdc, 10, 10, pop1[0]->getName().c_str(), pop1[0]->getName().length());
 			TCHAR buffer[32];
 			_itoa_s(pop1.size(), buffer, 10);
@@ -218,11 +197,9 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			else if (pop2.size() < 1000)
 				TextOut(hdc, 100, 10, buffer, 3);
 			else
-				TextOut(hdc, 100, 10, buffer, 4);
-	
+				TextOut(hdc, 100, 10, buffer, 4);	*/
 		}
-		else
-			paintAnimals(hdc, hWnd, pop1, "BLACK");
+
 
 
 		EndPaint(hWnd, &ps);
@@ -266,7 +243,8 @@ void Visual::animalPosUpdate(std::vector<std::shared_ptr<Animal>> pop){
 *  It spawns each animal in a box formation. Each with their own unique position. This is done so there is no outliers when spawning (i.e. they're all grouped up).
 *  Note, when we add in prey/predator we may need to space them out a bit more to avoid a feeding frenzy and possible genocide.
 *  Probably should create their position in the GA instead of here, but this works for now.
-*  Also this is causing some errors when the pop is < 9 and some of the aniamls are not getting an initial position. Need to rework this loop
+*  Re-did how they are given their position to match a 2d array style for loop. Made sure to add in the remainder this time.
+*  Also testing OpenMP. Still need to profile it with and without OpenMP to see if it is making any difference.
 */
 void Visual::initialPopPlot(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Animal>> pop) {
 	GAUtils gau = GAUtils();
@@ -275,8 +253,6 @@ void Visual::initialPopPlot(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Anim
 	int x = 1;
 	int y = pop.size();
 	int z = 0;
-	//int remainder = y % 9;
-	//y /= 9;
 
 #pragma omp parallel
 	for (int i = 500; i < 500; i++){
@@ -304,72 +280,6 @@ void Visual::initialPopPlot(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Anim
 		pop[j - i-1]->setYPosition(startY + popFillSize);
 		gridBoard[startY + popFillSize][startX + i] = pop[j-i-1];
 	}
-
-	/*while (y != 0){
-		for (int i = 0; i < 9; i++){
-			if (i == 0){
-				TextOut(hdc, startX, startY, ".", 1);
-				pop[i + z]->setXPosition(startX);
-				startX += x;
-				pop[i + z]->setYPosition(startY);
-			}
-			else if (i == 1){
-				TextOut(hdc, startX + x, startY, ".", 1);
-				pop[i + z]->setXPosition(startX);
-				startX += x;
-				pop[i + z]->setYPosition(startY);
-				startY += x;
-			}
-			else if (i == 2){
-				TextOut(hdc, startX + x, startY + x, ".", 1);
-				pop[i + z]->setXPosition(startX);
-				pop[i + z]->setYPosition(startY);
-				startY += x;
-			}
-			else if (i == 3){
-				TextOut(hdc, startX, startY + x, ".", 1);
-				pop[i + z]->setXPosition(startX);
-				startX -= x;
-				pop[i + z]->setYPosition(startY);
-				startY += x;
-			}
-			else if (i == 4){
-				TextOut(hdc, startX - x, startY + x, ".", 1);
-				pop[i + z]->setXPosition(startX);
-				startX -= x;
-				pop[i + z]->setYPosition(startY);
-			}
-			else if (i == 5){
-				TextOut(hdc, startX - x, startY, ".", 1);
-				pop[i + z]->setXPosition(startX - x);
-				pop[i + z]->setYPosition(startY);
-			}
-			else if (i == 6){
-				TextOut(hdc, startX - x, startY - x, ".", 1);
-				pop[i + z]->setXPosition(startX - x);
-				pop[i + z]->setYPosition(startY - x);
-			}
-			else if (i == 7){
-				TextOut(hdc, startX, startY - x, ".", 1);
-				pop[i + z]->setXPosition(startX);
-				pop[i + z]->setYPosition(startY - x);
-			}
-			else if (i == 8){
-				TextOut(hdc, startX + x, startY - x, ".", 1);
-				pop[i + z]->setXPosition(startX + x);
-				pop[i + z]->setYPosition(startY - x);
-			}
-		}
-		y--;
-		x += 1;
-		z += 9;
-	}*/
-
-	//for (; remainder > 0; remainder--){
-	//	pop[z + remainder]->setXPosition(startX + x);
-	//	pop[z + remainder]->setYPosition(startY + x);
-	//	x += 1;
-	//}
 	firstTime = false;
 	animalPosUpdate(pop);
 }
@@ -377,6 +287,7 @@ void Visual::initialPopPlot(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Anim
 /*COMMENTS:
 *  Basic painting and collision detection done in one function.
 *  Did this in one function becuase the collision is fairly small and fits right in with the paiting.
+*  Need to find a better way to do the COLORREF. Looking/thinking of a way to do this.
 */
 void Visual::paintAnimals(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Animal>> pop, std::string color){
 

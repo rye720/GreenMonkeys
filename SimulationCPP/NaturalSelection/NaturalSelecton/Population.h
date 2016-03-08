@@ -5,8 +5,10 @@
 #include "GA.h"
 #include "GAUtils.h"
 #include "Visual.h"
+#include <omp.h>
 #include <string>
 #include <iostream>
+#include <map>
 
 class Population{
 private:
@@ -16,19 +18,17 @@ private:
 protected:
 	/*Protected Variables*/
 	std::string populationName;
-	std::vector<std::shared_ptr<Animal>> pop;
-	int generation;
+	std::map<std::string,std::tuple<std::vector<std::shared_ptr<Animal>>, int>> popMap;
+	//std::vector<std::shared_ptr<Animal>> pop;
 
 public:
 	Population();
 	Population(std::string popName);
 
-	std::vector<std::shared_ptr<Animal>> getPop();
-
 	/*
 	* Input: Number of genes per animal. Number of animals to create . Starting generation number.
 	* Output: None
-	* Function: Fills the population with individual animals. Uses the name supplied in the constructor.
+	* Function: Creates a population with name given to main population.
 	* Notes: User has access to this, but not to pop. Abstraction is a great thing.
 	*/
 	void createPopulation(int geneNum, int startingSize, int generation);
@@ -36,7 +36,7 @@ public:
 	/*
 	* Input: Number of genes per animal. Number of animals to create. Starting generation. Name of animals.
 	* Output: None
-	* Function: Fills the population with individual animals. Uses the name supplied in this function, instead of the constructor one.
+	* Function: Creates a population. Uses the name supplied in this function, instead of the constructor one.
 	* Notes: User has access to this, but not to pop. Abstraction is a great thing.
 	*/
 	void createPopulation(int geneNum, int startingSize, int generation, std::string name);
@@ -44,7 +44,7 @@ public:
 	/*
 	* Input: None
 	* Output: None 
-	* Function: Advances the population one generation. This creates new animals and removes old/low fitness ones.
+	* Function: Advances each population one generation. This creates new animals and removes old/low fitness ones.
 	* Notes: This is so the driver only has to do one call to advance the generation.
 	*/
 	void advanceGeneration();
