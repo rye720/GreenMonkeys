@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <memory>
+#include <omp.h>
 #include <iostream>
 #include "GA.h"
 

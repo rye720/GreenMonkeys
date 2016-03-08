@@ -125,6 +125,7 @@ void GA::combination(std::vector<std::shared_ptr<Animal>> &pop, int animalNum, i
 		else
 			cTag.append(mom->getName() + "_" + std::to_string(currentGen) + "_" + std::to_string(animalNum + 1));
 		child->setTag(cTag);
+
 		combination(pop, animalNum+1, currentGen);
 		pop.push_back(std::move(mom));
 		pop.push_back(std::move(dad));
@@ -145,6 +146,7 @@ void GA::selection(std::vector<std::shared_ptr<Animal>> &pop){
 	int size = pop.size();
 	int x = (size / 4);
 	size -= 1;
+
 	for (; x > 0; size--, x--){
 		pop.erase(pop.begin() + size);
 	}

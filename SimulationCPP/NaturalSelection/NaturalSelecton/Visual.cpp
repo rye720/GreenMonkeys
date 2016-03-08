@@ -94,7 +94,7 @@ LRESULT CALLBACK Visual::StaticWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 		SetWindowLongPtr(hWnd, GWL_USERDATA, (LONG_PTR)pParent);
 		//SetTimer(hWnd, 1, 3, NULL);
 		SetTimer(hWnd, 2, 5000, NULL);
-		SetTimer(hWnd, 3, 125, NULL);
+		SetTimer(hWnd, 3, 150, NULL);
 		/*SetTimer(hWnd, 4, 10000, NULL);*/
 	}
 	else
@@ -162,19 +162,64 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		hdc = BeginPaint(hWnd, &ps);
 		/*Window here*/
 
+
 		//code to plot points of animal locations called here
 		if (firstTime && twoPops){
 			initialPopPlot(hdc, hWnd, pop1);
 			initialPopPlot(hdc, hWnd, pop2);
+			//TextOut(hdc, 10, 10, pop1[0]->getName().c_str(), pop1[0]->getName().length());
+			//TCHAR buffer[32];
+			//_itoa_s(pop1.size(), buffer, 10);
+			//if (pop1.size() < 10)
+			//	TextOut(hdc, 40, 10, buffer, 1);
+			//else if (pop1.size() < 100)
+			//	TextOut(hdc, 40, 10, buffer, 2);
+			//else if (pop1.size() < 1000)
+			//	TextOut(hdc, 40, 10, buffer, 3);
+			//else
+			//	TextOut(hdc, 40, 10, buffer, 4);
+
+			//TextOut(hdc, 70, 10, pop2[0]->getName().c_str(), pop1[0]->getName().length());
+			//_itoa_s(pop2.size(), buffer, 10);
+			//if (pop2.size() < 10)
+			//	TextOut(hdc, 100, 10, buffer, 1);
+			//else if (pop2.size() < 100)
+			//	TextOut(hdc, 100, 10, buffer, 2);
+			//else if (pop2.size() < 1000)
+			//	TextOut(hdc, 100, 10, buffer, 3);
+			//else
+			//	TextOut(hdc, 100, 10, buffer, 4);
 		}
 		else if (firstTime && !twoPops)
 		{
 			initialPopPlot(hdc, hWnd, pop1);
-
 		}
 		else if (twoPops){
 			paintAnimals(hdc, hWnd, pop1, "RED");
 			paintAnimals(hdc, hWnd, pop2, "BLACK");
+			TextOut(hdc, 10, 10, pop1[0]->getName().c_str(), pop1[0]->getName().length());
+			TCHAR buffer[32];
+			_itoa_s(pop1.size(), buffer, 10);
+			if (pop1.size() < 10)
+				TextOut(hdc, 40, 10, buffer, 1);
+			else if (pop1.size() < 100)
+				TextOut(hdc, 40, 10, buffer, 2);
+			else if (pop1.size() < 1000)
+				TextOut(hdc, 40, 10, buffer, 3);
+			else 
+				TextOut(hdc, 40, 10, buffer, 4);
+
+			TextOut(hdc, 70, 10, pop2[0]->getName().c_str(), pop1[0]->getName().length());
+			_itoa_s(pop2.size(), buffer, 10);
+			if (pop2.size() < 10)
+				TextOut(hdc, 100, 10, buffer, 1);
+			else if (pop2.size() < 100)
+				TextOut(hdc, 100, 10, buffer, 2);
+			else if (pop2.size() < 1000)
+				TextOut(hdc, 100, 10, buffer, 3);
+			else
+				TextOut(hdc, 100, 10, buffer, 4);
+	
 		}
 		else
 			paintAnimals(hdc, hWnd, pop1, "BLACK");
@@ -197,6 +242,8 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 */
 void Visual::animalPosUpdate(std::vector<std::shared_ptr<Animal>> pop){
 	GAUtils gau = GAUtils();
+
+//#pragma omp parallel
 	for (const auto& animal : pop){
 		int randx = gau.randIntGen(600);
 		int randy = gau.randIntGen(500);
@@ -231,6 +278,7 @@ void Visual::initialPopPlot(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Anim
 	//int remainder = y % 9;
 	//y /= 9;
 
+#pragma omp parallel
 	for (int i = 500; i < 500; i++){
 		for (int j = 700; j < 700; j++){
 			gridBoard[j][i] = NULL;
@@ -240,6 +288,7 @@ void Visual::initialPopPlot(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Anim
 	int popFillSize = floor(sqrt(y));
 	int remainder = (y-(popFillSize*popFillSize));
 
+#pragma omp parallel shared(popFillSize, remainder)
 	for (int i = 0, animalCount = 0; i < popFillSize; i++){
 		for (int j = 0; j < popFillSize; j++){
 			pop[animalCount]->setXPosition(startX + i);
@@ -249,6 +298,7 @@ void Visual::initialPopPlot(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Anim
 		}
 	}
 
+#pragma omp parallel
 	for (int i = 0, j = pop.size(); i < remainder; i++){
 		pop[j - i-1]->setXPosition(startX + i);
 		pop[j - i-1]->setYPosition(startY + popFillSize);
@@ -335,6 +385,7 @@ void Visual::paintAnimals(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Animal
 	else
 		SetTextColor(hdc, RGB(255,0,0));
 
+//#pragma omp parallel
 	for (const auto& animal : pop){
 		int xpos, ypos;
 		xpos = animal->getXPos();
@@ -353,10 +404,8 @@ void Visual::paintAnimals(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Animal
 			TextOut(hdc, xpos, 500, ".", 1);
 		else if ((ypos < 501) && (xpos > 701))
 			TextOut(hdc, 700, ypos, ".", 1);
-
 		else
 			TextOut(hdc, 699, 499, ".", 1);
-		
 	}
 }
 
@@ -366,6 +415,7 @@ void Visual::paintAnimals(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Animal
 */
 void Visual::animalIncUpdate(std::vector<std::shared_ptr<Animal>> pop){
 
+	//#pragma omp parallel
 	for (const auto& animal : pop){
 		int xpos = animal->getXPos();
 		int ypos = animal->getYPos();
@@ -394,5 +444,6 @@ void Visual::animalIncUpdate(std::vector<std::shared_ptr<Animal>> pop){
 			animal->setYPosition(animal->getYPos() - 1);
 			gridBoard[xpos][ypos-1] = animal;
 		}
+		//#pragma omp barrier
 	}
 }

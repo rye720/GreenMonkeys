@@ -5,6 +5,7 @@
 #include "Math.h"
 #include "GAUtils.h"
 #include "Animal.h"
+#include <omp.h>
 #include <iostream>
 #include <vector>
 #include <String>

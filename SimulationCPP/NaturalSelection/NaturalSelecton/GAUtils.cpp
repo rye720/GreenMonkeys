@@ -7,6 +7,7 @@
 *  if we can't fix the issue by balancing out the population by killing off more animals as the growth rises.
 */
 void GAUtils::rankPop(std::vector<std::shared_ptr<Animal>> &pop){
+	
 	std::sort(pop.begin(), pop.end(), compareAnimals);
 }
 
@@ -119,6 +120,7 @@ void GAUtils::agePopulation(std::vector<std::shared_ptr<Animal>> &pop, int x) {
 	for (size_t i = 0; i < pop.size(); i++) {
 		pop[i]->setAge(pop[i]->getAge() + x);
 	}
+
 }
 
 /*COMMENTS:
@@ -132,4 +134,5 @@ void GAUtils::killSeniorCitizens(std::vector<std::shared_ptr<Animal>> &pop) {
 			i--;
 		}
 	}
+
 }
