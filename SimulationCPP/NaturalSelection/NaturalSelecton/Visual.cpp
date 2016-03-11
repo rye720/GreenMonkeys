@@ -178,14 +178,14 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			//Got it working now	-Ryan
 
 			
-			TextOut(hdc, 10, 10, std::get<0>(popMap.begin()->second)[0]->getName().c_str(), std::get<0>(popMap.begin()->second)[0]->getName().length());
+			TextOut(hdc, 10, 10, std::get<0>(popMap.find("wolf")->second)[0]->getName().c_str(), std::get<0>(popMap.find("wolf")->second)[0]->getName().length());
 			TCHAR buffer[32];
-			_itoa_s(std::get<0>(popMap.begin()->second).size(), buffer, 10);
-			if (std::get<0>(popMap.begin()->second).size() < 10)
+			_itoa_s(std::get<0>(popMap.find("wolf")->second).size(), buffer, 10);
+			if (std::get<0>(popMap.find("wolf")->second).size() < 10)
 				TextOut(hdc, 40, 10, buffer, 1);
-			else if (std::get<0>(popMap.begin()->second).size() < 100)
+			else if (std::get<0>(popMap.find("wolf")->second).size() < 100)
 				TextOut(hdc, 40, 10, buffer, 2);
-			else if (std::get<0>(popMap.begin()->second).size() < 1000)
+			else if (std::get<0>(popMap.find("wolf")->second).size() < 1000)
 				TextOut(hdc, 40, 10, buffer, 3);
 			else
 				TextOut(hdc, 40, 10, buffer, 4);
