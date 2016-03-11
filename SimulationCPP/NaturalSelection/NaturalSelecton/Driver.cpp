@@ -137,7 +137,7 @@ int main(int argc, TCHAR *argv[]) {
 	std::transform(visualConf.begin(), visualConf.end(), visualConf.begin(), ::tolower);
 	Population pop = Population("pop1");
 	pop.createPopulation(geneNum1, animalStart1, 1, wolfName);
-	//pop.createPopulation(geneNum2, animalStart2, 1, rabName);
+	pop.createPopulation(geneNum2, animalStart2, 1, rabName);
 	//Population wolfpop = Population(wolfName);
 	//Population rabpop = Population(rabName);
 	//wolfpop.createPopulation(geneNum1, animalStart1, 1);
@@ -171,7 +171,7 @@ int main(int argc, TCHAR *argv[]) {
 
 		/*Loop i < loops; loops is the number of times you iterate through it*/
 		for (int i = 0; i < loops; i++) {
-			pop.advanceGeneration();
+			pop.advanceGeneration(); 
 		}
 		std::cout << std::endl;
 

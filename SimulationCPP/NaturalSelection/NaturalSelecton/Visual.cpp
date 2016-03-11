@@ -175,29 +175,31 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			 * vector from the map.                                                    *
 			 ***************************************************************************/
 
-			/*
-			TextOut(hdc, 10, 10, pop1[0]->getName().c_str(), pop1[0]->getName().length());
+			//Got it working now	-Ryan
+
+			
+			TextOut(hdc, 10, 10, std::get<0>(popMap.begin()->second)[0]->getName().c_str(), std::get<0>(popMap.begin()->second)[0]->getName().length());
 			TCHAR buffer[32];
-			_itoa_s(pop1.size(), buffer, 10);
-			if (pop1.size() < 10)
+			_itoa_s(std::get<0>(popMap.begin()->second).size(), buffer, 10);
+			if (std::get<0>(popMap.begin()->second).size() < 10)
 				TextOut(hdc, 40, 10, buffer, 1);
-			else if (pop1.size() < 100)
+			else if (std::get<0>(popMap.begin()->second).size() < 100)
 				TextOut(hdc, 40, 10, buffer, 2);
-			else if (pop1.size() < 1000)
+			else if (std::get<0>(popMap.begin()->second).size() < 1000)
 				TextOut(hdc, 40, 10, buffer, 3);
-			else 
+			else
 				TextOut(hdc, 40, 10, buffer, 4);
 
-			TextOut(hdc, 70, 10, pop2[0]->getName().c_str(), pop1[0]->getName().length());
-			_itoa_s(pop2.size(), buffer, 10);
-			if (pop2.size() < 10)
+			TextOut(hdc, 70, 10, std::get<0>(popMap.begin()->second)[0]->getName().c_str(), std::get<0>(popMap.begin()->second)[0]->getName().length());
+			_itoa_s(std::get<0>(popMap.begin()->second).size(), buffer, 10);
+			if (std::get<0>(popMap.begin()->second).size() < 10)
 				TextOut(hdc, 100, 10, buffer, 1);
-			else if (pop2.size() < 100)
+			else if (std::get<0>(popMap.begin()->second).size() < 100)
 				TextOut(hdc, 100, 10, buffer, 2);
-			else if (pop2.size() < 1000)
+			else if (std::get<0>(popMap.begin()->second).size() < 1000)
 				TextOut(hdc, 100, 10, buffer, 3);
 			else
-				TextOut(hdc, 100, 10, buffer, 4);	*/
+				TextOut(hdc, 100, 10, buffer, 4);
 		}
 
 
@@ -286,7 +288,7 @@ void Visual::initialPopPlot(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Anim
 
 /*COMMENTS:
 *  Basic painting and collision detection done in one function.
-*  Did this in one function becuase the collision is fairly small and fits right in with the paiting.
+*  Did this in one function becuase the collision is fairly small and fits right in with the painting.
 *  Need to find a better way to do the COLORREF. Looking/thinking of a way to do this.
 */
 void Visual::paintAnimals(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Animal>> pop, std::string color){
