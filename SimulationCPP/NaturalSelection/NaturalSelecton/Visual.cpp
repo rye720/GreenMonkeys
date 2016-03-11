@@ -153,16 +153,35 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		//code to plot points of animal locations called here
 //#pragma omp parallel
 		if (firstTime){
-			for (auto& map : popMap){
-				initialPopPlot(hdc, hWnd, std::get<0>(map.second));
-//#pragma omp barrier
+//			for (auto& map : popMap){
+//				initialPopPlot(hdc, hWnd, std::get<0>(map.second));
+////#pragma omp barrier
+//			}
+
+			for (int i = 0; i < std::get<0>(popMap.find("wolf")->second).size(); i++) {
+				initialPopPlot(hdc, hWnd, std::get<0>(popMap.find("wolf")->second));
 			}
+
+			for (int i = 0; i < std::get<0>(popMap.begin()->second).size(); i++) {
+				initialPopPlot(hdc, hWnd, std::get<0>(popMap.begin()->second));
+			}
+
+
 		}
 		else {
+
 //#pragma omp parallel
-			for (auto& map : popMap){
-				paintAnimals(hdc, hWnd, std::get<0>(map.second), "RED");
-//#pragma omp barrier
+//			for (auto& map : popMap){
+//				paintAnimals(hdc, hWnd, std::get<0>(map.second), "RED");
+////#pragma omp barrier
+//			}
+
+			for (int i = 0; i < std::get<0>(popMap.find("wolf")->second).size(); i++) {
+				paintAnimals(hdc, hWnd, std::get<0>(popMap.find("wolf")->second), "RED");
+			}
+
+			for (int i = 0; i < std::get<0>(popMap.begin()->second).size(); i++) {
+				paintAnimals(hdc, hWnd, std::get<0>(popMap.begin()->second), "BLACK");
 			}
 
 			/*paintAnimals(hdc, hWnd, pop1, "RED");
@@ -177,7 +196,7 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 			//Got it working now	-Ryan
 
-			
+			SetTextColor(hdc, RGB(0, 0, 0));
 			TextOut(hdc, 10, 10, std::get<0>(popMap.find("wolf")->second)[0]->getName().c_str(), std::get<0>(popMap.find("wolf")->second)[0]->getName().length());
 			TCHAR buffer[32];
 			_itoa_s(std::get<0>(popMap.find("wolf")->second).size(), buffer, 10);
@@ -190,6 +209,7 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			else
 				TextOut(hdc, 40, 10, buffer, 4);
 
+			SetTextColor(hdc, RGB(255, 0, 0));
 			TextOut(hdc, 70, 10, std::get<0>(popMap.begin()->second)[0]->getName().c_str(), std::get<0>(popMap.begin()->second)[0]->getName().length());
 			_itoa_s(std::get<0>(popMap.begin()->second).size(), buffer, 10);
 			if (std::get<0>(popMap.begin()->second).size() < 10)

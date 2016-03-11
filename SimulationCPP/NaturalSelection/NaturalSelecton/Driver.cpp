@@ -175,12 +175,12 @@ int main(int argc, TCHAR *argv[]) {
 		}
 		std::cout << std::endl;
 
-		std::cout << "Top 10 predator individuals by gene ranking: ";
+		std::cout << "Top prey individuals by gene ranking: ";
 		std::cout << std::endl;
 		std::cout << pop;
 		//wolfpop.outputNAnimals(10);
 		std::cout << std::endl;
-		std::cout << "wolfPopulation size: " + std::to_string(pop.getPopSize());
+		std::cout << "rabbitPopulation size: " + std::to_string(pop.getPopSize());
 		std::cout << std::endl;
 		std::cout << std::endl;
 
