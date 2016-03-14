@@ -52,7 +52,7 @@ char GAUtils::randSex(){
 
 
 /*COMMENTS:
-*  Using this version because it generates truly randly values via uniform distribution.
+*  Using this version because it generates truly random values via uniform distribution.
 *  Tried using time and it gave the same set of data over and over again, wasn't truly "random".
 *  May want to add the time random gen, as it is easier to generate the same data set over and over again for tesing purposes.
 *  This does not produce the same data set if ran twice (have tested this).

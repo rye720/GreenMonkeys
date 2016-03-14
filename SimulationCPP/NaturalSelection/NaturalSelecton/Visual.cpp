@@ -158,14 +158,9 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 ////#pragma omp barrier
 //			}
 
-			for (int i = 0; i < std::get<0>(popMap.find("wolf")->second).size(); i++) {
 				initialPopPlot(hdc, hWnd, std::get<0>(popMap.find("wolf")->second));
-			}
-
-			for (int i = 0; i < std::get<0>(popMap.begin()->second).size(); i++) {
+		
 				initialPopPlot(hdc, hWnd, std::get<0>(popMap.begin()->second));
-			}
-
 
 		}
 		else {
@@ -176,17 +171,10 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 ////#pragma omp barrier
 //			}
 
-			for (int i = 0; i < std::get<0>(popMap.find("wolf")->second).size(); i++) {
 				paintAnimals(hdc, hWnd, std::get<0>(popMap.find("wolf")->second), "RED");
-			}
 
-			for (int i = 0; i < std::get<0>(popMap.begin()->second).size(); i++) {
 				paintAnimals(hdc, hWnd, std::get<0>(popMap.begin()->second), "BLACK");
-			}
 
-			/*paintAnimals(hdc, hWnd, pop1, "RED");
-			paintAnimals(hdc, hWnd, pop2, "BLACK");
-			*/
 
 			/***************************************************************************
 			 * For ryan: How to Textout out the vector size + name of the animals.     *
@@ -268,7 +256,7 @@ void Visual::animalPosUpdate(std::vector<std::shared_ptr<Animal>> pop){
 *  Re-did how they are given their position to match a 2d array style for loop. Made sure to add in the remainder this time.
 *  Also testing OpenMP. Still need to profile it with and without OpenMP to see if it is making any difference.
 */
-void Visual::initialPopPlot(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Animal>> pop) {
+void Visual::initialPopPlot(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Animal>>& pop) {
 	GAUtils gau = GAUtils();
 	startX = gau.randIntGen(100, 300);
 	startY = gau.randIntGen(100, 300);
