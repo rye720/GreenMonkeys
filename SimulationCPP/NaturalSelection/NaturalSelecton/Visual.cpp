@@ -378,12 +378,13 @@ Comments: Set up to get good search grid bounds, defending against indexing out 
 
 void Visual::localizePopulation(std::vector<std::shared_ptr<Animal>> pop) {
 
-	for (const auto& animal : pop) {
+	int xStart;
+	int yStart;
+	int xStop;
+	int yStop;
 
-		int xStart;
-		int yStart;
-		int xStop;
-		int yStop;
+	for (const auto& animal : pop) {
+		
 		int searchSize = (int)std::floorf(6 * animal->getFitness());
 
 		if ( (animal->getXPos() - searchSize) > -1 ) {
@@ -414,8 +415,8 @@ void Visual::localizePopulation(std::vector<std::shared_ptr<Animal>> pop) {
 			yStop = gridHeight - 1;
 		}
 
-		for (int i = xStart; i < xStop; i++ ) {
-			for (int j = yStart; j < yStop; j++) {
+		for (int j = xStart; j < xStop; j++ ) {
+			for (int i = yStart; i < yStop; i++) {
 
 				if (!gridBoard[i][j] == NULL) {
 					
