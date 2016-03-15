@@ -382,39 +382,33 @@ void Visual::localizePopulation(std::vector<std::shared_ptr<Animal>> pop) {
 	int yStart;
 	int xStop;
 	int yStop;
+	int searchSize;
 
 	for (const auto& animal : pop) {
-		
-		int searchSize = (int)std::floorf(6 * animal->getFitness());
 
-		if ( (animal->getXPos() - searchSize) > -1 ) {
-			xStart = animal->getXPos() - searchSize;
-		}
-		else {
+		searchSize = (int)std::floorf(6 * animal->getFitness());
+
+		xStart = animal->getXPos() - searchSize;
+		yStart = animal->getYPos() - searchSize;
+		xStop = animal->getXPos() + searchSize;
+		yStop = animal->getYPos() + searchSize;
+
+		if (xStart < 0) {
 			xStart = 0;
 		}
-		
-		if ((animal->getYPos() - searchSize) > -1) {
-			yStart = animal->getYPos() - searchSize;
-		}
-		else {
+	
+		if (yStart < 0) {
 			yStart = 0;
 		}
-
-		if ( (animal->getXPos() + searchSize) < (gridWidth - 1) ) {
-			xStop = animal->getXPos() + searchSize;
-		}
-		else {
+	
+		if (xStop > (gridWidth - 1) ) {
 			xStop = gridWidth - 1;
 		}
-
-		if ((animal->getYPos() + searchSize) < (gridHeight - 1)) {
-			yStop = animal->getYPos() + searchSize;
-		}
-		else {
+	
+		if (yStop > (gridHeight - 1)) {
 			yStop = gridHeight - 1;
 		}
-
+	
 		for (int j = xStart; j < xStop; j++ ) {
 			for (int i = yStart; i < yStop; i++) {
 
