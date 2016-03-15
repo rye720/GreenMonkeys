@@ -74,7 +74,7 @@ private:
 	* Function: Plots the initial animal position
 	* Notes: None
 	*/
-	void initialPopPlot(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Animal>> pop);
+	void initialPopPlot(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Animal>>& pop);
 
 	/*
 	* Input: Vector of shared pointers to the Animal class
@@ -99,6 +99,15 @@ private:
 	* Notes: see .cpp comment for more indepth notes.
 	*/
 	LRESULT WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+
+	/*
+	stuff
+	*/
+	void localizePopulation(std::vector<std::shared_ptr<Animal>> pop);
+
+
+
 };
 
 

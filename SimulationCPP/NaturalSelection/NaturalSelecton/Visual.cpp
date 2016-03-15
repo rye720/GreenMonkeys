@@ -367,4 +367,64 @@ void Visual::animalIncUpdate(std::vector<std::shared_ptr<Animal>> pop){
 		}
 		//#pragma omp barrier
 	}
+	localizePopulation(pop);
+}
+
+
+/*
+Comments: Set up to get good search grid bounds, defending against indexing out of the gridMap
+*/
+
+
+void Visual::localizePopulation(std::vector<std::shared_ptr<Animal>> pop) {
+
+	for (const auto& animal : pop) {
+
+		int xStart;
+		int yStart;
+		int xStop;
+		int yStop;
+		int searchSize = (int)std::floorf(6 * animal->getFitness());
+
+		if ( (animal->getXPos() - searchSize) > -1 ) {
+			xStart = animal->getXPos() - searchSize;
+		}
+		else {
+			xStart = 0;
+		}
+		
+		if ((animal->getYPos() - searchSize) > -1) {
+			yStart = animal->getYPos() - searchSize;
+		}
+		else {
+			yStart = 0;
+		}
+
+		if ( (animal->getXPos() + searchSize) < (gridWidth - 1) ) {
+			xStop = animal->getXPos() + searchSize;
+		}
+		else {
+			xStop = gridWidth - 1;
+		}
+
+		if ((animal->getYPos() + searchSize) < (gridHeight - 1)) {
+			yStop = animal->getYPos() + searchSize;
+		}
+		else {
+			yStop = gridHeight - 1;
+		}
+
+		for (int i = xStart; i < xStop; i++ ) {
+			for (int j = yStart; j < yStop; j++) {
+
+				if (!gridBoard[i][j] == NULL) {
+					
+					//do search and eat animals
+
+				}
+			}
+		}
+
+	}
+
 }
