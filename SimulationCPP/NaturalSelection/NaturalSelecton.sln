@@ -1,7 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NaturalSelecton", "NaturalSelecton\NaturalSelecton.vcxproj", "{696DBF5E-7A2D-4EAA-9DA8-E2D79C1792E9}"
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NaturalSelection", "NaturalSelecton\NaturalSelecton.vcxproj", "{696DBF5E-7A2D-4EAA-9DA8-E2D79C1792E9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest1", "UnitTest1\UnitTest1.vcxproj", "{BB794555-4C37-4C04-B4F6-D6C285CD3299}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NaturalSelectionDLL", "NaturalSelectionDLL\NaturalSelectionDLL.vcxproj", "{5F75C244-10F0-415A-92E3-F410D930B1EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +19,14 @@ Global
 		{696DBF5E-7A2D-4EAA-9DA8-E2D79C1792E9}.Debug|Win32.Build.0 = Debug|Win32
 		{696DBF5E-7A2D-4EAA-9DA8-E2D79C1792E9}.Release|Win32.ActiveCfg = Release|Win32
 		{696DBF5E-7A2D-4EAA-9DA8-E2D79C1792E9}.Release|Win32.Build.0 = Release|Win32
+		{BB794555-4C37-4C04-B4F6-D6C285CD3299}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BB794555-4C37-4C04-B4F6-D6C285CD3299}.Debug|Win32.Build.0 = Debug|Win32
+		{BB794555-4C37-4C04-B4F6-D6C285CD3299}.Release|Win32.ActiveCfg = Release|Win32
+		{BB794555-4C37-4C04-B4F6-D6C285CD3299}.Release|Win32.Build.0 = Release|Win32
+		{5F75C244-10F0-415A-92E3-F410D930B1EE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5F75C244-10F0-415A-92E3-F410D930B1EE}.Debug|Win32.Build.0 = Debug|Win32
+		{5F75C244-10F0-415A-92E3-F410D930B1EE}.Release|Win32.ActiveCfg = Release|Win32
+		{5F75C244-10F0-415A-92E3-F410D930B1EE}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
