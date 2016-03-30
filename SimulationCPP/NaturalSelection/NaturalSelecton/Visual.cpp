@@ -20,7 +20,14 @@ Visual::Visual(std::map<std::string, std::tuple<std::vector<std::shared_ptr<Anim
 	hWnd = NULL;
 	hInstance = NULL;
 	hDc = NULL;
-	
+	int i = 0;
+	for (auto& map : popMap){
+		if (i == 0)
+			animal1 = std::get<0>(map.second)[0]->getName();
+		else
+			animal2 = std::get<0>(map.second)[0]->getName();
+		i++;
+	}
 	gridBoard.resize(gridHeight);		
 	for (int i = 0; i < gridHeight; i++){	
 		gridBoard[i].resize(gridWidth);
@@ -153,27 +160,33 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		//code to plot points of animal locations called here
 //#pragma omp parallel
 		if (firstTime){
-//			for (auto& map : popMap){
-//				initialPopPlot(hdc, hWnd, std::get<0>(map.second));
+			for (auto& map : popMap)
+				initialPopPlot(hdc, hWnd, std::get<0>(map.second));
 ////#pragma omp barrier
 //			}
 
-				initialPopPlot(hdc, hWnd, std::get<0>(popMap.find("wolf")->second));
+				//initialPopPlot(hdc, hWnd, std::get<0>(popMap.begin()->second));
 		
-				initialPopPlot(hdc, hWnd, std::get<0>(popMap.begin()->second));
+				//initialPopPlot(hdc, hWnd, std::get<0>(popMap.begin()->second));
 
 		}
 		else {
 
 //#pragma omp parallel
-//			for (auto& map : popMap){
-//				paintAnimals(hdc, hWnd, std::get<0>(map.second), "RED");
+			int i = 0;
+			for (auto& map : popMap){
+				if (i == 0)
+					paintAnimals(hdc, hWnd, std::get<0>(map.second), "RED");
+				else
+					paintAnimals(hdc, hWnd, std::get<0>(map.second), "BLACK");
+				i++;
+			}
 ////#pragma omp barrier
 //			}
 
-				paintAnimals(hdc, hWnd, std::get<0>(popMap.find("wolf")->second), "RED");
-
-				paintAnimals(hdc, hWnd, std::get<0>(popMap.begin()->second), "BLACK");
+				///*paintAnimals(hdc, hWnd, std::get<0>(popMap.begin()), "RED");*/
+			 //   paintAnimals(hdc, hWnd, std::get<0>(popMap.begin()->second), "RED");
+				//paintAnimals(hdc, hWnd, std::get<0>(popMap.begin()->second), "BLACK");
 
 
 			/***************************************************************************
@@ -185,26 +198,26 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			//Got it working now	-Ryan
 
 			SetTextColor(hdc, RGB(0, 0, 0));
-			TextOut(hdc, 10, 10, std::get<0>(popMap.find("wolf")->second)[0]->getName().c_str(), std::get<0>(popMap.find("wolf")->second)[0]->getName().length());
+			TextOut(hdc, 10, 10, std::get<0>(popMap.find(animal1)->second)[0]->getName().c_str(), std::get<0>(popMap.find(animal1)->second)[0]->getName().length());
 			TCHAR buffer[32];
-			_itoa_s(std::get<0>(popMap.find("wolf")->second).size(), buffer, 10);
-			if (std::get<0>(popMap.find("wolf")->second).size() < 10)
+			_itoa_s(std::get<0>(popMap.find(animal1)->second).size(), buffer, 10);
+			if (std::get<0>(popMap.find(animal1)->second).size() < 10)
 				TextOut(hdc, 40, 10, buffer, 1);
-			else if (std::get<0>(popMap.find("wolf")->second).size() < 100)
+			else if (std::get<0>(popMap.find(animal1)->second).size() < 100)
 				TextOut(hdc, 40, 10, buffer, 2);
-			else if (std::get<0>(popMap.find("wolf")->second).size() < 1000)
+			else if (std::get<0>(popMap.find(animal1)->second).size() < 1000)
 				TextOut(hdc, 40, 10, buffer, 3);
 			else
 				TextOut(hdc, 40, 10, buffer, 4);
 
 			SetTextColor(hdc, RGB(255, 0, 0));
-			TextOut(hdc, 70, 10, std::get<0>(popMap.begin()->second)[0]->getName().c_str(), std::get<0>(popMap.begin()->second)[0]->getName().length());
-			_itoa_s(std::get<0>(popMap.begin()->second).size(), buffer, 10);
-			if (std::get<0>(popMap.begin()->second).size() < 10)
+			TextOut(hdc, 70, 10, std::get<0>(popMap.find(animal2)->second)[0]->getName().c_str(), std::get<0>(popMap.find(animal2)->second)[0]->getName().length());
+			_itoa_s(std::get<0>(popMap.find(animal2)->second).size(), buffer, 10);
+			if (std::get<0>(popMap.find(animal2)->second).size() < 10)
 				TextOut(hdc, 100, 10, buffer, 1);
-			else if (std::get<0>(popMap.begin()->second).size() < 100)
+			else if (std::get<0>(popMap.find(animal2)->second).size() < 100)
 				TextOut(hdc, 100, 10, buffer, 2);
-			else if (std::get<0>(popMap.begin()->second).size() < 1000)
+			else if (std::get<0>(popMap.find(animal1)->second).size() < 1000)
 				TextOut(hdc, 100, 10, buffer, 3);
 			else
 				TextOut(hdc, 100, 10, buffer, 4);
@@ -274,7 +287,7 @@ void Visual::initialPopPlot(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Anim
 	int popFillSize = floor(sqrt(y));
 	int remainder = (y-(popFillSize*popFillSize));
 
-#pragma omp parallel shared(popFillSize, remainder)
+//#pragma omp parallel shared(popFillSize, remainder)
 	for (int i = 0, animalCount = 0; i < popFillSize; i++){
 		for (int j = 0; j < popFillSize; j++){
 			pop[animalCount]->setXPosition(startX + i);

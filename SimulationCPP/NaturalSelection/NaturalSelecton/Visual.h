@@ -42,6 +42,7 @@ private:
 	int gridWidth = 700;
 	int gridHeight = 500;
 	int startX, startY;
+	std::string animal1, animal2;
 	bool firstTime = true;
 	std::map<std::string, std::tuple<std::vector<std::shared_ptr<Animal>>, int>> popMap;
 	//std::vector<std::shared_ptr<Animal>> pop1;
