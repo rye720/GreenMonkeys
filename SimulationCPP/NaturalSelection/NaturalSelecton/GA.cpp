@@ -98,13 +98,14 @@ void GA::combination(std::vector<std::shared_ptr<Animal>> &pop, int animalNum, i
 
 		std::vector<float> dadGenes = dad->getGenes();
 		std::vector<float> momGenes = mom->getGenes();
-		for (int i = 0; i < cp; i++){
-			childGenes.push_back(dadGenes[i]); 
+		
+		for (int i = 0; i < dadGenes.size(); i++){
+			childGenes.push_back((dadGenes[i] + momGenes[i]) / 2.0); 
 		}
 
-		for (int i = cp; i < mom->getGeneSize(); i++){
-			childGenes.push_back(momGenes[i]);
-		}
+		//for (int i = cp; i < mom->getGeneSize(); i++){
+		//	childGenes.push_back(momGenes[i]);
+		//}
 
 		bool hasMutation = false;
 		if (gu.randIntGen(100) <= 25) {
