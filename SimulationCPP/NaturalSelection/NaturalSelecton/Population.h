@@ -31,7 +31,7 @@ public:
 	* Function: Creates a population with name given to main population.
 	* Notes: User has access to this, but not to pop. Abstraction is a great thing.
 	*/
-	void createPopulation(int geneNum, int startingSize, int generation);
+	void createPopulation(int geneNum, int startingSize, int generation, int typeID);
 
 	/*
 	* Input: Number of genes per animal. Number of animals to create. Starting generation. Name of animals.
@@ -39,7 +39,7 @@ public:
 	* Function: Creates a population. Uses the name supplied in this function, instead of the constructor one.
 	* Notes: User has access to this, but not to pop. Abstraction is a great thing.
 	*/
-	void createPopulation(int geneNum, int startingSize, int generation, std::string name);
+	void createPopulation(int geneNum, int startingSize, int generation, std::string name, int typeID);
 
 	/*
 	* Input: None

@@ -18,9 +18,9 @@ Population::Population(std::string popName){
 /*COMMENTS:
 *  None
 */
-void Population::createPopulation(int geneNum, int startingSize, int generation){
+void Population::createPopulation(int geneNum, int startingSize, int generation, int typeID){
 	std::vector<std::shared_ptr<Animal>> pop;
-	ga.generatePop(pop, populationName, startingSize, geneNum, generation);
+	ga.generatePop(pop, populationName, startingSize, geneNum, generation, typeID);
 	std::tuple<std::vector<std::shared_ptr<Animal>>, int> popTuple(pop, generation);
 	if (popMap.find(populationName) == popMap.end())
 		popMap[populationName] = popTuple;
@@ -30,9 +30,9 @@ void Population::createPopulation(int geneNum, int startingSize, int generation)
 * This one should be used to give each population their own name and key 
 * 
 */
-void Population::createPopulation(int geneNum, int startingSize, int generation, std::string name){
+void Population::createPopulation(int geneNum, int startingSize, int generation, std::string name, int typeID){
 	std::vector<std::shared_ptr<Animal>> pop;
-	ga.generatePop(pop, name, startingSize, geneNum, generation);
+	ga.generatePop(pop, name, startingSize, geneNum, generation, typeID);
 	std::tuple<std::vector<std::shared_ptr<Animal>>, int> popTuple(pop, generation);
 	popMap[name] = popTuple;
 }

@@ -396,6 +396,7 @@ void Visual::localizePopulation(std::vector<std::shared_ptr<Animal>> pop) {
 	int xStop;
 	int yStop;
 	int searchSize;
+	int typeID;
 
 	for (const auto& animal : pop) {
 
@@ -428,6 +429,11 @@ void Visual::localizePopulation(std::vector<std::shared_ptr<Animal>> pop) {
 				if (!gridBoard[i][j] == NULL) {
 					
 					//do search and eat animals
+
+					/*if (animal->getTag) {
+
+					}*/
+
 
 				}
 			}

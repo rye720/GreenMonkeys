@@ -20,7 +20,7 @@ public:
 	* Function: Generates the first Population of animals.
 	* Notes: None
 	*/
-	void generatePop(std::vector<std::shared_ptr<Animal>> &pop, std::string name, int animals, int genes, int generation);
+	void generatePop(std::vector<std::shared_ptr<Animal>> &pop, std::string name, int animals, int genes, int generation, int typeID);
 
 	/*
 	* Input: Vector of Animals, number of Animals in the vector, and current generation.

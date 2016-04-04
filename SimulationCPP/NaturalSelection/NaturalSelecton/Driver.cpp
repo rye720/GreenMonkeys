@@ -136,8 +136,8 @@ int main(int argc, TCHAR *argv[]) {
 	std::locale loc;
 	std::transform(visualConf.begin(), visualConf.end(), visualConf.begin(), ::tolower);
 	Population pop = Population("pop1");
-	pop.createPopulation(geneNum1, animalStart1, 1, wolfName);
-	pop.createPopulation(geneNum2, animalStart2, 1, rabName);
+	pop.createPopulation(geneNum1, animalStart1, 1, wolfName, 1);
+	pop.createPopulation(geneNum2, animalStart2, 1, rabName, 2);
 	//Population wolfpop = Population(wolfName);
 	//Population rabpop = Population(rabName);
 	//wolfpop.createPopulation(geneNum1, animalStart1, 1);

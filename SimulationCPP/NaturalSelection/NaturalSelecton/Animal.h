@@ -5,6 +5,11 @@
 #include <string>
 
 class Animal{
+
+	/*JAMES:
+	Added animal type id so they know what they are and what they can eat
+	-Ryan
+	*/
 private:
 	/*Variables*/
 	char sex;
@@ -17,6 +22,7 @@ private:
 	int position[3];
 	int posXOffset = 0;
 	int posYOffset = 0;
+	int typeID = 0;
 
 public:
 	Animal();
@@ -33,6 +39,7 @@ public:
 	void setPosXOffset(int posXOffset);
 	void setPosYOffset(int posYOffset);
 	void setTag(std::string tag);
+	void setTypeID(int id);
 	char getSex();
 	float getFitness();
 	std::vector<float> getGenes();
@@ -46,6 +53,7 @@ public:
 	int getZPost();
 	int getPosXOffset();
 	int getPosYOffset();
+	int getTypeID();
 };
 
 #endif

@@ -148,6 +148,16 @@ void Animal::setTag(std::string tag){
 * Function:
 * Notes:
 */
+void Animal::setTypeID(int id) {
+	this->typeID = id;
+}
+
+/*
+* Input:
+* Output:
+* Function:
+* Notes:
+*/
 char Animal::getSex(){
 	return this->sex;
 }
@@ -200,6 +210,16 @@ std::string Animal::getName(){
 */
 std::string Animal::getTag(){
 	return this->tag;
+}
+
+/*
+* Input:
+* Output:
+* Function:
+* Notes:
+*/
+int Animal::getTypeID() {
+	return this->typeID;
 }
 
 /*

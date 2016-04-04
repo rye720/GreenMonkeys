@@ -5,7 +5,7 @@
 *  Not using shared pointer on the vector becuase I'm just passing the reference of it. 
 *  I.E. making a vector of shared pointers to animal classes.
 */
-void GA::generatePop(std::vector<std::shared_ptr<Animal>> &pop, std::string name, int animals, int genes, int generation){
+void GA::generatePop(std::vector<std::shared_ptr<Animal>> &pop, std::string name, int animals, int genes, int generation, int typeID){
 
 	for (int i = 0; i < animals; i++){
 		GAUtils gu = GAUtils();
@@ -18,6 +18,7 @@ void GA::generatePop(std::vector<std::shared_ptr<Animal>> &pop, std::string name
 		fitness = gu.fitnessSingle(a->getGenes());
 		a->setFitness(fitness);
 		a->setTag(name + "_" + std::to_string(generation) + std::to_string(i));
+		a->setTypeID(typeID);
 		pop.push_back(std::move(a));
 	}
 }
