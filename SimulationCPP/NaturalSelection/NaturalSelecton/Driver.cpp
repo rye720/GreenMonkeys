@@ -146,18 +146,17 @@ int main(int argc, TCHAR *argv[]) {
 	if (visualConf == "yes" || visualConf == "y") {
 
 		//visual mode
-		for (int i = 0; i < 20; i++) {
-			pop.advanceGeneration();
-			//wolfpop.advanceGeneration();
-			//rabpop.advanceGeneration();
 
-		}
-
+	//	for (int i = 0; i < 20; i++) {
+	//	pop.advanceGeneration();
+	//	wolfpop.advanceGeneration();
+	//		rabpop.advanceGeneration();
+	//}
 
 		Visual v = pop.initVisual();
 		v.visualSetup();
 		//Visual v = Visual(wolfpop.getPopulation());
-		/*Visual v = wolfpop.initVisual();	
+		/*Visual v = wolfpop.initVisual();
 		v.visualSetup();*/
 
 
@@ -171,7 +170,7 @@ int main(int argc, TCHAR *argv[]) {
 
 		/*Loop i < loops; loops is the number of times you iterate through it*/
 		for (int i = 0; i < loops; i++) {
-			pop.advanceGeneration(); 
+			pop.advanceGeneration();
 		}
 		std::cout << std::endl;
 

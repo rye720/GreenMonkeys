@@ -107,6 +107,8 @@ private:
 	*/
 	void localizePopulation(std::vector<std::shared_ptr<Animal>> pop);
 
+	void advanceGeneration();
+
 
 
 };

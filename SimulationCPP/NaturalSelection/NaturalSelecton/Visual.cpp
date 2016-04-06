@@ -4,7 +4,7 @@
 *  Need this inorder to create a pointer to this class in the static version of windowprodecure.3
 *  Not going to use pop in this at all, so setting pop equal to its self is safe in this instance.
 */
-Visual::Visual():popMap(popMap){
+Visual::Visual() :popMap(popMap) {
 	hWnd = NULL;
 	hInstance = NULL;
 	hDc = NULL;
@@ -16,20 +16,20 @@ Visual::Visual():popMap(popMap){
 *  In earlier development this did not use an initializer list and the program quickly ran into problems setting popMap equal to incPopMap in the body of the function.
 *  Not sure what caused this, but it was fixed with an initalizer list.
 */
-Visual::Visual(std::map<std::string, std::tuple<std::vector<std::shared_ptr<Animal>>, int>> incPopMap) : popMap(std::move(incPopMap)){
+Visual::Visual(std::map<std::string, std::tuple<std::vector<std::shared_ptr<Animal>>, int>> incPopMap) : popMap(std::move(incPopMap)) {
 	hWnd = NULL;
 	hInstance = NULL;
 	hDc = NULL;
 	int i = 0;
-	for (auto& map : popMap){
+	for (auto& map : popMap) {
 		if (i == 0)
 			animal1 = std::get<0>(map.second)[0]->getName();
 		else
 			animal2 = std::get<0>(map.second)[0]->getName();
 		i++;
 	}
-	gridBoard.resize(gridHeight);		
-	for (int i = 0; i < gridHeight; i++){	
+	gridBoard.resize(gridHeight);
+	for (int i = 0; i < gridHeight; i++) {
 		gridBoard[i].resize(gridWidth);
 	}
 }
@@ -37,35 +37,35 @@ Visual::Visual(std::map<std::string, std::tuple<std::vector<std::shared_ptr<Anim
 /*COMMENTS:
 * OLD, no need for this. Was used when the grid was a 2d array and needed to malloc the grid.
 */
-Visual::~Visual(){
+Visual::~Visual() {
 	//for (int i = 0; i < 500; i++)
 	//	free(gridBoard[i]);
 	//free(gridBoard);
 }
 
 /*COMMENTS:
-*  Just basic window creation and registration with a basic msg handler loop. Nothing too fancy. 
+*  Just basic window creation and registration with a basic msg handler loop. Nothing too fancy.
 */
-void Visual::visualSetup(){
+void Visual::visualSetup() {
 	LPCSTR myClass = "Green Monkeys";
 	LPCSTR myTitle = "Natural Selection Simulator";
 	std::cout << std::get<0>(popMap.begin()->second).size();
 
-	WNDCLASS wndclass = { CS_HREDRAW | CS_VREDRAW, (WNDPROC)StaticWndProc, 0, 0, 
+	WNDCLASS wndclass = { CS_HREDRAW | CS_VREDRAW, (WNDPROC)StaticWndProc, 0, 0,
 		hInstance, LoadIcon(NULL,IDI_WINLOGO), LoadCursor(NULL, IDC_ARROW),
-		(HBRUSH) GetStockObject(WHITE_BRUSH), myTitle, myClass};
+		(HBRUSH)GetStockObject(WHITE_BRUSH), myTitle, myClass };
 
 	if (RegisterClass(&wndclass))
 	{
 		hWnd = CreateWindowEx(0, myClass, myTitle,
 			WS_BORDER | WS_SYSMENU, CW_USEDEFAULT, CW_USEDEFAULT,
 			800, 600, NULL, NULL, hInstance, this);
-		
+
 		if (hWnd)
 		{
 			ShowWindow(hWnd, SW_SHOWDEFAULT);
 			UpdateWindow(hWnd);
-			MSG msg; 
+			MSG msg;
 			while (GetMessage(&msg, 0, 0, 0)) DispatchMessage(&msg);
 		}
 	}
@@ -76,8 +76,8 @@ void Visual::visualSetup(){
 *  So windows api only allows the main window procedure to be static. But since we are using an external data structure
 *  this proved to be a problem. The way this problem was solved was by creating a pointer to the class and a pointer to the window.
 *  The window pointer is then used to initalize the class pointer (class pointer still has access to the static window). With this we are able to call functions via the class pointer.
-*  And since we are able to call our second window procedure, which is not static, and use our external data members. 
-*  This whole process allows us to bypass the static window procedure. 
+*  And since we are able to call our second window procedure, which is not static, and use our external data members.
+*  This whole process allows us to bypass the static window procedure.
 *  Again this was a big pain to get working.
 */
 LRESULT CALLBACK Visual::StaticWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -104,8 +104,8 @@ LRESULT CALLBACK Visual::StaticWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 }
 
 /*COMMENTS:
-*  Non-static version of the window procedure. 
-*  May need to edit the timers a bit more. 
+*  Non-static version of the window procedure.
+*  May need to edit the timers a bit more.
 *  Also need to remove the first timer as it is not being used anymore.
 *  Messing with OpenMP. Causing errors though, still looking into it.
 */
@@ -121,7 +121,7 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		//SetTimer(hWnd, 2, 2000, NULL);
 		break;
 	case WM_TIMER:
-		switch (wParam){
+		switch (wParam) {
 		case 1:
 			/*This will be used to update the window to give the illusion of realtime movement*/
 
@@ -129,28 +129,28 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			UpdateWindow(hWnd);
 			break;
 		case 2:
-			/*Possible timer to update animals position and such. Mostly for testing right now*/		
+			/*Possible timer to update animals position and such. Mostly for testing right now*/
 //#pragma omp parallel
-			for (auto& map : popMap){
+			for (auto& map : popMap) {
 				animalPosUpdate(std::get<0>(map.second));
-//#pragma omp barrier
+				//#pragma omp barrier
 			}
 			break;
 		case 3:
-//#pragma omp parallel
-			for (auto& map : popMap){
+			//#pragma omp parallel
+			for (auto& map : popMap) {
 				animalIncUpdate(std::get<0>(map.second));
-//#pragma omp barrier
-			}	
+				//#pragma omp barrier
+			}
 			InvalidateRect(hWnd, NULL, TRUE);
 			UpdateWindow(hWnd);
 			break;
-		/*case 4:
-			GA g = GA();
-			g.combination(pop, pop.size(), 0);
-			g.ranking(pop);
-			g.selection(pop);
-			break;*/
+			/*case 4:
+				GA g = GA();
+				g.combination(pop, pop.size(), 0);
+				g.ranking(pop);
+				g.selection(pop);
+				break;*/
 		}
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
@@ -159,43 +159,43 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 		//code to plot points of animal locations called here
 //#pragma omp parallel
-		if (firstTime){
+		if (firstTime) {
 			for (auto& map : popMap)
 				initialPopPlot(hdc, hWnd, std::get<0>(map.second));
-////#pragma omp barrier
-//			}
+			////#pragma omp barrier
+			//			}
 
-				//initialPopPlot(hdc, hWnd, std::get<0>(popMap.begin()->second));
-		
-				//initialPopPlot(hdc, hWnd, std::get<0>(popMap.begin()->second));
+							//initialPopPlot(hdc, hWnd, std::get<0>(popMap.begin()->second));
+
+							//initialPopPlot(hdc, hWnd, std::get<0>(popMap.begin()->second));
 
 		}
 		else {
 
-//#pragma omp parallel
+			//#pragma omp parallel
 			int i = 0;
-			for (auto& map : popMap){
+			for (auto& map : popMap) {
 				if (i == 0)
 					paintAnimals(hdc, hWnd, std::get<0>(map.second), "RED");
 				else
 					paintAnimals(hdc, hWnd, std::get<0>(map.second), "BLACK");
 				i++;
 			}
-////#pragma omp barrier
-//			}
+			////#pragma omp barrier
+			//			}
 
-				///*paintAnimals(hdc, hWnd, std::get<0>(popMap.begin()), "RED");*/
-			 //   paintAnimals(hdc, hWnd, std::get<0>(popMap.begin()->second), "RED");
-				//paintAnimals(hdc, hWnd, std::get<0>(popMap.begin()->second), "BLACK");
+							///*paintAnimals(hdc, hWnd, std::get<0>(popMap.begin()), "RED");*/
+						 //   paintAnimals(hdc, hWnd, std::get<0>(popMap.begin()->second), "RED");
+							//paintAnimals(hdc, hWnd, std::get<0>(popMap.begin()->second), "BLACK");
 
 
-			/***************************************************************************
-			 * For ryan: How to Textout out the vector size + name of the animals.     *
-			 * Old code before we had the map though. Still works just need to get the *
-			 * vector from the map.                                                    *
-			 ***************************************************************************/
+						/***************************************************************************
+						 * For ryan: How to Textout out the vector size + name of the animals.     *
+						 * Old code before we had the map though. Still works just need to get the *
+						 * vector from the map.                                                    *
+						 ***************************************************************************/
 
-			//Got it working now	-Ryan
+						 //Got it working now	-Ryan
 
 			SetTextColor(hdc, RGB(0, 0, 0));
 			TextOut(hdc, 10, 10, std::get<0>(popMap.find(animal1)->second)[0]->getName().c_str(), std::get<0>(popMap.find(animal1)->second)[0]->getName().length());
@@ -237,17 +237,17 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 }
 
 /*COMMENTS:
-*  This will need to change or be re-written once we add in prey/a grid 2d array. 
+*  This will need to change or be re-written once we add in prey/a grid 2d array.
 *  Currently it is giving the animal a random direction to "roam" in.
 */
-void Visual::animalPosUpdate(std::vector<std::shared_ptr<Animal>> pop){
+void Visual::animalPosUpdate(std::vector<std::shared_ptr<Animal>> pop) {
 	GAUtils gau = GAUtils();
 
-//#pragma omp parallel
-	for (const auto& animal : pop){
+	//#pragma omp parallel
+	for (const auto& animal : pop) {
 		int randx = gau.randIntGen(600);
 		int randy = gau.randIntGen(500);
-			
+
 		if (gau.randIntGen(10) >= 5)
 			animal->setPosXOffset(randx);
 		else
@@ -258,7 +258,7 @@ void Visual::animalPosUpdate(std::vector<std::shared_ptr<Animal>> pop){
 		else
 			animal->setPosYOffset(randy*-1);
 	}
-	
+
 }
 
 /*COMMENTS:
@@ -278,30 +278,30 @@ void Visual::initialPopPlot(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Anim
 	int z = 0;
 
 #pragma omp parallel
-	for (int i = 500; i < 500; i++){
-		for (int j = 700; j < 700; j++){
+	for (int i = 500; i < 500; i++) {
+		for (int j = 700; j < 700; j++) {
 			gridBoard[j][i] = NULL;
 		}
 	}
 
 	int popFillSize = floor(sqrt(y));
-	int remainder = (y-(popFillSize*popFillSize));
+	int remainder = (y - (popFillSize*popFillSize));
 
-//#pragma omp parallel shared(popFillSize, remainder)
-	for (int i = 0, animalCount = 0; i < popFillSize; i++){
-		for (int j = 0; j < popFillSize; j++){
+	//#pragma omp parallel shared(popFillSize, remainder)
+	for (int i = 0, animalCount = 0; i < popFillSize; i++) {
+		for (int j = 0; j < popFillSize; j++) {
 			pop[animalCount]->setXPosition(startX + i);
 			pop[animalCount]->setYPosition(startY + j);
-			gridBoard[startY + j][startX + i] = pop[animalCount];			
+			gridBoard[startY + j][startX + i] = pop[animalCount];
 			animalCount++;
 		}
 	}
 
 #pragma omp parallel
-	for (int i = 0, j = pop.size(); i < remainder; i++){
-		pop[j - i-1]->setXPosition(startX + i);
-		pop[j - i-1]->setYPosition(startY + popFillSize);
-		gridBoard[startY + popFillSize][startX + i] = pop[j-i-1];
+	for (int i = 0, j = pop.size(); i < remainder; i++) {
+		pop[j - i - 1]->setXPosition(startX + i);
+		pop[j - i - 1]->setYPosition(startY + popFillSize);
+		gridBoard[startY + popFillSize][startX + i] = pop[j - i - 1];
 	}
 	firstTime = false;
 	animalPosUpdate(pop);
@@ -312,22 +312,22 @@ void Visual::initialPopPlot(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Anim
 *  Did this in one function becuase the collision is fairly small and fits right in with the painting.
 *  Need to find a better way to do the COLORREF. Looking/thinking of a way to do this.
 */
-void Visual::paintAnimals(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Animal>> pop, std::string color){
+void Visual::paintAnimals(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Animal>> pop, std::string color) {
 
 	if (color == "BLACK")
-		SetTextColor(hdc, RGB(0,0,0));
+		SetTextColor(hdc, RGB(0, 0, 0));
 	else
-		SetTextColor(hdc, RGB(255,0,0));
+		SetTextColor(hdc, RGB(255, 0, 0));
 
-//#pragma omp parallel
-	for (const auto& animal : pop){
+	//#pragma omp parallel
+	for (const auto& animal : pop) {
 		int xpos, ypos;
 		xpos = animal->getXPos();
 		ypos = animal->getYPos();
-		
+
 
 		if ((xpos > 51) && (ypos > 51) && (ypos < 501) && (xpos < 701))
-			TextOut(hdc,xpos, ypos, ".", 1);
+			TextOut(hdc, xpos, ypos, ".", 1);
 		else if ((xpos < 51) && (ypos > 51))
 			TextOut(hdc, 50, ypos, ".", 1);
 		else if ((ypos < 51) && (xpos > 51))
@@ -347,40 +347,42 @@ void Visual::paintAnimals(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Animal
 *  Possible future work: Instead of each animal moving 1 pixel at a time have them move at their own speed.
 *  Would need to test this though. Could lead to a "skipping" effect on the screen.
 */
-void Visual::animalIncUpdate(std::vector<std::shared_ptr<Animal>> pop){
+void Visual::animalIncUpdate(std::vector<std::shared_ptr<Animal>> pop) {
 
 	//#pragma omp parallel
-	for (const auto& animal : pop){
+	for (const auto& animal : pop) {
 		int xpos = animal->getXPos();
 		int ypos = animal->getYPos();
-		if (animal->getPosXOffset() > 0 && xpos < gridHeight-1 && xpos > 0){
+		if (animal->getPosXOffset() > 0 && xpos < gridHeight - 1 && xpos > 0) {
 			animal->setPosXOffset(animal->getPosXOffset() - 1);
 			gridBoard[xpos][ypos] = NULL;
 			animal->setXPosition(animal->getXPos() + 1);
-			gridBoard[xpos+1][ypos] = animal;
+			gridBoard[xpos + 1][ypos] = animal;
 		}
-		else if (animal->getPosXOffset() < 0 && xpos < gridHeight-1 && xpos > 0){
+		else if (animal->getPosXOffset() < 0 && xpos < gridHeight - 1 && xpos > 0) {
 			animal->setPosXOffset(animal->getPosXOffset() + 1);
 			gridBoard[xpos][ypos] = NULL;
 			animal->setXPosition(animal->getXPos() - 1);
-			gridBoard[xpos-1][ypos] = animal;
+			gridBoard[xpos - 1][ypos] = animal;
 		}
 
-		if (animal->getPosYOffset() > 0 && ypos < gridWidth-1 && ypos > 0){
+		if (animal->getPosYOffset() > 0 && ypos < gridWidth - 1 && ypos > 0) {
 			animal->setPosYOffset(animal->getPosYOffset() - 1);
 			gridBoard[xpos][ypos] = NULL;
-			animal->setYPosition(animal->getYPos ()+ 1);
-			gridBoard[xpos][ypos+1] = animal;
+			animal->setYPosition(animal->getYPos() + 1);
+			gridBoard[xpos][ypos + 1] = animal;
 		}
-		else if (animal->getPosYOffset() < 0 && ypos < gridWidth-1 && ypos > 0){
+		else if (animal->getPosYOffset() < 0 && ypos < gridWidth - 1 && ypos > 0) {
 			animal->setPosYOffset(animal->getPosYOffset() + 1);
 			gridBoard[xpos][ypos] = NULL;
 			animal->setYPosition(animal->getYPos() - 1);
-			gridBoard[xpos][ypos-1] = animal;
+			gridBoard[xpos][ypos - 1] = animal;
 		}
 		//#pragma omp barrier
 	}
+
 	localizePopulation(pop);
+
 }
 
 
@@ -410,29 +412,31 @@ void Visual::localizePopulation(std::vector<std::shared_ptr<Animal>> pop) {
 		if (xStart < 0) {
 			xStart = 0;
 		}
-	
+
 		if (yStart < 0) {
 			yStart = 0;
 		}
-	
-		if (xStop > (gridWidth - 1) ) {
+
+		if (xStop > (gridWidth - 1)) {
 			xStop = gridWidth - 1;
 		}
-	
+
 		if (yStop > (gridHeight - 1)) {
 			yStop = gridHeight - 1;
 		}
-	
-		for (int j = xStart; j < xStop; j++ ) {
+
+		for (int j = xStart; j < xStop; j++) {
 			for (int i = yStart; i < yStop; i++) {
 
 				if (!gridBoard[i][j] == NULL) {
-					
+
 					//do search and eat animals
 
 					/*if (animal->getTag) {
 
 					}*/
+
+					//remove from grid and actual popmap
 
 
 				}
@@ -441,4 +445,18 @@ void Visual::localizePopulation(std::vector<std::shared_ptr<Animal>> pop) {
 
 	}
 
+	advanceGeneration();
+
+
 }
+
+void Visual::advanceGeneration() {
+	GA ga;
+	for (auto& tuple : popMap) {
+		ga.combination(std::get<0>(tuple.second), std::get<0>(tuple.second).size(), std::get<1>(tuple.second));
+		ga.ranking(std::get<0>(tuple.second));
+		ga.selection(std::get<0>(tuple.second));
+		std::get<1>(tuple.second)++;
+	}
+}
+
