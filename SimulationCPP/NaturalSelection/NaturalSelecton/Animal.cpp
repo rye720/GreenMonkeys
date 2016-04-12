@@ -291,3 +291,14 @@ int Animal::getPosXOffset(){
 int Animal::getPosYOffset(){
 	return this->posYOffset;
 }
+
+
+/*
+* Input:
+* Output:
+* Function:
+* Notes:
+*/
+int* Animal::getPosition(){
+	return this->position;
+}

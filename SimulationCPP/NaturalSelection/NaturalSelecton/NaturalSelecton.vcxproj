@@ -74,6 +74,7 @@
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -91,6 +92,7 @@
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

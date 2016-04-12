@@ -24,10 +24,12 @@ void GA::generatePop(std::vector<std::shared_ptr<Animal>> &pop, std::string name
 }
 
 /* COMMENTS:
+<param>
 *  The big if/else statement is to add variety to the mating (if the pop is > 10 then mate with the top 8. pop > 6 mate with top 4, etc..).
 *  This whole function is not taking into account of gender's or position so it will need to be re-written once we have two seperate data structures,
 *  one with males and the other with females. Also will need to take into account of proximity once we get there.
 *  This also removes older animals; Maybe should move that to selection since it really isn't a part of the combination procedure.
+</param>
 */
 void GA::combination(std::vector<std::shared_ptr<Animal>> &pop, int animalNum, int currentGen){
 	char sex;
@@ -122,6 +124,8 @@ void GA::combination(std::vector<std::shared_ptr<Animal>> &pop, int animalNum, i
 		child->setGenes(childGenes);
 		child->setSex(sex);
 		child->setGeneration(currentGen);
+		child->setTypeID(mom->getTypeID());
+		child->setPosition(mom->getXPos(), mom->getYPos(), 0);
 		if (hasMutation)
 			cTag.append(mom->getName() + "_" + std::to_string(currentGen) + "_" + std::to_string(animalNum + 1) + "m");
 		else
@@ -135,7 +139,7 @@ void GA::combination(std::vector<std::shared_ptr<Animal>> &pop, int animalNum, i
 	}
 
 	gu.agePopulation(pop,5);
-	gu.killSeniorCitizens(pop);
+gu.killSeniorCitizens(pop);
 
 }
 

@@ -43,6 +43,7 @@ public:
 	char getSex();
 	float getFitness();
 	std::vector<float> getGenes();
+	int* getPosition();
 	int getGeneSize(); 
 	std::string getName();
 	std::string getTag();

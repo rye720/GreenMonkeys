@@ -152,6 +152,11 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 				g.selection(pop);
 				break;*/
 		}
+
+	case 4:
+		advanceGeneration();
+		break;
+
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
 		/*Window here*/
@@ -305,6 +310,7 @@ void Visual::initialPopPlot(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Anim
 	}
 	firstTime = false;
 	animalPosUpdate(pop);
+	SetTimer(hWnd, 4, 15000, NULL);
 }
 
 /*COMMENTS:
@@ -445,13 +451,13 @@ void Visual::localizePopulation(std::vector<std::shared_ptr<Animal>> pop) {
 
 	}
 
-	advanceGeneration();
+	
 
 
 }
 
 void Visual::advanceGeneration() {
-	GA ga;
+	GA ga = GA();
 	for (auto& tuple : popMap) {
 		ga.combination(std::get<0>(tuple.second), std::get<0>(tuple.second).size(), std::get<1>(tuple.second));
 		ga.ranking(std::get<0>(tuple.second));
