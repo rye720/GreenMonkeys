@@ -117,8 +117,12 @@ void GAUtils::popOut(std::vector<std::shared_ptr<Animal>> &pop, int x){
 *
 */
 void GAUtils::agePopulation(std::vector<std::shared_ptr<Animal>> &pop, int x) {
+	int test = 0;
 	for (size_t i = 0; i < pop.size(); i++) {
-		pop[i]->setAge(pop[i]->getAge() + x);
+		test = pop[i]->getAge();
+		test += x;
+		pop[i]->setAge(test);
+		test = 0;
 	}
 
 }

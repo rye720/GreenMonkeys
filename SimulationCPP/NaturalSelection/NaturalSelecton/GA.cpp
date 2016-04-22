@@ -138,8 +138,7 @@ void GA::combination(std::vector<std::shared_ptr<Animal>> &pop, int animalNum, i
 		pop.push_back(std::move(child));
 	}
 
-	gu.agePopulation(pop,5);
-gu.killSeniorCitizens(pop);
+
 
 }
 
@@ -147,11 +146,17 @@ gu.killSeniorCitizens(pop);
 * Removing only 1/4 of the population. 
 * Smart pointers are being used so no need to delete
 */
-
 void GA::selection(std::vector<std::shared_ptr<Animal>> &pop){
+	
+	GAUtils gu = GAUtils();
+	gu.agePopulation(pop, 5);
+	gu.killSeniorCitizens(pop);
+	
 	int size = pop.size();
 	int x = (size / 4);
 	size -= 1;
+
+
 
 	for (; x > 0; size--, x--){
 		pop.erase(pop.begin() + size);

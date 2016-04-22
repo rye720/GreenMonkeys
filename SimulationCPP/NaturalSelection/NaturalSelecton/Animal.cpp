@@ -239,7 +239,7 @@ int Animal::getGeneration(){
 * Notes:
 */
 int Animal::getAge(){
-	return this->generation;
+	return this->age;
 }
 
 /*

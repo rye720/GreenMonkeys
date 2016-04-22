@@ -65,8 +65,6 @@ public:
 	*/
 	Visual initVisual();
 
-
-
 	/*
 	* Input: None
 	* Output: Size of the population in int.

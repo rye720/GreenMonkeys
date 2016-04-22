@@ -8,8 +8,10 @@ Visual::Visual() :popMap(popMap) {
 	hWnd = NULL;
 	hInstance = NULL;
 	hDc = NULL;
-
 }
+
+
+
 
 /*COMMENTS:
 *  The constructor that will be called from outside this class. Using an initializer list more for style and avoiding possible complicated code.
@@ -32,15 +34,22 @@ Visual::Visual(std::map<std::string, std::tuple<std::vector<std::shared_ptr<Anim
 	for (int i = 0; i < gridHeight; i++) {
 		gridBoard[i].resize(gridWidth);
 	}
+
+	myfile.open("plotData.dat");
+
+	myfile << "#" << "\t" << "X" << "\t" << "Y1" << "\t" << "Y2" << "\n";
+
+	outPlotLine(std::get<1>(popMap.begin()->second), std::get<0>(popMap.begin()->second).size(),
+		std::get<0>(popMap.find(animal2)->second).size());
+
+
 }
 
 /*COMMENTS:
-* OLD, no need for this. Was used when the grid was a 2d array and needed to malloc the grid.
+* needed to close the output file
 */
 Visual::~Visual() {
-	//for (int i = 0; i < 500; i++)
-	//	free(gridBoard[i]);
-	//free(gridBoard);
+	myfile.close();
 }
 
 /*COMMENTS:
@@ -151,11 +160,16 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 				g.ranking(pop);
 				g.selection(pop);
 				break;*/
+
+		case 4:
+			advanceGeneration(hWnd);
+			outPlotLine(std::get<1>(popMap.begin()->second), std::get<0>(popMap.begin()->second).size(), 
+				std::get<0>(popMap.find(animal2)->second).size());
+			break;
+
 		}
 
-	case 4:
-		advanceGeneration();
-		break;
+
 
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
@@ -186,24 +200,12 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 					paintAnimals(hdc, hWnd, std::get<0>(map.second), "BLACK");
 				i++;
 			}
-			////#pragma omp barrier
-			//			}
-
-							///*paintAnimals(hdc, hWnd, std::get<0>(popMap.begin()), "RED");*/
-						 //   paintAnimals(hdc, hWnd, std::get<0>(popMap.begin()->second), "RED");
-							//paintAnimals(hdc, hWnd, std::get<0>(popMap.begin()->second), "BLACK");
 
 
-						/***************************************************************************
-						 * For ryan: How to Textout out the vector size + name of the animals.     *
-						 * Old code before we had the map though. Still works just need to get the *
-						 * vector from the map.                                                    *
-						 ***************************************************************************/
-
-						 //Got it working now	-Ryan
+			
 
 			SetTextColor(hdc, RGB(0, 0, 0));
-			TextOut(hdc, 10, 10, std::get<0>(popMap.find(animal1)->second)[0]->getName().c_str(), std::get<0>(popMap.find(animal1)->second)[0]->getName().length());
+				TextOut(hdc, 10, 10, std::get<0>(popMap.find(animal1)->second)[0]->getName().c_str(), std::get<0>(popMap.find(animal1)->second)[0]->getName().length());
 			TCHAR buffer[32];
 			_itoa_s(std::get<0>(popMap.find(animal1)->second).size(), buffer, 10);
 			if (std::get<0>(popMap.find(animal1)->second).size() < 10)
@@ -214,6 +216,11 @@ LRESULT Visual::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 				TextOut(hdc, 40, 10, buffer, 3);
 			else
 				TextOut(hdc, 40, 10, buffer, 4);
+
+			
+			_itoa_s(std::get<1>(popMap.begin()->second), buffer, 10);
+			TextOut(hdc, 248, 10, buffer, 2);
+			TextOut(hdc, 150, 10, "Generation #: ", 13);
 
 			SetTextColor(hdc, RGB(255, 0, 0));
 			TextOut(hdc, 70, 10, std::get<0>(popMap.find(animal2)->second)[0]->getName().c_str(), std::get<0>(popMap.find(animal2)->second)[0]->getName().length());
@@ -310,7 +317,7 @@ void Visual::initialPopPlot(HDC hdc, HWND hWnd, std::vector<std::shared_ptr<Anim
 	}
 	firstTime = false;
 	animalPosUpdate(pop);
-	SetTimer(hWnd, 4, 15000, NULL);
+	SetTimer(hWnd, 4, 1500, NULL);
 }
 
 /*COMMENTS:
@@ -451,18 +458,32 @@ void Visual::localizePopulation(std::vector<std::shared_ptr<Animal>> pop) {
 
 	}
 
-	
+
 
 
 }
 
-void Visual::advanceGeneration() {
+void Visual::advanceGeneration(HWND hWnd) {
 	GA ga = GA();
-	for (auto& tuple : popMap) {
-		ga.combination(std::get<0>(tuple.second), std::get<0>(tuple.second).size(), std::get<1>(tuple.second));
-		ga.ranking(std::get<0>(tuple.second));
-		ga.selection(std::get<0>(tuple.second));
-		std::get<1>(tuple.second)++;
+	if (std::get<1>(popMap.begin()->second) < 25) {
+		for (auto& tuple : popMap) {
+			ga.combination(std::get<0>(tuple.second), std::get<0>(tuple.second).size(), std::get<1>(tuple.second));
+			ga.ranking(std::get<0>(tuple.second));
+			ga.selection(std::get<0>(tuple.second));
+			std::get<1>(tuple.second)++;
+		}
 	}
+	else {
+		KillTimer(hWnd, 2);
+		KillTimer(hWnd, 3);
+		KillTimer(hWnd, 4);
+	}
+}
+
+
+void Visual::outPlotLine(int gen, int predSize, int preySize) {
+	
+	myfile << "\t" << gen << "\t" << predSize << "\t" << preySize << "\n";
+
 }
 

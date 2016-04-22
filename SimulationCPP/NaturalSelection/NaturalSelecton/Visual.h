@@ -7,6 +7,7 @@
 #include <memory>
 #include <omp.h>
 #include <iostream>
+#include <fstream>
 #include <map>
 #include "GA.h"
 
@@ -36,6 +37,7 @@ protected:
 	HWND hWnd;
 	HINSTANCE hInstance;
 	HDC hDc;
+	std::ofstream myfile;
 
 private:
 	/*Variables*/
@@ -107,7 +109,9 @@ private:
 	*/
 	void localizePopulation(std::vector<std::shared_ptr<Animal>> pop);
 
-	void advanceGeneration();
+	void advanceGeneration(HWND hWnd);
+
+	void outPlotLine(int gen, int predSize, int preySize);
 
 
 
