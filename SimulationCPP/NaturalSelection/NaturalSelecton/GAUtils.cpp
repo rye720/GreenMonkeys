@@ -118,7 +118,7 @@ void GAUtils::popOut(std::vector<std::shared_ptr<Animal>> &pop, int x){
 */
 void GAUtils::agePopulation(std::vector<std::shared_ptr<Animal>> &pop, int x) {
 	int test = 0;
-	for (size_t i = 0; i < pop.size(); i++) {
+	for (int i = 0; i < pop.size(); i++) {
 		test = pop[i]->getAge();
 		test += x;
 		pop[i]->setAge(test);
@@ -131,12 +131,11 @@ void GAUtils::agePopulation(std::vector<std::shared_ptr<Animal>> &pop, int x) {
 *
 */
 void GAUtils::killSeniorCitizens(std::vector<std::shared_ptr<Animal>> &pop) {
-	for (size_t i = 0; i < pop.size(); i++) {
+	for (int i = 0; i < pop.size(); i++) {
 		if (pop[i]->getAge() > 23) {
 			//Animal a = pop[i];
 			pop.erase(pop.begin() + i);
 			i--;
 		}
 	}
-
 }

@@ -80,8 +80,31 @@ int Population::getPopSize(){
 *  If a way is found please add it below this and edit this comment accordingly.
 */
 std::ostream& operator<<(std::ostream& os, const Population& pop){
-	for (auto & animal : std::get<0>(pop.popMap.begin()->second)){
-		os << animal->getTag() + "  " + std::to_string(animal->getFitness()) << std::endl;
+	//os << "Top prey individuals by gene ranking: " << std::endl;
+	//for (auto & animal : std::get<0>(pop.popMap.begin()->second)){
+	//	os << animal->getTag() + "  " + std::to_string(animal->getFitness()) << std::endl;
+	//}
+	//os << "prey population size" << std::get<0>(pop.popMap.begin()->second).size() << std::endl;
+	//os << "Top predator individuals by gene ranking: " << std::endl;
+	//for (auto & animal : std::get<0>(pop.popMap.begin()->second)){
+	//	os << animal->getTag() + "  " + std::to_string(animal->getFitness()) << std::endl;
+	//}
+	//os << "predator population size" << std::get<0>(std::next(pop.popMap.begin()->second, 1)).size() << std::endl;
+	for (auto& tuple : pop.popMap){
+		if (std::get<0>(tuple.second).size() > 0){
+			if (std::get<0>(tuple.second)[0]->getTypeID() == 1)
+				os << "Top predator individuals by gene ranking: " << std::endl;
+			else
+				os << "Top prey individuals by gene ranking: " << std::endl;
+			for (auto& animal : std::get<0>(tuple.second)){				
+				os << animal->getTag() + "  " + std::to_string(animal->getFitness()) << std::endl;
+			}
+			if (std::get<0>(tuple.second)[0]->getTypeID() == 1)
+				os << "predator population size" << std::get<0>(tuple.second).size() << std::endl;
+			else
+				os << "prey population size" << std::get<0>(tuple.second).size() << std::endl;
+			std::cout << std::endl;
+		}
 	}
-	return os;
+	return os; 
 }

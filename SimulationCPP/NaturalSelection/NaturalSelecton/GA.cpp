@@ -149,8 +149,8 @@ void GA::combination(std::vector<std::shared_ptr<Animal>> &pop, int animalNum, i
 void GA::selection(std::vector<std::shared_ptr<Animal>> &pop){
 	
 	GAUtils gu = GAUtils();
-	gu.agePopulation(pop, 5);
-	gu.killSeniorCitizens(pop);
+	//gu.agePopulation(pop, 5);
+	//gu.killSeniorCitizens(pop);
 	
 	int size = pop.size();
 	int x = (size / 4);
